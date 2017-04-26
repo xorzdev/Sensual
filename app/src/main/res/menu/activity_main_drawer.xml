@@ -3,30 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:itemIconTint="@android:color/holo_orange_light">
 
-    <group android:id="@+id/group_action_layout">
+    <group
+        android:id="@+id/group_action_layout"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notice"
+            android:icon="@drawable/vt_short_text_24dp"
+            android:title="通知"
+            app:actionLayout="@layout/menu_action_notice"
+            app:showAsAction="always" />
         <item
             android:id="@+id/nav_tip"
             android:icon="@drawable/vt_short_text_24dp"
             android:title="提示"
-            app:actionLayout="@layout/menu_layout_tip" />
+            app:actionLayout="@layout/menu_action_tip" />
         <item
             android:id="@+id/nav_switch"
             android:icon="@drawable/vt_short_text_24dp"
             android:title="选择"
-            app:actionLayout="@layout/menu_layout_switch" />
+            app:actionLayout="@layout/menu_action_switch" />
         <item
             android:id="@+id/nav_msg"
             android:icon="@drawable/vt_short_text_24dp"
             android:title="信息"
-            app:actionLayout="@layout/menu_layout_msg" />
+            app:actionLayout="@layout/menu_action_msg" />
     </group>
 
     <item android:title="样式">
         <menu>
             <item
                 android:id="@+id/nav_behavior"
+                android:checkable="true"
                 android:icon="@drawable/vt_short_text_24dp"
-                android:title="自定义behavior" />
+                android:title="自定义behavior"
+                app:showAsAction="ifRoom" />
             <item
                 android:id="@+id/nav_bottom_navigation"
                 android:icon="@drawable/vt_short_text_24dp"

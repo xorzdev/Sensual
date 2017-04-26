@@ -26,6 +26,6 @@ public class ScrollingFragment extends BaseFragment<TestFargScrollingBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-
+        binding.toolbar.inflateMenu(R.menu.activity_main_drawer);
     }
 }

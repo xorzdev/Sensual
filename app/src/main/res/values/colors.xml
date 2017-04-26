@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <!--<color name="colorCover">#10000000</color>-->
     <color name="colorCover">#00000000</color>
+    <color name="colorVector">#FFFFFF</color>
     <color name="colorBackground">#F0F0F0</color>
 </resources>
