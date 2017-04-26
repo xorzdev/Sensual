@@ -23,6 +23,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends SupportAct
         // 兼容vector
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         binding = DataBindingUtil.setContentView(this, getLayoutId());
+//        ApplicationComponent.Instance.get().inject(this);
         afterCreate(savedInstanceState);
     }
 

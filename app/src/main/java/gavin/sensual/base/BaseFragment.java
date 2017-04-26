@@ -29,6 +29,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends SupportFra
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        ApplicationComponent.Instance.get().inject(this);
         afterCreate(savedInstanceState);
     }
 
