@@ -45,6 +45,7 @@ dependencies {
     compile rootProject.ext.libSupportRecyclerView
     compile rootProject.ext.libSupportCardView
     compile rootProject.ext.libSupportGridLayout
+    compile rootProject.ext.libSupportVectorDrawable
     compile rootProject.ext.libSupportPalette
     compile rootProject.ext.libSupportPercent
 

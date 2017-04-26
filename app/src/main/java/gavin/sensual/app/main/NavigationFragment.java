@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v7.widget.SwitchCompat;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import gavin.sensual.R;
+import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
-import gavin.sensual.test.ScrollingFragment;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 侧滑菜单页
@@ -20,6 +21,8 @@ import gavin.sensual.test.ScrollingFragment;
  * @author gavin.xiong 2017/4/25
  */
 public class NavigationFragment extends BaseFragment<FragNavigationBinding> implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Disposable disposable;
 
     public static NavigationFragment newInstance() {
         return new NavigationFragment();
@@ -33,8 +36,9 @@ public class NavigationFragment extends BaseFragment<FragNavigationBinding> impl
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.holder, ScrollingFragment.newInstance());
+            loadRootFragment(R.id.holder, DailyFragment.newInstance());
         }
+        subscribe();
         init();
     }
 
@@ -51,27 +55,33 @@ public class NavigationFragment extends BaseFragment<FragNavigationBinding> impl
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         binding.drawer.closeDrawer(Gravity.START);
         switch (item.getItemId()) {
-            case R.id.nav_notice:
-                return true;
-            case R.id.nav_tip:
-                return true;
-            case R.id.nav_switch:
-                return true;
-            case R.id.nav_msg:
-                return true;
-            case R.id.nav_behavior:
+            case R.id.nav_news:
                 return true;
         }
         return false;
     }
 
+    @Override
+    public void onDestroyView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+        super.onDestroyView();
+    }
+
+    private void subscribe() {
+        disposable = RxBus.get().toObservable(DrawerToggleEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((event -> {
+                    if (event.open) {
+                        binding.drawer.openDrawer(Gravity.START);
+                    } else {
+                        binding.drawer.closeDrawer(Gravity.START);
+                    }
+                }));
+    }
+
     private void init() {
-        TextView textView = (TextView) binding.navigation.getMenu().findItem(R.id.nav_tip).getActionView();
-        textView.setText("9+");
-        TextView textView2 = (TextView) binding.navigation.getMenu().findItem(R.id.nav_msg).getActionView().findViewById(R.id.textView);
-        textView2.setText("提示信息");
-        SwitchCompat switchCompat = (SwitchCompat) binding.navigation.getMenu().findItem(R.id.nav_switch).getActionView();
-        switchCompat.setChecked(true);
         binding.navigation.setNavigationItemSelectedListener(this);
     }
 
