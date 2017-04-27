@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import gavin.sensual.R;
 import gavin.sensual.app.daily.DailyFragment;
-import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,7 +20,7 @@ import io.reactivex.disposables.Disposable;
  *
  * @author gavin.xiong 2017/4/25
  */
-public class NavigationFragment extends BaseFragment<FragNavigationBinding> implements NavigationView.OnNavigationItemSelectedListener {
+public class NavigationFragment extends BindingFragment<FragNavigationBinding> implements NavigationView.OnNavigationItemSelectedListener {
 
     private Disposable disposable;
 
@@ -37,6 +37,7 @@ public class NavigationFragment extends BaseFragment<FragNavigationBinding> impl
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             loadRootFragment(R.id.holder, DailyFragment.newInstance());
+//            loadRootFragment(R.id.holder, TestFragment.newInstance());
         }
         subscribe();
         init();

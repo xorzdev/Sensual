@@ -66,5 +66,7 @@ dependencies {
     compile rootProject.ext.libDagger
     annotationProcessor rootProject.ext.libDaggerCompiler
 
+    compile rootProject.ext.libShapedImageView
+
     compile rootProject.ext.libGlide
 }

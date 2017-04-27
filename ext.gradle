@@ -4,10 +4,11 @@ def fragmentationVersion = "0.10.3"
 def fragmentationSwipeBackVersion = "0.7.9"
 def rxJavaVersion = "2.0.9"
 def rxAndroidVersion = "2.0.1"
-def retrofitVersion = "2.1.0"
-def okHttpLoggingInterceptorVersion = "3.5.0"
+def retrofitVersion = "2.2.0"
+def gsonVersion = "2.8.0"
+def okHttpVersion = "3.6.0"
 def daggerVersion = "2.10"
-def circleImageViewVersion = "2.1.0"
+def shapedImageViewVersion = "0.8.4"
 def glideVersion = "3.7.0"
 def guavaVersion = "18.0"
 
@@ -28,6 +29,7 @@ ext {
     libSupportRecyclerView = "com.android.support:recyclerview-v7:${supportVersion}"
     libSupportCardView = "com.android.support:cardview-v7:${supportVersion}"
     libSupportGridLayout = "com.android.support:gridlayout-v7:${supportVersion}"
+    libSupportVectorDrawable = "com.android.support:support-vector-drawable:${supportVersion}"
     libSupportPalette = "com.android.support:palette-v7:${supportVersion}"
     libSupportPercent = "com.android.support:percent:${supportVersion}"
 
@@ -39,13 +41,17 @@ ext {
 
     libRetrofit = "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     libRetrofitConverterGson = "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
-    libRetrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
-    libOkhttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${okHttpLoggingInterceptorVersion}"
+    libRetrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+
+    libGson = "com.google.code.gson:gson:${gsonVersion}"
+
+    libOkHttp = "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    libOkHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
 
     libDagger = "com.google.dagger:dagger:${daggerVersion}"
     libDaggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
 
-    libCircleImageView = "de.hdodenhof:circleimageview:${circleImageViewVersion}"
+    libShapedImageView = "cn.gavinliu.android.lib:ShapedImageView:${shapedImageViewVersion}"
 
     libGlide = "com.github.bumptech.glide:glide:${glideVersion}"
 

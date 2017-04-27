@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
-import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.TestFragBinding;
 
 /**
@@ -12,7 +12,7 @@ import gavin.sensual.databinding.TestFragBinding;
  *
  * @author gavin.xiong 2017/4/25
  */
-public class TestFragment extends BaseFragment<TestFragBinding> {
+public class TestFragment extends BindingFragment<TestFragBinding> {
 
     public static TestFragment newInstance() {
         return new TestFragment();
@@ -25,6 +25,6 @@ public class TestFragment extends BaseFragment<TestFragBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-
+        binding.textView.setText(getDataLayer().toString());
     }
 }

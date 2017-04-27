@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
-import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.TestFargScrollingBinding;
 import gavin.sensual.databinding.TestFragBinding;
 
@@ -13,7 +13,7 @@ import gavin.sensual.databinding.TestFragBinding;
  *
  * @author gavin.xiong 2017/4/25
  */
-public class ScrollingFragment extends BaseFragment<TestFargScrollingBinding> {
+public class ScrollingFragment extends BindingFragment<TestFargScrollingBinding> {
 
     public static ScrollingFragment newInstance() {
         return new ScrollingFragment();

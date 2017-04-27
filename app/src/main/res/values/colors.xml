@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#0098E2</color>
     <!--<color name="colorCover">#10000000</color>-->
-    <color name="colorCover">#00000000</color>
-    <color name="colorVector">#FFFFFF</color>
+    <color name="colorCover">#10000000</color>
     <color name="colorBackground">#F0F0F0</color>
+    <color name="colorDivider">#F0F0F0</color>
+    <color name="colorVector">#777777</color>
+    <color name="colorTitle">#555555</color>
+    <color name="textColorPrimary">#2C2C2C</color>
+    <color name="textColorSecondary">#777777</color>
+    <color name="textColorTertiary">#AAAAAA</color>
+
+    <!-- 图片占位色 -->
+    <color name="holderColor00">#ebd8cd</color>
+    <color name="holderColor01">#e3b29d</color>
+    <color name="holderColor02">#9e7367</color>
+    <color name="holderColor03">#9fc9c2</color>
+    <color name="holderColor04">#d5f2e5</color>
+    <color name="holderColor05">#e7c5e0</color>
+    <color name="holderColor06">#566199</color>
 </resources>

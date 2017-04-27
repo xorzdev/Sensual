@@ -16,7 +16,7 @@ import android.view.KeyEvent;
 
 import gavin.sensual.R;
 import gavin.sensual.app.main.NavigationFragment;
-import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RequestCode;
 import gavin.sensual.databinding.LayoutBlankBinding;
 import io.reactivex.Observable;
@@ -27,7 +27,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  *
  * @author gavin.xiong 2017/4/25
  */
-public class PermissionFragment extends BaseFragment<LayoutBlankBinding> {
+public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
 
     public static PermissionFragment newInstance() {
         return new PermissionFragment();

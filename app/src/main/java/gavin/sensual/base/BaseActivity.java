@@ -1,30 +1,39 @@
 package gavin.sensual.base;
 
-import android.app.ProgressDialog;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDelegate;
 
+import javax.inject.Inject;
+
+import gavin.sensual.inject.component.ApplicationComponent;
+import gavin.sensual.service.base.DataLayer;
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
-public abstract class BaseActivity<T extends ViewDataBinding> extends SupportActivity {
+/**
+ * 这里是萌萌哒注释君
+ *
+ * @author gavin.xiong 2016/12/30  2016/12/30
+ */
+public abstract class BaseActivity extends SupportActivity {
 
-    protected T binding;
-
-    private ProgressDialog progressDialog;
+    @Inject
+    DataLayer mDataLayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 兼容vector
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        binding = DataBindingUtil.setContentView(this, getLayoutId());
-//        ApplicationComponent.Instance.get().inject(this);
+        setContentView();
+        ApplicationComponent.Instance.get().inject(this);
         afterCreate(savedInstanceState);
+    }
+
+    public DataLayer getDataLayer() {
+        return mDataLayer;
     }
 
     @Override
@@ -32,36 +41,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends SupportAct
         return new DefaultNoAnimator();
     }
 
-    /**
-     * 提供布局资源id
-     */
-    protected abstract int getLayoutId();
-
-    /**
-     * 页面加载
-     */
     protected abstract void afterCreate(@Nullable Bundle savedInstanceState);
 
-    /**
-     * 显示进度对话框
-     */
-    public void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("请稍候...");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(true);
-        }
-        progressDialog.show();
-    }
 
-    /**
-     * 关闭对话框
-     */
-    public void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
+    public abstract void setContentView();
 }
