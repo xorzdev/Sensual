@@ -12,8 +12,9 @@ import gavin.sensual.inject.module.ApplicationModule;
 import gavin.sensual.service.base.BaseManager;
 
 /**
- * @author lsxiao
- * @date 2015-11-04 00:47
+ * ApplicationComponent
+ *
+ * @author gavin.xiong 2017/4/28
  */
 @Singleton
 @Component(modules = ApplicationModule.class)
@@ -31,6 +32,7 @@ public interface ApplicationComponent {
     Application getApplication();
 
     class Instance {
+
         private static ApplicationComponent sComponent;
 
         public static void init(@NonNull ApplicationComponent component) {

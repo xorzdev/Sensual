@@ -36,5 +36,5 @@ public class BundleKey {
     public static final String NEWS_LIST_STORE = "newsListStore";
     public static final String LATEST_DATE = "latestDate";
 
-    public static final String NEWS_ID = "newsId";
+    public static final String DAILY_ID = "dailyId";
 }

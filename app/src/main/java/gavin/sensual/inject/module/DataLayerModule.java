@@ -8,8 +8,9 @@ import gavin.sensual.service.DailyManager;
 import gavin.sensual.service.base.DataLayer;
 
 /**
- * @author lsxiao
- * @date 2015-11-04 00:44
+ * DataLayerModule
+ *
+ * @author gavin.xiong 2017/4/28
  */
 @Module
 public class DataLayerModule {

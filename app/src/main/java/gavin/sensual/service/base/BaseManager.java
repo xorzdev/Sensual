@@ -8,8 +8,9 @@ import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
 
 /**
- * @author lsxiao
- * @date 2015-11-03 22:28
+ * BaseManager
+ *
+ * @author gavin.xiong 2017/4/28
  */
 public abstract class BaseManager {
     @Inject

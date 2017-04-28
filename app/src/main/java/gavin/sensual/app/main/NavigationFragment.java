@@ -49,6 +49,10 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
             binding.drawer.closeDrawer(Gravity.START);
             return true;
         }
+        if (!(getTopChildFragment() instanceof DailyFragment)) {
+            popChild();
+            return true;
+        }
         return false;
     }
 

@@ -8,13 +8,14 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * author lsxiao
- * date 2016-05-09 20:06
+ * ApplicationModule
+ *
+ * @author gavin.xiong 2017/4/28
  */
 @Module(includes = {DataLayerModule.class, ClientAPIModule.class})
 public class ApplicationModule {
     
-    Application mApplication;
+    private Application mApplication;
 
     public ApplicationModule(Application application) {
         mApplication = application;

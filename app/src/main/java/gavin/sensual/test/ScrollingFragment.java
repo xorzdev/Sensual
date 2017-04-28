@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import gavin.sensual.R;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.TestFargScrollingBinding;
-import gavin.sensual.databinding.TestFragBinding;
 
 /**
  * 测试
@@ -26,6 +25,6 @@ public class ScrollingFragment extends BindingFragment<TestFargScrollingBinding>
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        binding.toolbar.inflateMenu(R.menu.activity_main_drawer);
+        binding.toolbar.inflateMenu(R.menu.frag_navigation_drawer);
     }
 }

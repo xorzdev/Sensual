@@ -8,10 +8,10 @@ import gavin.sensual.service.base.DataLayer;
 import gavin.sensual.util.SPUtil;
 import io.reactivex.Observable;
 
-
 /**
- * @author lsxiao
- *         date 2015-11-03 22:28
+ * DailyManager
+ *
+ * @author gavin.xiong 2017/4/28
  */
 public class DailyManager extends BaseManager implements DataLayer.DailyService {
 

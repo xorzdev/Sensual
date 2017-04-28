@@ -5,12 +5,13 @@ import gavin.sensual.app.daily.TodayNews;
 import io.reactivex.Observable;
 
 /**
- * @author lsxiao
- * @date 2015-11-03 22:28
+ * DataLayer
+ *
+ * @author gavin.xiong 2017/4/28
  */
 public class DataLayer {
 
-    DailyService mDailyService;
+    private DailyService mDailyService;
 
     public DataLayer(DailyService dailyService) {
         mDailyService = dailyService;
@@ -58,7 +59,6 @@ public class DataLayer {
          * 缓存新闻
          *
          * @param news News
-         * @return Void
          */
         void cacheNews(final News news);
 
@@ -67,7 +67,6 @@ public class DataLayer {
          * 缓存今日热文列表
          *
          * @param todayNews TodayNews
-         * @return Void
          */
         void cacheTodayNews(final TodayNews todayNews);
     }

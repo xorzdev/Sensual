@@ -7,17 +7,19 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 /**
- * API
+ * ClientAPI
  *
  * @author gavin.xiong 2016/12/9
  */
 public interface ClientAPI {
 
     /**
-     * 获取今日日报新闻列表
+     * 获取今日日报新闻列表 ( 最长缓存一天 60 * 60 * 24 )
      *
-     * @return
+     * @return TodayNews
      */
+    // 如果服务端有做缓存处理的话，我们只需要在Request的Header中添加Cache-Control即可
+    // @Headers("Cache-Control: public, max-age=86400")
     @GET("news/latest")
     Observable<TodayNews> getTodayNews();
 

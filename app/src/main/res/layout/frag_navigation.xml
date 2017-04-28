@@ -24,7 +24,7 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/header_navigation"
             app:itemBackground="@drawable/sn_item_navigation"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/frag_navigation_drawer" />
 
     </android.support.v4.widget.DrawerLayout>
 
