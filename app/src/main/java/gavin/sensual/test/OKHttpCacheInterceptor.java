@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.base.App;
 import okhttp3.CacheControl;
@@ -21,8 +22,11 @@ public class OKHttpCacheInterceptor implements Interceptor {
 
     private CacheControl cacheControl;
 
-    public OKHttpCacheInterceptor(CacheControl cacheControl) {
-        this.cacheControl = cacheControl;
+    public OKHttpCacheInterceptor() {
+        this.cacheControl = new CacheControl.Builder()
+                .maxAge(60, TimeUnit.SECONDS) // 这个是控制缓存的最大生命时间
+                .maxStale(86400, TimeUnit.SECONDS) // 这个是控制缓存的过时时间
+                .build();
     }
 
     @Override
@@ -31,22 +35,24 @@ public class OKHttpCacheInterceptor implements Interceptor {
         if (!isNetworkAvailable(App.getApplication())) {
             request = request.newBuilder()
                     .cacheControl(cacheControl)
+//                    .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
         }
-        Response originalResponse = chain.proceed(request);
-        if (isNetworkAvailable(App.getApplication())) {
-            return originalResponse.newBuilder()
-                    .removeHeader("Pragma")
-                    .header("Cache-Control", request.cacheControl().toString())
-                    .build();
-        } else {
-//            int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-            int maxStale = 10; // tolerate 4-weeks stale
-            return originalResponse.newBuilder()
-                    .removeHeader("Pragma")
-                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                    .build();
-        }
+        return chain.proceed(request);
+//        Response response = chain.proceed(request);
+//        if (isNetworkAvailable(App.getApplication())) {
+//            int maxAge = 0 * 60; // 有网络时 设置缓存超时时间0个小时
+//            return response.newBuilder()
+//                    .header("Cache-Control", "public, max-age=" + maxAge)
+//                    .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
+//                    .build();
+//        } else {
+//            int maxStale = 60 * 60 * 24 * 28; // 无网络时，设置超时为4周
+//            return response.newBuilder()
+//                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                    .removeHeader("Pragma")
+//                    .build();
+//        }
     }
 
     /**

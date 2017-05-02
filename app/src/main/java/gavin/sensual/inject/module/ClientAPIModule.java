@@ -13,12 +13,9 @@ import dagger.Provides;
 import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
 import gavin.sensual.net.ClientAPI;
-import gavin.sensual.test.OKHttpCacheInterceptor;
 import gavin.sensual.test.OKHttpLoggingInterceptor;
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
-import okhttp3.internal.cache.CacheInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -96,14 +93,13 @@ public class ClientAPIModule {
      */
     @Singleton
     @Provides
-    public OkHttpClient provideClient(HttpLoggingInterceptor loggingInterceptor, OKHttpCacheInterceptor cacheInterceptor, Cache cache) {
+    public OkHttpClient provideClient(HttpLoggingInterceptor loggingInterceptor, Cache cache) {
         return new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(new OKHttpLoggingInterceptor())
-                .addInterceptor(cacheInterceptor)
                 .cache(cache)
                 .build();
     }
@@ -117,7 +113,7 @@ public class ClientAPIModule {
     @Provides
     public HttpLoggingInterceptor provideLogger() {
         return new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY);
+                .setLevel(HttpLoggingInterceptor.Level.BASIC);
     }
 
     /**
@@ -129,30 +125,5 @@ public class ClientAPIModule {
     @Provides
     public Cache provideCache() {
         return new Cache(new File(CacheHelper.getCacheDir(App.getApplication()), "responses"), 50 * 1024 * 1024);
-    }
-
-    /**
-     * 缓存控制器单例对象
-     *
-     * @return CacheControl
-     */
-    @Singleton
-    @Provides
-    public CacheControl provideCacheControl() {
-        return new CacheControl.Builder()
-                .maxAge(20, TimeUnit.SECONDS) // 这个是控制缓存的最大生命时间
-                .maxStale(10, TimeUnit.SECONDS) // 这个是控制缓存的过时时间
-                .build();
-    }
-
-    /**
-     * 缓存拦截器单例对象
-     *
-     * @return CacheInterceptor
-     */
-    @Singleton
-    @Provides
-    public OKHttpCacheInterceptor provideInterceptor(CacheControl cacheControl) {
-        return new OKHttpCacheInterceptor(cacheControl);
     }
 }
