@@ -3,6 +3,9 @@ package gavin.sensual.app.daily;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,8 @@ import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
+import gavin.sensual.util.DisplayUtil;
+import gavin.sensual.widget.LinearItemDecoration;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -67,6 +72,12 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
                     binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getTopStories().get(i).getId())));
                     BindingAdapter adapter = new BindingAdapter<>(_mActivity, daily.getStories(), R.layout.item_daily, BR.item);
                     adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getStories().get(i).getId())));
+                    binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
+                    LinearItemDecoration decoration = new LinearItemDecoration(_mActivity);
+                    decoration.setDividerHeight(5);
+                    decoration.setColor(ContextCompat.getColor(_mActivity, android.R.color.white));
+                    decoration.setPadding(DisplayUtil.dp2px(78), DisplayUtil.dp2px(16));
+                    binding.recycler.addItemDecoration(decoration);
                     binding.recycler.setAdapter(adapter);
                 }, e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
 
