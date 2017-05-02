@@ -93,13 +93,13 @@ public class ClientAPIModule {
      */
     @Singleton
     @Provides
-    public OkHttpClient provideClient(HttpLoggingInterceptor loggingInterceptor, Cache cache) {
+    public OkHttpClient provideClient(HttpLoggingInterceptor loggingInterceptor, OKHttpLoggingInterceptor okHttpLoggingInterceptor, Cache cache) {
         return new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(new OKHttpLoggingInterceptor())
+                .addInterceptor(okHttpLoggingInterceptor)
                 .cache(cache)
                 .build();
     }
@@ -113,7 +113,18 @@ public class ClientAPIModule {
     @Provides
     public HttpLoggingInterceptor provideLogger() {
         return new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BASIC);
+                .setLevel(HttpLoggingInterceptor.Level.NONE);
+    }
+
+    /**
+     * 日志拦截器单例对象,用于OkHttp层对日志进行处理
+     *
+     * @return HttpLoggingInterceptor
+     */
+    @Singleton
+    @Provides
+    public OKHttpLoggingInterceptor provideOKHttpLogger() {
+        return new OKHttpLoggingInterceptor();
     }
 
     /**
