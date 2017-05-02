@@ -13,7 +13,7 @@ import dagger.Provides;
 import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
 import gavin.sensual.net.ClientAPI;
-import gavin.sensual.test.OKHttpLoggingInterceptor;
+import gavin.sensual.util.okhttp.OKHttpLoggingInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

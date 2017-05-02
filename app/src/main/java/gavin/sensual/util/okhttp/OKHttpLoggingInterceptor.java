@@ -1,4 +1,4 @@
-package gavin.sensual.test;
+package gavin.sensual.util.okhttp;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

@@ -1,4 +1,4 @@
-package gavin.sensual.test;
+package gavin.sensual.util.okhttp;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

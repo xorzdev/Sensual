@@ -1,7 +1,7 @@
 package gavin.sensual.service.base;
 
+import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
-import gavin.sensual.app.daily.TodayNews;
 import io.reactivex.Observable;
 
 /**
@@ -26,9 +26,9 @@ public class DataLayer {
         /**
          * 获取最新日报新闻列表
          *
-         * @return TodayNews
+         * @return Daily
          */
-        Observable<TodayNews> getTodayNews();
+        Observable<Daily> getDaily();
 
         /**
          * 获取新闻
@@ -39,35 +39,10 @@ public class DataLayer {
         Observable<News> getNews(long newsId);
 
         /**
-         * 获取本地新闻
-         *
-         * @param id string
-         * @return News
-         */
-        Observable<News> getLocalNews(final String id);
-
-
-        /**
-         * 获取本地今日热文
-         *
-         * @return TodayNews
-         */
-        Observable<TodayNews> getLatestTodayNews();
-
-
-        /**
-         * 缓存新闻
-         *
-         * @param news News
-         */
-        void cacheNews(final News news);
-
-
-        /**
          * 缓存今日热文列表
          *
-         * @param todayNews TodayNews
+         * @param daily Daily
          */
-        void cacheTodayNews(final TodayNews todayNews);
+        void cacheDaily(final Daily daily);
     }
 }

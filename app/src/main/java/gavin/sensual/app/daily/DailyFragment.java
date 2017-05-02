@@ -1,7 +1,6 @@
 package gavin.sensual.app.daily;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 
@@ -15,7 +14,6 @@ import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
-import gavin.sensual.util.L;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -38,7 +36,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         init();
-        getTodayNews();
+        getDaily();
     }
 
     private void init() {
@@ -47,31 +45,28 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
-        binding.refreshLayout.setOnRefreshListener(this::getTodayNews);
+        binding.refreshLayout.setOnRefreshListener(this::getDaily);
     }
 
-    private void getTodayNews() {
-        getDataLayer().getDailyService().getTodayNews()
+    private void getDaily() {
+        getDataLayer().getDailyService().getDaily()
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> {
-                    L.e(Looper.myLooper() == Looper.getMainLooper());
-                    binding.refreshLayout.setRefreshing(true);
-                })
+                .doOnSubscribe(disposable -> binding.refreshLayout.setRefreshing(true))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> binding.refreshLayout.setRefreshing(false))
-                .doOnError(throwable -> binding.refreshLayout.setRefreshing(false))
-                .subscribe(todayNews -> {
-                    List<String> urlList = new ArrayList<>();
-                    List<String> titleList = new ArrayList<>();
-                    for (TodayNews.Story t : todayNews.getTopStories()) {
-                        urlList.add(t.getImageUrl());
-                        titleList.add(t.getTitle());
-                    }
+                .doOnError(e -> binding.refreshLayout.setRefreshing(false))
+                .subscribe(daily -> {
+                    List<String> urlList = daily.getTopStories().stream()
+                            .map(Daily.Story::getImageUrl)
+                            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                    List<String> titleList = daily.getTopStories().stream()
+                            .map(Daily.Story::getTitle)
+                            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
                     binding.banner.setUrlList(urlList, titleList);
-                    BindingAdapter adapter = new BindingAdapter<>(_mActivity, todayNews.getStories(), R.layout.item_daily, BR.item);
-                    adapter.setOnItemClickListener(position ->
-                            start(DailyDetailFragment.newInstance(todayNews.getStories().get(position).getId())));
+                    binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getTopStories().get(i).getId())));
+                    BindingAdapter adapter = new BindingAdapter<>(_mActivity, daily.getStories(), R.layout.item_daily, BR.item);
+                    adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getStories().get(i).getId())));
                     binding.recycler.setAdapter(adapter);
                 }, e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
 

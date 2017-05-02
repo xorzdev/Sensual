@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 今日热文
+ * 日报列表
  *
  * @author gavin.xiong 2017/4/26
  */
-public class TodayNews implements Serializable {
+public class Daily implements Serializable {
     //日期,唯一,重复的直接覆盖
     @SerializedName("date")
     private String date;
@@ -37,7 +37,7 @@ public class TodayNews implements Serializable {
 
     @Override
     public String toString() {
-        return "TodayNews{" +
+        return "Daily{" +
                 "mDate='" + date + '\'' +
                 ", mStories=" + stories +
                 ", mTopStories=" + topStories +

@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="gavin.sensual.app.daily.TodayNews.Story" />
+            type="gavin.sensual.app.daily.Daily.Story" />
 
     </data>
 
@@ -29,7 +29,7 @@
             app:imageUrl="@{item.imageUrls == null || item.imageUrls.empty ? @string/empty : item.imageUrls.get(0)}"
             app:shape_mode="circle"
             app:stroke_color="@android:color/white"
-            app:stroke_width="2dp"
+            app:stroke_width="1dp"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView

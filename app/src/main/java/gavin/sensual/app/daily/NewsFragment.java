@@ -13,7 +13,7 @@ import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragDailyDetailBinding;
+import gavin.sensual.databinding.FragNewsBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -22,25 +22,25 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/4/28
  */
-public class DailyDetailFragment extends BindingFragment<FragDailyDetailBinding> {
+public class NewsFragment extends BindingFragment<FragNewsBinding> {
 
-    public static DailyDetailFragment newInstance(long dailyId) {
+    public static NewsFragment newInstance(long newsId) {
         Bundle args = new Bundle();
-        args.putLong(BundleKey.DAILY_ID, dailyId);
-        DailyDetailFragment fragment = new DailyDetailFragment();
+        args.putLong(BundleKey.NEWS_ID, newsId);
+        NewsFragment fragment = new NewsFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_daily_detail;
+        return R.layout.frag_news;
     }
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         init();
-        getDailyDetail(getArguments().getLong(BundleKey.DAILY_ID));
+        getNews(getArguments().getLong(BundleKey.NEWS_ID));
     }
 
     private void init() {
@@ -51,8 +51,8 @@ public class DailyDetailFragment extends BindingFragment<FragDailyDetailBinding>
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
     }
 
-    private void getDailyDetail(long dailyId) {
-        getDataLayer().getDailyService().getNews(dailyId)
+    private void getNews(long newsId) {
+        getDataLayer().getDailyService().getNews(newsId)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     binding.nestedView.setVisibility(View.GONE);
