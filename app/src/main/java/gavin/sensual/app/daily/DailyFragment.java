@@ -55,13 +55,6 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
         binding.refreshLayout.setOnRefreshListener(this::getDaily);
-
-        LinearItemDecoration decoration = new LinearItemDecoration(_mActivity);
-        decoration.setOrientation(LinearItemDecoration.VERTICAL);
-        decoration.setHeight(5);
-        decoration.setColor(ContextCompat.getColor(_mActivity, android.R.color.white));
-        decoration.setPadding(DisplayUtil.dp2px(78), DisplayUtil.dp2px(16));
-        binding.recycler.addItemDecoration(decoration);
     }
 
     private void getDaily() {
