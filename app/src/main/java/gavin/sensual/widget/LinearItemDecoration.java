@@ -18,9 +18,9 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
-    private final Rect mBounds = new Rect();
+    private Rect mBounds;
 
-    private int dividerHeight = 1;
+    private int mHeight = 1;
     private int paddingStart = 0, paddingEnd = 0;
     private Paint mPaint;
 
@@ -37,8 +37,8 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
         mOrientation = orientation;
     }
 
-    public void setDividerHeight(int dividerHeight) {
-        this.dividerHeight = dividerHeight;
+    public void setHeight(int height) {
+        this.mHeight = height;
     }
 
     public void setPadding(int paddingStart, int paddingEnd) {
@@ -51,6 +51,8 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     private void init(Context context) {
+        mBounds = new Rect();
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(ContextCompat.getColor(context, android.R.color.darker_gray));
         mPaint.setStyle(Paint.Style.FILL);
@@ -75,8 +77,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
         if (Build.VERSION.SDK_INT >= 21 && parent.getClipToPadding()) {
             left = parent.getPaddingLeft();
             right = parent.getWidth() - parent.getPaddingRight();
-            canvas.clipRect(left, parent.getPaddingTop(), right,
-                    parent.getHeight() - parent.getPaddingBottom());
+            canvas.clipRect(left, parent.getPaddingTop(), right, parent.getHeight() - parent.getPaddingBottom());
         } else {
             left = 0;
             right = parent.getWidth();
@@ -87,8 +88,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             parent.getDecoratedBoundsWithMargins(child, mBounds);
             final int bottom = mBounds.bottom + Math.round(ViewCompat.getTranslationY(child));
-            final int top = bottom - dividerHeight;
-
+            final int top = bottom - mHeight;
             canvas.drawRect(left + paddingStart, top, right - paddingEnd, bottom, mPaint);
         }
         canvas.restore();
@@ -101,8 +101,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
         if (Build.VERSION.SDK_INT >= 21 && parent.getClipToPadding()) {
             top = parent.getPaddingTop();
             bottom = parent.getHeight() - parent.getPaddingBottom();
-            canvas.clipRect(parent.getPaddingLeft(), top,
-                    parent.getWidth() - parent.getPaddingRight(), bottom);
+            canvas.clipRect(parent.getPaddingLeft(), top, parent.getWidth() - parent.getPaddingRight(), bottom);
         } else {
             top = 0;
             bottom = parent.getHeight();
@@ -113,25 +112,23 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(ViewCompat.getTranslationX(child));
-            final int left = right - dividerHeight;
-
+            final int left = right - mHeight;
             canvas.drawRect(left, top + paddingStart, right, bottom - paddingEnd, mPaint);
         }
         canvas.restore();
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                               RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == VERTICAL) {
             if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-                outRect.set(0, 0, 0, dividerHeight);
+                outRect.set(0, 0, 0, mHeight);
             } else {
                 outRect.set(0, 0, 0, 0);
             }
         } else {
             if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-                outRect.set(0, 0, dividerHeight, 0);
+                outRect.set(0, 0, mHeight, 0);
             } else {
                 outRect.set(0, 0, 0, 0);
             }

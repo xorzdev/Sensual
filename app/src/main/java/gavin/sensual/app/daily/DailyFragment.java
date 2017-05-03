@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +50,13 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
         binding.refreshLayout.setOnRefreshListener(this::getDaily);
+
+        LinearItemDecoration decoration = new LinearItemDecoration(_mActivity);
+        decoration.setOrientation(LinearItemDecoration.VERTICAL);
+        decoration.setHeight(5);
+        decoration.setColor(ContextCompat.getColor(_mActivity, android.R.color.white));
+        decoration.setPadding(DisplayUtil.dp2px(78), DisplayUtil.dp2px(16));
+        binding.recycler.addItemDecoration(decoration);
     }
 
     private void getDaily() {
@@ -73,11 +79,6 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
                     BindingAdapter adapter = new BindingAdapter<>(_mActivity, daily.getStories(), R.layout.item_daily, BR.item);
                     adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getStories().get(i).getId())));
                     binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
-                    LinearItemDecoration decoration = new LinearItemDecoration(_mActivity);
-                    decoration.setDividerHeight(5);
-                    decoration.setColor(ContextCompat.getColor(_mActivity, android.R.color.white));
-                    decoration.setPadding(DisplayUtil.dp2px(78), DisplayUtil.dp2px(16));
-                    binding.recycler.addItemDecoration(decoration);
                     binding.recycler.setAdapter(adapter);
                 }, e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
 
