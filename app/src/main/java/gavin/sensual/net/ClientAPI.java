@@ -19,11 +19,8 @@ public interface ClientAPI {
      *
      * @return Daily
      */
-    // 猜测： max-age 为同一请求复用时间  max-stale 缓存过期时间 复用请求不会延迟过期
-    // 单位均为秒
-    // 缓存有限期为 60 * 60 * 24
-    // 请求复用时间 60 * 1
-    @Headers("Cache-Control: public, max-age=60, max-stale=86400")
+    // 指定返回复用时间为 60s
+    @Headers("Cache-Control: max-stale=60")
     @GET("news/latest")
     Observable<Daily> getDaily();
 
@@ -33,7 +30,7 @@ public interface ClientAPI {
      * @param newsId long
      * @return News
      */
-    @Headers("Cache-Control: public, max-age=3600, max-stale=86400")
+    @Headers("Cache-Control: max-stale=3600")
     @GET("news/{newsId}")
     Observable<News> getNews(@Path("newsId") long newsId);
 }

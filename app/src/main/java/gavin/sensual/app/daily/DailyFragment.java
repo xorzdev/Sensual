@@ -47,6 +47,11 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> {
         binding.toolbar.setTitle("知乎日报");
         binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
+        binding.toolbar.inflateMenu(R.menu.action_refresh);
+        binding.toolbar.setOnMenuItemClickListener((item) -> {
+            getDaily();
+            return false;
+        });
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
         binding.refreshLayout.setOnRefreshListener(this::getDaily);

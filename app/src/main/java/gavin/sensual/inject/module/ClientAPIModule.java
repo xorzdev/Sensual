@@ -13,6 +13,7 @@ import dagger.Provides;
 import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
 import gavin.sensual.net.ClientAPI;
+import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;
 import gavin.sensual.util.okhttp.OKHttpLoggingInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -87,19 +88,21 @@ public class ClientAPIModule {
     /**
      * OkHttp 客户端单例对象
      *
-     * @param loggingInterceptor HttpLoggingInterceptor
-     * @param cache              Cache
+     * @param logging HttpLoggingInterceptor
+     * @param cache   Cache
      * @return OkHttpClient
      */
     @Singleton
     @Provides
-    public OkHttpClient provideClient(HttpLoggingInterceptor loggingInterceptor, OKHttpLoggingInterceptor okHttpLoggingInterceptor, Cache cache) {
+    public OkHttpClient provideClient(HttpLoggingInterceptor logging, OKHttpLoggingInterceptor logging2,
+                                      OKHttpCacheInterceptor cacheInterceptor, Cache cache) {
         return new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(okHttpLoggingInterceptor)
+                .addInterceptor(logging)
+                .addInterceptor(logging2)
+                .addInterceptor(cacheInterceptor)
                 .cache(cache)
                 .build();
     }
@@ -113,7 +116,7 @@ public class ClientAPIModule {
     @Provides
     public HttpLoggingInterceptor provideLogger() {
         return new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.NONE);
+                .setLevel(HttpLoggingInterceptor.Level.BODY);
     }
 
     /**
@@ -125,6 +128,17 @@ public class ClientAPIModule {
     @Provides
     public OKHttpLoggingInterceptor provideOKHttpLogger() {
         return new OKHttpLoggingInterceptor();
+    }
+
+    /**
+     * OKHttp 缓存拦截器
+     *
+     * @return OKHttpCacheInterceptor
+     */
+    @Singleton
+    @Provides
+    public OKHttpCacheInterceptor provideCacheInterceptor() {
+        return new OKHttpCacheInterceptor();
     }
 
     /**
