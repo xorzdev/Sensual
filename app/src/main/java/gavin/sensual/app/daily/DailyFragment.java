@@ -43,7 +43,6 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         init();
-        setAdapter();
         getDaily(0);
     }
 
@@ -61,6 +60,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
         binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
 
         binding.recycler.setOnLoadListener(this);
+        setAdapter();
     }
 
     private void getDaily(int dayDiff) {
@@ -119,7 +119,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
     private void setAdapter() {
         if (adapter == null) {
             adapter = new DailyAdapter(_mActivity, storyList);
-//            adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(storyList.get(i).getId())));
+            adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(storyList.get(i).getId())));
             binding.recycler.setAdapter(adapter);
             loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(_mActivity));
             adapter.setFooterBinding(loadingBinding);

@@ -15,15 +15,25 @@ import gavin.sensual.databinding.ItemDailyBinding;
  *
  * @author gavin.xiong 2017/5/4
  */
-public class DailyAdapter extends RecyclerHeaderFooterAdapter<Daily.Story, ItemDailyBinding, FooterLoadingBinding, FooterLoadingBinding> {
+class DailyAdapter extends RecyclerHeaderFooterAdapter<Daily.Story, ItemDailyBinding, FooterLoadingBinding, FooterLoadingBinding> {
 
-    public DailyAdapter(Context context, List<Daily.Story> mList) {
+    private OnItemClickListener onItemClickListener;
+
+    DailyAdapter(Context context, List<Daily.Story> mList) {
         super(context, mList, R.layout.item_daily);
     }
 
     @Override
     public void onBind(RecyclerHolder<ItemDailyBinding> holder, int position, Daily.Story t) {
         holder.binding.setItem(t);
-        holder.binding.executePendingBindings();
+        holder.binding.item.setOnClickListener(v -> onItemClickListener.onItemClick(position));
+    }
+
+    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }
