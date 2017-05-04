@@ -65,7 +65,7 @@
                     android:visibility="gone"
                     tools:text="空空如也" />
 
-                <android.support.v7.widget.RecyclerView
+                <gavin.sensual.widget.AutoLoadRecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

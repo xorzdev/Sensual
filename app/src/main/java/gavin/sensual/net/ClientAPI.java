@@ -33,4 +33,14 @@ public interface ClientAPI {
     @Headers("Cache-Control: max-stale=3600")
     @GET("news/{newsId}")
     Observable<News> getNews(@Path("newsId") long newsId);
+
+    /**
+     * 获取往期日报
+     *
+     * @param date yyyyMMdd
+     * @return Daily
+     */
+    @Headers("Cache-Control: max-stale=86400")
+    @GET("news/before/{date}")
+    Observable<Daily> getDailyBefore(@Path("date") String date);
 }

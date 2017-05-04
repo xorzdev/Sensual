@@ -3,7 +3,6 @@ package gavin.sensual.base;
 import android.content.Context;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
-import android.view.View;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import gavin.sensual.R;
 public class BindingAdapter<T> extends RecyclerAdapter<T, ViewDataBinding> {
 
     private int variableId;
-    private OnItemClickListener onItemClickListener;
+    private OnItemClickListener mListener;
 
     public BindingAdapter(Context context, List<T> mData, @LayoutRes int layoutId, int variableId) {
         super(context, mData, layoutId);
@@ -25,20 +24,15 @@ public class BindingAdapter<T> extends RecyclerAdapter<T, ViewDataBinding> {
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+        this.mListener = onItemClickListener;
     }
 
     @Override
     public void onBind(RecyclerHolder<ViewDataBinding> holder, T t, final int position) {
         holder.binding.setVariable(variableId, t);
         holder.binding.executePendingBindings();
-        if (onItemClickListener != null) {
-            holder.itemView.findViewById(R.id.item).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onItemClick(position);
-                }
-            });
+        if (mListener != null) {
+            holder.itemView.findViewById(R.id.item).setOnClickListener((v) -> mListener.onItemClick(position));
         }
     }
 

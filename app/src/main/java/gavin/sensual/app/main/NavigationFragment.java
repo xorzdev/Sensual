@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -12,6 +13,7 @@ import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
+import gavin.sensual.test.TestFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -37,7 +39,6 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             loadRootFragment(R.id.holder, DailyFragment.newInstance());
-//            loadRootFragment(R.id.holder, TestFragment.newInstance());
         }
         subscribe();
         init();
@@ -61,6 +62,12 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
         binding.drawer.closeDrawer(Gravity.START);
         switch (item.getItemId()) {
             case R.id.nav_news:
+                return true;
+            case R.id.nav_unknown:
+                Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
+                return false;
+            case R.id.nav_test:
+                start(TestFragment.newInstance());
                 return true;
         }
         return false;

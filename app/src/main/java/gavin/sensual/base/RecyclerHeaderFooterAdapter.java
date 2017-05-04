@@ -17,18 +17,20 @@ import java.util.List;
  * <p>
  * Created by gavin.xiong on 2016/5/15.
  */
-public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
-        HB extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerHolder> {
+public abstract class RecyclerHeaderFooterAdapter<T, B extends ViewDataBinding,
+        HB extends ViewDataBinding, FB extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerHolder> {
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_NORMAL = 1;
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_HEADER = 1;
+    private static final int TYPE_FOOTER = 2;
 
     private HB headerBinding;
+    private FB footerBinding;
     protected Context mContext;
     protected List<T> mList;
     private int layoutId;
 
-    public RecyclerHeaderAdapter(Context context, List<T> mList, @LayoutRes int layoutId) {
+    public RecyclerHeaderFooterAdapter(Context context, List<T> mList, @LayoutRes int layoutId) {
         this.mContext = context;
         this.mList = mList;
         this.layoutId = layoutId;
@@ -38,10 +40,16 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
         this.headerBinding = headerBinding;
     }
 
+    public void setFooterBinding(FB footerBinding) {
+        this.footerBinding = footerBinding;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        if (headerBinding == null) return TYPE_NORMAL;
-        if (position == 0) return TYPE_HEADER;
+        if (headerBinding == null && footerBinding == null) return TYPE_NORMAL;
+        if (headerBinding != null && position == 0) return TYPE_HEADER;
+        if (footerBinding != null && position == mList.size() + (headerBinding == null ? 0 : 1))
+            return TYPE_FOOTER;
         return TYPE_NORMAL;
     }
 
@@ -49,6 +57,8 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
     public RecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (headerBinding != null && viewType == TYPE_HEADER) {
             return new RecyclerHolder<>(headerBinding);
+        } else if (footerBinding != null && viewType == TYPE_FOOTER) {
+            return new RecyclerHolder<>(footerBinding);
         } else {
             B bing = DataBindingUtil.inflate(LayoutInflater.from(mContext), layoutId, parent, false);
             return new RecyclerHolder<>(bing);
@@ -57,7 +67,8 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
 
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int position) {
-        if (getItemViewType(position) == TYPE_HEADER) return;
+        if (getItemViewType(position) == TYPE_HEADER || getItemViewType(position) == TYPE_FOOTER)
+            return;
         final int pos = getRealPosition(holder);
         final T data = mList.get(pos);
         onBind(holder, pos, data);
@@ -73,7 +84,7 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return getItemViewType(position) == TYPE_HEADER
+                    return (getItemViewType(position) == TYPE_HEADER || getItemViewType(position) == TYPE_FOOTER)
                             ? gridManager.getSpanCount() : 1;
                 }
             });
@@ -84,9 +95,17 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
     public void onViewAttachedToWindow(RecyclerHolder holder) {
         super.onViewAttachedToWindow(holder);
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-        if (headerBinding != null && lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+        if (lp == null) return;
+        if (lp.getClass() == RecyclerView.LayoutParams.class) {
+            lp.width = RecyclerView.LayoutParams.MATCH_PARENT; // 线性布局头尾全屏
+        }
+        if (headerBinding != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
-            p.setFullSpan(holder.getLayoutPosition() == 0);
+            p.setFullSpan(holder.getLayoutPosition() == 0 || p.isFullSpan());
+        }
+        if (footerBinding != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+            p.setFullSpan(holder.getLayoutPosition() == mList.size() + (headerBinding == null ? 0 : 1) || p.isFullSpan());
         }
     }
 
@@ -98,9 +117,21 @@ public abstract class RecyclerHeaderAdapter<T, B extends ViewDataBinding,
     @Override
     public int getItemCount() {
         if (mList == null) {
-            return headerBinding == null ? 0 : 1;
+            if (headerBinding != null && footerBinding != null) {
+                return 2;
+            } else if (headerBinding != null || footerBinding != null) {
+                return 1;
+            } else {
+                return 0;
+            }
         } else {
-            return headerBinding == null ? mList.size() : mList.size() + 1;
+            if (headerBinding != null && footerBinding != null) {
+                return mList.size() + 2;
+            } else if (headerBinding != null || footerBinding != null) {
+                return mList.size() + 1;
+            } else {
+                return mList.size();
+            }
         }
     }
 

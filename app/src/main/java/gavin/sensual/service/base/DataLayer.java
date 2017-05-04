@@ -28,7 +28,7 @@ public class DataLayer {
          *
          * @return Daily
          */
-        Observable<Daily> getDaily();
+        Observable<Daily> getDaily(int dayDiff);
 
         /**
          * 获取新闻

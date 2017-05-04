@@ -73,6 +73,8 @@ public class Daily implements Serializable {
         @SerializedName("multipic")
         private boolean multiPic;
 
+        private String date;
+
         public long getId() {
             return id;
         }
@@ -99,6 +101,14 @@ public class Daily implements Serializable {
 
         public boolean isMultiPic() {
             return multiPic;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
         }
 
         @Override
