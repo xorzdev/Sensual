@@ -21,6 +21,7 @@ ext {
     targetSdkVersion = 25
     versionCode = 1
     versionName = "0.0.1"
+    resConfigs = "zh" // 只保留中文
 
 
     libSupportV4 = "com.android.support:support-v4:${supportVersion}"

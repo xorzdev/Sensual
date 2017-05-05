@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'AndResGuard'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,14 +12,33 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        resConfigs rootProject.ext.resConfigs
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            storeFile file('D:/Android/keyStore/gavinxxxxxx.jks')
+            storePassword '994995'
+            keyAlias 'primary'
+            keyPassword '3721000'
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -30,6 +50,41 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+andResGuard {
+    //mappingFile用于增量更新，保持本次混淆与上次混淆结果一致；
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    //uss7zip为true时，useSign必须为true；
+    use7zip = true
+    //useSign为true时，需要配置signConfig；
+    useSign = true
+    //打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字;
+    keepRoot = false
+    //whiteList添加在代码内部需要动态获取的资源id，不混淆这部分；
+    whiteList = [
+            // for your icon
+            "R.mipmap.ic_launcher",
+            "R.mipmap.ic_launcher_round",
+
+            // "R.string.umeng*",
+    ]
+    //用来指定文件重打包时是否压缩指定文件;
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+    //sevenzip可使用artifacr或path，path指本地安装的7za（7zip命令行工具）。
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.0'
+        //path = "/usr/local/bin/7za"
+    }
+    // gradle resguardRelease
+    // adb shell monkey -p com.ymmart.artlibrary -v 200
 }
 
 dependencies {

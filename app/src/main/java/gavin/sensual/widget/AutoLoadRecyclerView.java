@@ -49,7 +49,7 @@ public class AutoLoadRecyclerView extends RecyclerView {
         addOnScrollListener(onScrollListener);
     }
 
-    // TODO: 2017/5/5 当数据量少时下拉刷新后不会再触发加载事件
+    // 使用 DiffUtil 可解决 当数据量少时下拉刷新后不会再触发加载事件
     private OnScrollListener onScrollListener = new OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

@@ -15,13 +15,14 @@ public class CacheHelper {
      * -    ? /storage/sdcard0/Android/data/com.example.dir/cache
      * -    : /data/data/com.example.dir/cache )
      *
-     * @param context
-     * @return
+     * @param context Context
+     * @return cachePath
      */
     public static String getCacheDir(Context context) {
         String cachePath;
+        // if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable())
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
+                && context.getExternalCacheDir() != null) {
             cachePath = context.getExternalCacheDir().getPath();
         } else {
             cachePath = context.getCacheDir().getPath();
@@ -34,14 +35,14 @@ public class CacheHelper {
      * -    ? /storage/sdcard0/Android/data/com.example.dir/files
      * -    : /data/data/com.example.dir/files )
      *
-     * @param context
-     * @param type 传空在 files 根目录下， 传值在 files 下创建对应文件夹
-     * @return
+     * @param context Context
+     * @param type    传空在 files 根目录下， 传值在 files 下创建对应文件夹
+     * @return cachePath
      */
     public static String getFilesDir(Context context, String type) {
         String cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
+                && context.getExternalFilesDir(type) != null) {
             cachePath = context.getExternalFilesDir(type).getPath();
         }
         return cachePath;

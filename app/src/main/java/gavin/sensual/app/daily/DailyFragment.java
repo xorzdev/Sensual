@@ -122,12 +122,12 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
     }
 
     private void initBanner(List<Daily.Story> topStoryList) {
-        List<String> urlList = topStoryList.stream()
-                .map(Daily.Story::getImageUrl)
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        List<String> titleList = topStoryList.stream()
-                .map(Daily.Story::getTitle)
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        List<String> urlList = new ArrayList<>();
+        List<String> titleList = new ArrayList<>();
+        for (Daily.Story story : topStoryList) {
+            urlList.add(story.getImageUrl());
+            titleList.add(story.getTitle());
+        }
         binding.banner.setUrlList(urlList, titleList);
         binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(topStoryList.get(i).getId())));
     }
