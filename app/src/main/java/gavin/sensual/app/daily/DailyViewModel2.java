@@ -80,9 +80,7 @@ public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
 
     void onNext(int dayDiff, Daily daily) {
         List<Daily.Story> newList = new ArrayList<>();
-        if (dayDiff != 0) {
-            newList.addAll(storyList);
-        }
+        if (dayDiff != 0) newList.addAll(storyList);
         newList.addAll(daily.getStories());
 
         Observable.just(newList)
@@ -90,9 +88,7 @@ public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    if (dayDiff == 0) {
-                        storyList.clear();
-                    }
+                    if (dayDiff == 0) storyList.clear();
                     storyList.addAll(daily.getStories());
                 })
                 .subscribe(diffResult -> diffResult.dispatchUpdatesTo(adapter));

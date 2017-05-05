@@ -46,12 +46,12 @@ public class DailyFragment2 extends BindingFragment<FragDailyTwoBinding>
 
     @Override
     public void onItemClick(Daily.Story story) {
-        NewsFragment.newInstance(story.getId());
+        start(NewsFragment.newInstance(story.getId()));
     }
 
     @Override
     public void onBannerItemClick(Daily.Story story) {
-        NewsFragment.newInstance(story.getId());
+        start(NewsFragment.newInstance(story.getId()));
     }
 
     private void init() {
