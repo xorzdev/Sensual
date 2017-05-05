@@ -3,6 +3,7 @@ package gavin.sensual.app.daily;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.util.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -60,7 +61,11 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
         binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
 
         binding.recycler.setOnLoadListener(this);
-        setAdapter();
+        adapter = new DailyAdapter(_mActivity, storyList);
+        adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(storyList.get(i).getId())));
+        binding.recycler.setAdapter(adapter);
+        loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(_mActivity));
+        adapter.setFooterBinding(loadingBinding);
     }
 
     private void getDaily(int dayDiff) {
@@ -79,52 +84,51 @@ public class DailyFragment extends BindingFragment<FragDailyBinding> implements 
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(daily -> {
+                    daily.getStories().get(0).setDate(dayDiff == 0 ? "今日热文" : daily.getDate());
+                    return daily;
+                })
+                .doOnNext(daily -> {
+                    // 知乎日报的生日为 2013 年 5 月 19 日
+                    binding.recycler.haveMore = Integer.parseInt(daily.getDate()) > 20130519;
+                    if (dayDiff == 0) {
+                        initBanner(daily.getTopStories());
+                    }
+                })
                 .doOnComplete(() -> {
                     binding.refreshLayout.setRefreshing(false);
                     binding.recycler.loadingMore = false;
                     loadingBinding.progressBar.setVisibility(View.GONE);
                     loadingBinding.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
                 })
-                .subscribe(daily -> {
-                    // 知乎日报的生日为 2013 年 5 月 19 日
-                    binding.recycler.haveMore = Integer.parseInt(daily.getDate()) > 20130519;
-                    if (dayDiff == 0) {
-                        initBanner(daily);
-                        storyList.clear();
-                    }
-                    if (daily.getStories() != null) {
-                        daily.getStories().get(0).setDate(dayDiff == 0 ? "今日热文" : daily.getDate());
-                        storyList.addAll(daily.getStories());
-                    }
-                    setAdapter();
-                }, e -> {
+                .doOnError(throwable -> {
                     binding.refreshLayout.setRefreshing(false);
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
-                    Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show();
-                });
+                })
+                .subscribe(daily -> {
+                    List<Daily.Story> newList = new ArrayList<>();
+                    if (dayDiff != 0) {
+                        newList.addAll(storyList);
+                    }
+                    newList.addAll(daily.getStories());
+                    DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffCallback(storyList, newList));
+                    diffResult.dispatchUpdatesTo(adapter);
+                    if (dayDiff == 0) {
+                        storyList.clear();
+                    }
+                    storyList.addAll(daily.getStories());
+                }, e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
     }
 
-    private void initBanner(Daily daily) {
-        List<String> urlList = daily.getTopStories().stream()
+    private void initBanner(List<Daily.Story> topStoryList) {
+        List<String> urlList = topStoryList.stream()
                 .map(Daily.Story::getImageUrl)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        List<String> titleList = daily.getTopStories().stream()
+        List<String> titleList = topStoryList.stream()
                 .map(Daily.Story::getTitle)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         binding.banner.setUrlList(urlList, titleList);
-        binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(daily.getTopStories().get(i).getId())));
-    }
-
-    private void setAdapter() {
-        if (adapter == null) {
-            adapter = new DailyAdapter(_mActivity, storyList);
-            adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(storyList.get(i).getId())));
-            binding.recycler.setAdapter(adapter);
-            loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(_mActivity));
-            adapter.setFooterBinding(loadingBinding);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
+        binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(topStoryList.get(i).getId())));
     }
 }
