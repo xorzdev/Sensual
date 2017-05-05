@@ -9,7 +9,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import gavin.sensual.R;
-import gavin.sensual.app.daily.DailyFragment;
+import gavin.sensual.app.daily.DailyFragment2;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
@@ -38,7 +38,7 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.holder, DailyFragment.newInstance());
+            loadRootFragment(R.id.holder, DailyFragment2.newInstance());
         }
         subscribe();
         init();
@@ -50,7 +50,7 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
             binding.drawer.closeDrawer(Gravity.START);
             return true;
         }
-        if (!(getTopChildFragment() instanceof DailyFragment)) {
+        if (!(getTopChildFragment() instanceof DailyFragment2)) {
             popChild();
             return true;
         }
