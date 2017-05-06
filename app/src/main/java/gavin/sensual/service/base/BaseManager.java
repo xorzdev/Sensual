@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
+import gavin.sensual.net.GankAPI;
 
 /**
  * BaseManager
@@ -16,6 +17,8 @@ public abstract class BaseManager {
     @Inject
     ClientAPI mApi;
     @Inject
+    GankAPI mGankApi;
+    @Inject
     Gson mGson;
 
     public BaseManager() {
@@ -24,6 +27,10 @@ public abstract class BaseManager {
 
     public ClientAPI getApi() {
         return mApi;
+    }
+
+    public GankAPI getGankApi() {
+        return mGankApi;
     }
 
     public Gson getGson() {

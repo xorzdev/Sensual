@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import gavin.sensual.R;
 import gavin.sensual.app.daily.DailyFragment;
+import gavin.sensual.app.gank.GankFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
@@ -63,6 +64,9 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
         switch (item.getItemId()) {
             case R.id.nav_news:
                 return true;
+            case R.id.nav_gank:
+                start(GankFragment.newInstance());
+                return false;
             case R.id.nav_unknown:
                 Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
                 return false;

@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import gavin.sensual.service.DailyManager;
+import gavin.sensual.service.GankManager;
 import gavin.sensual.service.base.DataLayer;
 
 /**
@@ -21,10 +22,15 @@ public class DataLayerModule {
         return new DailyManager();
     }
 
+    @Singleton
+    @Provides
+    public GankManager provideGankManager() {
+        return new GankManager();
+    }
 
     @Singleton
     @Provides
-    public DataLayer provideDataLayer(DailyManager dailyManager) {
-        return new DataLayer(dailyManager);
+    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager) {
+        return new DataLayer(dailyManager, gankManager);
     }
 }

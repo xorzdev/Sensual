@@ -84,7 +84,7 @@ andResGuard {
         //path = "/usr/local/bin/7za"
     }
     // gradle resguardRelease
-    // adb shell monkey -p com.ymmart.artlibrary -v 200
+    // adb shell monkey -p gavin.sensual -v 500
 }
 
 dependencies {
