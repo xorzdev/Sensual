@@ -9,9 +9,10 @@ import gavin.sensual.R;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragDailyTwoBinding;
+import gavin.sensual.databinding.FragDailyBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -19,18 +20,20 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/4/26
  */
-public class DailyFragment2 extends BindingFragment<FragDailyTwoBinding>
-        implements AutoLoadRecyclerView.OnLoadListener, DailyViewModel2.Callback {
+public class DailyFragment extends BindingFragment<FragDailyBinding>
+        implements AutoLoadRecyclerView.OnLoadListener, DailyViewModel.Callback {
 
-    private DailyViewModel2 mViewModel;
+    private DailyViewModel mViewModel;
 
-    public static DailyFragment2 newInstance() {
-        return new DailyFragment2();
+    private Disposable disposable;
+
+    public static DailyFragment newInstance() {
+        return new DailyFragment();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_daily_two;
+        return R.layout.frag_daily;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class DailyFragment2 extends BindingFragment<FragDailyTwoBinding>
     }
 
     private void init() {
-        mViewModel = new DailyViewModel2(_mActivity, binding, this);
+        mViewModel = new DailyViewModel(_mActivity, binding, this);
         binding.setViewModel(mViewModel);
 
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
@@ -70,6 +73,10 @@ public class DailyFragment2 extends BindingFragment<FragDailyTwoBinding>
                 .doOnSubscribe(disposable -> {
                     mViewModel.doOnSubscribe(dayDiff);
                     binding.recycler.loadData(dayDiff != 0);
+                    if (this.disposable != null && !this.disposable.isDisposed()) {
+                        this.disposable.dispose();
+                    }
+                    this.disposable = disposable;
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -87,6 +94,15 @@ public class DailyFragment2 extends BindingFragment<FragDailyTwoBinding>
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
-                .subscribe(daily -> mViewModel.onNext(dayDiff, daily), e -> mViewModel.onError(e));
+                .subscribe(daily -> mViewModel.onNext(dayDiff, daily), e -> mViewModel.onError(e, dayDiff));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.onDestroy();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 }

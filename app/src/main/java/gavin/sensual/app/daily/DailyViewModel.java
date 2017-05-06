@@ -6,15 +6,17 @@ import android.support.v7.util.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.FragDailyTwoBinding;
+import gavin.sensual.databinding.FragDailyBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -22,32 +24,34 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/5
  */
-public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
+public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
 
-    private Context context;
+    private WeakReference<Context> mContext;
     private Callback callback;
 
     private List<Daily.Story> storyList = new ArrayList<>();
     private DailyAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
-    DailyViewModel2(Context context, FragDailyTwoBinding binding, Callback callback) {
+    private Disposable disposable;
+
+    DailyViewModel(Context context, FragDailyBinding binding, Callback callback) {
         super(binding);
-        this.context = context;
+        this.mContext = new WeakReference<>(context);
         this.callback = callback;
         init();
     }
 
     private void init() {
-        binding.toolbar.setTitle("破乎服");
+        binding.toolbar.setTitle("知乎日报");
         binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new DailyAdapter(context, storyList);
+        adapter = new DailyAdapter(mContext.get(), storyList);
         adapter.setOnItemClickListener(i -> callback.onItemClick(storyList.get(i)));
         binding.recycler.setAdapter(adapter);
-        loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(context));
+        loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
     }
 
@@ -87,6 +91,12 @@ public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
                 .map(stories -> DiffUtil.calculateDiff(new DiffCallback(storyList, stories)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    if (this.disposable != null && !this.disposable.isDisposed()) {
+                        this.disposable.dispose();
+                    }
+                    this.disposable = disposable;
+                })
                 .doOnComplete(() -> {
                     if (dayDiff == 0) storyList.clear();
                     storyList.addAll(daily.getStories());
@@ -94,8 +104,14 @@ public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
                 .subscribe(diffResult -> diffResult.dispatchUpdatesTo(adapter));
     }
 
-    void onError(Throwable e) {
-        Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show();
+    void onError(Throwable e, int dayDiff) {
+        if (dayDiff != 0) {
+            loadingBinding.progressBar.setVisibility(View.GONE);
+            loadingBinding.textView.setText("玩坏了...");
+            Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show();
+        }
     }
 
     private void initBanner(List<Daily.Story> topStoryList) {
@@ -107,6 +123,12 @@ public class DailyViewModel2 extends BindingViewModel<FragDailyTwoBinding> {
         }
         binding.banner.setUrlList(urlList, titleList);
         binding.banner.setOnItemClickListener(i -> callback.onBannerItemClick(topStoryList.get(i)));
+    }
+
+    void onDestroy() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
     interface Callback {
