@@ -69,7 +69,6 @@ public class GankFragment extends BindingFragment<FragGankBinding>
 
     private void getWelfare(boolean isMore) {
         getDataLayer().getGankService().getWelfare(8, isMore ? binding.recycler.pageNo + 1 : 1)
-                .throttleFirst(6000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -116,7 +115,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
-                .doAfterSuccess(arg0 -> binding.recycler.loadingMore = false)
+//                .doAfterSuccess(arg0 -> binding.recycler.loadingMore = false)
                 .doOnError(throwable -> binding.recycler.loadingMore = false)
                 .subscribe(list -> mViewModel.onNext(isMore, welfareList), Throwable::printStackTrace);
     }
