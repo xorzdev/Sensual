@@ -2,7 +2,6 @@ package gavin.sensual.app.gank;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -12,7 +11,6 @@ import gavin.sensual.R;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.FragGankBinding;
-import gavin.sensual.util.L;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

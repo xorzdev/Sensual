@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="item"
             type="gavin.sensual.app.gank.Welfare" />
@@ -20,6 +18,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
             app:imageUrl="@{item.url}" />
 
     </android.support.v7.widget.CardView>

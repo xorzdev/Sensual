@@ -83,7 +83,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                 .doOnNext(daily -> {
                     mViewModel.doOnNext(dayDiff, daily);
                     // 知乎日报的生日为 2013 年 5 月 19 日
-                    binding.recycler.haveMore = Integer.parseInt(daily.getDate()) > 20130519;
+                    binding.recycler.haveMore = !autoLoadMore(dayDiff, daily) && Integer.parseInt(daily.getDate()) > 20130519;
                 })
                 .doOnComplete(() -> {
                     mViewModel.doOnComplete();
@@ -94,7 +94,23 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
+                .doAfterNext(daily -> {
+                    if (autoLoadMore(dayDiff, daily))
+                        onLoad();
+                })
                 .subscribe(daily -> mViewModel.onNext(dayDiff, daily), e -> mViewModel.onError(e, dayDiff));
+    }
+
+    /**
+     * 满足什么条件时自动加载下一页
+     * 解决今日热文过少时下拉刷新后上拉加载更多失效问题
+     *
+     * @param dayDiff dayDiff
+     * @param daily   Daily
+     * @return boolean
+     */
+    private boolean autoLoadMore(int dayDiff, Daily daily) {
+        return dayDiff == 0 && daily.getStories().size() < 10;
     }
 
     @Override

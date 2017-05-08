@@ -19,7 +19,6 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
@@ -41,6 +40,8 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="4dp"
+                android:clipToPadding="false"
                 app:layoutManager="StaggeredGridLayoutManager"
                 app:spanCount="2" />
 
