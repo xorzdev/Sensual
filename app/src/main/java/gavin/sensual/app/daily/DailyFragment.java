@@ -12,6 +12,7 @@ import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -25,7 +26,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
 
     private DailyViewModel mViewModel;
 
-    private Disposable disposable;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static DailyFragment newInstance() {
         return new DailyFragment();
@@ -71,12 +72,9 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
+                    compositeDisposable.add(disposable);
                     mViewModel.doOnSubscribe(dayDiff);
                     binding.recycler.loadData(dayDiff != 0);
-                    if (this.disposable != null && !this.disposable.isDisposed()) {
-                        this.disposable.dispose();
-                    }
-                    this.disposable = disposable;
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,7 +96,8 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                     if (autoLoadMore(dayDiff, daily))
                         onLoad();
                 })
-                .subscribe(daily -> mViewModel.onNext(dayDiff, daily), e -> mViewModel.onError(e, dayDiff));
+                .subscribe(daily -> mViewModel.onNext(dayDiff, daily),
+                        e -> mViewModel.onError(e, dayDiff));
     }
 
     /**
@@ -117,8 +116,6 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
     public void onDestroyView() {
         super.onDestroyView();
         mViewModel.onDestroy();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        compositeDisposable.dispose();
     }
 }

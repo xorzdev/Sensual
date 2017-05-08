@@ -16,7 +16,7 @@ import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.FragDailyBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -33,7 +33,7 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
     private DailyAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
-    private Disposable disposable;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     DailyViewModel(Context context, FragDailyBinding binding, Callback callback) {
         super(binding);
@@ -83,21 +83,20 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
     }
 
     void onNext(int dayDiff, Daily daily) {
+        if (dayDiff == 0 && storyList.isEmpty()) {
+            storyList.addAll(daily.getStories());
+            adapter.notifyDataSetChanged();
+            return;
+        }
         List<Daily.Story> newList = new ArrayList<>();
         if (dayDiff != 0) newList.addAll(storyList);
         newList.addAll(daily.getStories());
-
         Observable.just(newList)
                 .map(stories -> DiffUtil.calculateDiff(new DiffCallback(storyList, stories)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> {
-                    if (this.disposable != null && !this.disposable.isDisposed()) {
-                        this.disposable.dispose();
-                    }
-                    this.disposable = disposable;
-                })
-                .doOnComplete(() -> {
+                .doOnSubscribe(compositeDisposable::add)
+                .doOnNext(diffResult -> {
                     if (dayDiff == 0) storyList.clear();
                     storyList.addAll(daily.getStories());
                 })
@@ -126,9 +125,7 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
     }
 
     void onDestroy() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        compositeDisposable.dispose();
     }
 
     interface Callback {

@@ -1,6 +1,7 @@
 package gavin.sensual.app.daily;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import gavin.sensual.databinding.ItemDailyBinding;
  *
  * @author gavin.xiong 2017/5/4
  */
-class DailyAdapter extends RecyclerHeaderFooterAdapter<Daily.Story, ItemDailyBinding, FooterLoadingBinding, FooterLoadingBinding> {
+class DailyAdapter extends RecyclerHeaderFooterAdapter<Daily.Story, ItemDailyBinding, ViewDataBinding, FooterLoadingBinding> {
 
     private OnItemClickListener onItemClickListener;
 

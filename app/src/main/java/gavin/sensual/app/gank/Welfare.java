@@ -23,10 +23,13 @@ public class Welfare implements Serializable {
 
     @SerializedName("_id")
     private String id;
-    @SerializedName("createdAt")
+    @SerializedName("publishedAt")
     private String time;
     @SerializedName("url")
     private String url;
+
+    private int width;
+    private int height;
 
     public String getId() {
         return id;
@@ -40,12 +43,30 @@ public class Welfare implements Serializable {
         return url;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     @Override
     public String toString() {
         return "Welfare{" +
                 "id='" + id + '\'' +
                 ", time='" + time + '\'' +
                 ", url='" + url + '\'' +
+                ", width=" + width +
+                ", height=" + height +
                 '}';
     }
 }

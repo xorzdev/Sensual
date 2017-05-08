@@ -20,7 +20,7 @@ public interface GankAPI {
      * @param no    页码
      * @return Result
      */
-    @Headers("Cache-Control: max-stale=86400")
+    @Headers("Cache-Control: max-stale=1800")
     @GET("data/福利/{limit}/{no}")
     Observable<Result> getWelfare(@Path("limit") int limit, @Path("no") int no);
 }

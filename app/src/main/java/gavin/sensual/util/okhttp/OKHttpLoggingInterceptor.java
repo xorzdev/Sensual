@@ -26,11 +26,11 @@ public final class OKHttpLoggingInterceptor implements Interceptor {
         try {
             Buffer buffer = new Buffer();
             request.body().writeTo(buffer);
-            L.v("--> " + request.method() + ' ' + request.url() + "\n" + buffer.readString(UTF8));
+            L.d("--> " + request.method() + ' ' + request.url() + "\n" + buffer.readString(UTF8));
         } catch (NullPointerException e) {
-            L.v("--> " + request.method() + ' ' + request.url());
+            L.d("--> " + request.method() + ' ' + request.url());
         } catch (Exception e) {
-            L.v("--> " + request.method() + ' ' + request.url() + ' ' + e.getLocalizedMessage());
+            L.d("--> " + request.method() + ' ' + request.url() + ' ' + e.getLocalizedMessage());
         }
 
         Response response;
@@ -43,9 +43,9 @@ public final class OKHttpLoggingInterceptor implements Interceptor {
         try {
             BufferedSource source = response.body().source();
             source.request(Long.MAX_VALUE);
-            L.d("<-- " + request.url() + "\n" + source.buffer().clone().readString(UTF8));
+            L.v("<-- " + request.url() + "\n" + source.buffer().clone().readString(UTF8));
         } catch (Exception e) {
-            L.d("<-- " + request.url() + ' ' + e);
+            L.v("<-- " + request.url() + ' ' + e);
         }
 
         return response;

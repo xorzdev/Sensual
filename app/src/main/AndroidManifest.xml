@@ -25,6 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 使用 okhttp3 加载图片 -->
+        <meta-data
+            android:name="gavin.sensual.util.glide.GlideQualityModule"
+            android:value="GlideModule" />
     </application>
 
 </manifest>
