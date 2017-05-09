@@ -3,7 +3,6 @@ package gavin.sensual.app.gank;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,6 +27,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class GankFragment extends BindingFragment<FragGankBinding>
         implements AutoLoadRecyclerView.OnLoadListener, GankViewModel.Callback {
+
+    private final int limit = 10;
 
     private GankViewModel mViewModel;
 
@@ -54,8 +55,27 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     }
 
     @Override
-    public void onItemClick(Welfare welfare) {
-        Snackbar.make(binding.recycler, welfare.getUrl(), Snackbar.LENGTH_LONG).show();
+    public void onItemClick(List<Welfare> welfareList, int position) {
+        sharedPager = new SharedPager<>();
+        sharedPager.list = welfareList;
+        sharedPager.limit = limit;
+        sharedPager.no = binding.recycler.pageNo;
+        sharedPager.index = position;
+        startForResult(BigImage2.newInstance(sharedPager), 999);
+    }
+
+    SharedPager<Welfare> sharedPager;
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        if (requestCode == 999) {
+            binding.recycler.pageNo = sharedPager.no;
+            if (binding.recycler.getAdapter() != null) {
+                binding.recycler.getAdapter().notifyDataSetChanged();
+                binding.recycler.smoothScrollToPosition(sharedPager.index);
+            }
+        }
     }
 
     private void init() {
@@ -68,13 +88,12 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     }
 
     private void getWelfare(boolean isMore) {
-        getDataLayer().getGankService().getWelfare(10, isMore ? binding.recycler.pageNo + 1 : 1)
+        getDataLayer().getGankService().getWelfare(limit, isMore ? binding.recycler.pageNo + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
                     mViewModel.doOnSubscribe(isMore);
                     binding.recycler.loadData(isMore);
-                    binding.recycler.haveMore = true;
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -83,7 +102,10 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
-                .subscribe(result -> fixData(isMore, result.getResults()), e -> mViewModel.onError(e, isMore));
+                .subscribe(result -> {
+                    binding.recycler.haveMore = limit == result.getResults().size();
+                    fixData(isMore, result.getResults());
+                }, e -> mViewModel.onError(e, isMore));
     }
 
     private void fixData(boolean isMore, List<Welfare> welfareList) {

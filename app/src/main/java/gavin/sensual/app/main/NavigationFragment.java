@@ -11,10 +11,10 @@ import android.view.MenuItem;
 import gavin.sensual.R;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.gank.GankFragment;
+import gavin.sensual.test.SnapRecyclerFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
-import gavin.sensual.test.TestFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -71,7 +71,8 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
                 Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
                 return false;
             case R.id.nav_test:
-                start(TestFragment.newInstance());
+                start(SnapRecyclerFragment.newInstance());
+//                start(TestFragment.newInstance());
                 return true;
         }
         return false;

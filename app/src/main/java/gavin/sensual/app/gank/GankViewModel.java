@@ -20,7 +20,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 这里是萌萌哒注释君
+ * 干货集中营 - 福利
  *
  * @author gavin.xiong 2017/5/8
  */
@@ -49,7 +49,7 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
         adapter = new GankAdapter(mContext.get(), welfareList);
-        adapter.setOnItemClickListener(i -> callback.onItemClick(welfareList.get(i)));
+        adapter.setOnItemClickListener(i -> callback.onItemClick(welfareList, i));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
@@ -121,7 +121,7 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
     }
 
     interface Callback {
-        void onItemClick(Welfare welfare);
+        void onItemClick(List<Welfare> welfareList, int position);
     }
 
 }

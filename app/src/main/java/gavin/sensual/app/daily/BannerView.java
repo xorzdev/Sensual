@@ -30,6 +30,7 @@ import gavin.sensual.R;
  *
  * @author gavin.xiong 2016/9/13
  */
+// TODO: 2017/5/9 改用 dataBinding
 public class BannerView extends FrameLayout {
 
     private ViewPager viewPager;
@@ -63,7 +64,7 @@ public class BannerView extends FrameLayout {
     @SuppressLint("InflateParams")
     public void initView(Context context) {
         View v = LayoutInflater.from(context).inflate(R.layout.widget_banner_view, null);
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
+        viewPager = (ViewPager) v.findViewById(R.id.viewPager);
         linear = (LinearLayout) v.findViewById(R.id.linear);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         this.addView(v, lp);
@@ -99,13 +100,9 @@ public class BannerView extends FrameLayout {
             imageView.setLayoutParams(new LayoutParams(-1, -1));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(getContext()).load(urlList.get(index)).placeholder(R.mipmap.ic_launcher).dontAnimate().into(imageView);
-            imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(index);
-                    }
-                }
+            imageView.setOnClickListener(view -> {
+                if (onItemClickListener != null)
+                    onItemClickListener.onItemClick(index);
             });
 
             frameLayout.addView(imageView);

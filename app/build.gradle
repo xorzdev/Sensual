@@ -125,4 +125,6 @@ dependencies {
 
     compile rootProject.ext.libGlide
     compile rootProject.ext.libGlideOkhttp3Integration
+
+    compile rootProject.ext.libPhotoView
 }

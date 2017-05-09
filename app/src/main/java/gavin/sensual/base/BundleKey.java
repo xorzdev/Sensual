@@ -31,4 +31,8 @@ public class BundleKey {
     public static final String LATEST_DATE = "latestDate";
 
     public static final String NEWS_ID = "newsId";
+
+    public static final String IMAGE_URL = "imageUrl";
+    public static final String POSITION = "position";
+    public static final String SHARED_PAGER = "sharedPager";
 }
