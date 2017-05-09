@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import gavin.sensual.service.DBManager;
 import gavin.sensual.service.DailyManager;
 import gavin.sensual.service.GankManager;
 import gavin.sensual.service.base.DataLayer;
@@ -30,7 +31,13 @@ public class DataLayerModule {
 
     @Singleton
     @Provides
-    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager) {
-        return new DataLayer(dailyManager, gankManager);
+    public DBManager provideDBManager() {
+        return new DBManager();
+    }
+
+    @Singleton
+    @Provides
+    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager, DBManager dbManager) {
+        return new DataLayer(dailyManager, gankManager, dbManager);
     }
 }

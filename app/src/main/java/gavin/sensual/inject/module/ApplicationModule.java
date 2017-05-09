@@ -6,13 +6,14 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import gavin.sensual.net.DBAPI;
 
 /**
  * ApplicationModule
  *
  * @author gavin.xiong 2017/4/28
  */
-@Module(includes = {DataLayerModule.class, ClientAPIModule.class, GankAPIModule.class})
+@Module(includes = {DataLayerModule.class, ClientAPIModule.class, GankAPIModule.class, DBAPIModule.class})
 public class ApplicationModule {
     
     private Application mApplication;

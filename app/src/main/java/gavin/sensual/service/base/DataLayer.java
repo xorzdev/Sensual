@@ -4,6 +4,8 @@ import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.gank.Result;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.http.Query;
 
 /**
  * DataLayer
@@ -14,10 +16,12 @@ public class DataLayer {
 
     private DailyService mDailyService;
     private GankService mGankService;
+    private DBService mDBService;
 
-    public DataLayer(DailyService dailyService, GankService gankService) {
+    public DataLayer(DailyService dailyService, GankService gankService, DBService dbService) {
         mDailyService = dailyService;
         mGankService = gankService;
+        mDBService = dbService;
     }
 
     public DailyService getDailyService() {
@@ -26,6 +30,10 @@ public class DataLayer {
 
     public GankService getGankService() {
         return mGankService;
+    }
+
+    public DBService getDBService() {
+        return mDBService;
     }
 
     public interface DailyService {
@@ -63,5 +71,10 @@ public class DataLayer {
          * @return Result
          */
         Observable<Result> getWelfare(int limit, int no);
+    }
+
+    public interface DBService {
+
+        Observable<ResponseBody> getRank(int page);
     }
 }

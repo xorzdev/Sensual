@@ -127,4 +127,6 @@ dependencies {
     compile rootProject.ext.libGlideOkhttp3Integration
 
     compile rootProject.ext.libPhotoView
+
+    compile 'org.jsoup:jsoup:1.10.2'
 }
