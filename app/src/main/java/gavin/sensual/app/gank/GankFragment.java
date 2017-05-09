@@ -3,6 +3,7 @@ package gavin.sensual.app.gank;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -10,7 +11,6 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingFragment;
@@ -55,7 +55,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
 
     @Override
     public void onItemClick(Welfare welfare) {
-
+        Snackbar.make(binding.recycler, welfare.getUrl(), Snackbar.LENGTH_LONG).show();
     }
 
     private void init() {
@@ -68,31 +68,22 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     }
 
     private void getWelfare(boolean isMore) {
-        getDataLayer().getGankService().getWelfare(8, isMore ? binding.recycler.pageNo + 1 : 1)
+        getDataLayer().getGankService().getWelfare(10, isMore ? binding.recycler.pageNo + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
                     mViewModel.doOnSubscribe(isMore);
                     binding.recycler.loadData(isMore);
+                    binding.recycler.haveMore = true;
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(result -> {
-//                    mViewModel.doOnNext(isMore, result);
-                    fixData(isMore, result.getResults());
-                    binding.recycler.haveMore = true;
-                })
-                .doOnComplete(() -> {
-//                    mViewModel.doOnComplete();
-//                    binding.recycler.loadingMore = false;
-                })
                 .doOnError(throwable -> {
-                    mViewModel.doOnError();
+                    mViewModel.doOnError(isMore);
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
-                .subscribe(result -> mViewModel.onNext(isMore, result.getResults()),
-                        e -> mViewModel.onError(e, isMore));
+                .subscribe(result -> fixData(isMore, result.getResults()), e -> mViewModel.onError(e, isMore));
     }
 
     private void fixData(boolean isMore, List<Welfare> welfareList) {
@@ -105,7 +96,6 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                         welfare.setHeight(bm.getHeight());
                         bm.recycle();
                     } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
                         welfare.setWidth(500);
                         welfare.setHeight(500);
                     }
@@ -115,9 +105,15 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
-//                .doAfterSuccess(arg0 -> binding.recycler.loadingMore = false)
-                .doOnError(throwable -> binding.recycler.loadingMore = false)
-                .subscribe(list -> mViewModel.onNext(isMore, welfareList), Throwable::printStackTrace);
+                .doAfterSuccess(arg0 -> {
+                    mViewModel.doOnComplete();
+                    binding.recycler.loadingMore = false;
+                })
+                .doOnError(throwable -> {
+                    mViewModel.doOnError(isMore);
+                    binding.recycler.loadingMore = false;
+                })
+                .subscribe(list -> mViewModel.onNext(isMore, welfareList), e -> mViewModel.onError(e, isMore));
     }
 
     private Bitmap getBitmap(Welfare t) throws InterruptedException, ExecutionException {

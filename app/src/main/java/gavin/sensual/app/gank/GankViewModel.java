@@ -1,20 +1,14 @@
 package gavin.sensual.app.gank;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.design.widget.Snackbar;
 import android.support.v7.util.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.Target;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingViewModel;
@@ -71,15 +65,25 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
         }
     }
 
-    void doOnError() {
+    void doOnError(boolean isMore) {
+        if (isMore) {
+            loadingBinding.progressBar.setVisibility(View.GONE);
+            loadingBinding.textView.setText("玩坏了...");
+        } else {
+            binding.refreshLayout.setRefreshing(false);
+        }
+    }
+
+    void doOnComplete() {
         binding.refreshLayout.setRefreshing(false);
+        loadingBinding.progressBar.setVisibility(View.GONE);
+        loadingBinding.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
     }
 
     void onNext(boolean isMore, List<Welfare> list) {
         if (!isMore && welfareList.isEmpty()) {
             welfareList.addAll(list);
             adapter.notifyDataSetChanged();
-            binding.refreshLayout.setRefreshing(false);
             return;
         }
         List<Welfare> newList = new ArrayList<>();
@@ -106,8 +110,6 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
 
     void onError(Throwable e, boolean isMore) {
         if (isMore) {
-            loadingBinding.progressBar.setVisibility(View.GONE);
-            loadingBinding.textView.setText("玩坏了...");
             Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show();
