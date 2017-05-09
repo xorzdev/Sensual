@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import gavin.sensual.R;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.FragGankBinding;
-import gavin.sensual.util.L;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -36,32 +35,12 @@ public class DoubanFragment extends BindingFragment<FragGankBinding> {
     }
 
     private void getRank() {
-        getDataLayer().getDBService().getRank(1)
+        getDataLayer().getDBService().getRank(this, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-
-                .subscribeOn(Schedulers.computation())
-//                .map(responseBody -> {
-//                    List<Image> images = new ArrayList<>();
-//                    try {
-//                        Document document = Jsoup.parse(responseBody.string());
-////                            Elements elements = document.select("div[class=thumbnail] > div[class=img_single] > a > img");
-//                        Elements elements = document.select("div[class=thumbnail] div[class=img_single] img");
-//                        final int size = elements.size();
-//                        for (int i = 0; i < size; i++) {
-//                            String src = elements.get(i).attr("src").trim();
-//                            if (DataBase.hasImage(null, src)) {
-//                                continue;
-//                            }
-//                            images.add(new Image(src, type));
-//                        }
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return images;
-//                });
-                .subscribe(responseBody -> {
-
+                .subscribe(images -> {
+                    DoubanAdapter adapter = new DoubanAdapter(_mActivity, images);
+                    binding.recycler.setAdapter(adapter);
                 });
     }
 }

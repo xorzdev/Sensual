@@ -1,9 +1,15 @@
 package gavin.sensual.service.base;
 
+import android.support.v4.app.Fragment;
+
+import java.util.List;
+
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.gank.Result;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.http.Query;
 
@@ -74,7 +80,6 @@ public class DataLayer {
     }
 
     public interface DBService {
-
-        Observable<ResponseBody> getRank(int page);
+        Single<List<Image>> getRank(Fragment fragment, int page);
     }
 }
