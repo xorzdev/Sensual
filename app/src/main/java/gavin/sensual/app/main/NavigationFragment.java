@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import gavin.sensual.R;
+import gavin.sensual.app.capture.CaptureFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
@@ -70,6 +71,9 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
                 return false;
             case R.id.nav_douban:
                 start(DoubanTabFragment.newInstance());
+                return false;
+            case R.id.nav_capture:
+                start(CaptureFragment.newInstance());
                 return false;
             case R.id.nav_unknown:
                 Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();

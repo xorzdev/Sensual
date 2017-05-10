@@ -19,6 +19,10 @@
             android:icon="@drawable/vt_code_24dp"
             android:title="豆瓣妹子" />
         <item
+            android:id="@+id/nav_capture"
+            android:icon="@drawable/vt_code_24dp"
+            android:title="抓图" />
+        <item
             android:id="@+id/nav_unknown"
             android:icon="@drawable/vt_code_24dp"
             android:title="敬请期待" />
