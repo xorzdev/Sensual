@@ -96,6 +96,7 @@ public class BannerView extends FrameLayout {
      * 创建通知栏下面的页码小图标*
      */
     private void showTip() {
+        binding.linear.removeAllViews();
         if (modelList.size() < 2) return;
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DisplayUtil.dp2px(5), DisplayUtil.dp2px(5));
         params.setMargins(5, 0, 5, 0);

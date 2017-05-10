@@ -8,9 +8,14 @@ import android.view.View;
 import gavin.sensual.R;
 import gavin.sensual.app.setting.PermissionFragment;
 import gavin.sensual.base.BindingActivity;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.ActMainBinding;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BindingActivity<ActMainBinding> {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected int getLayoutId() {
@@ -27,5 +32,17 @@ public class MainActivity extends BindingActivity<ActMainBinding> {
         if (savedInstanceState == null) {
             loadRootFragment(R.id.holder, PermissionFragment.newInstance());
         }
+
+        RxBus.get().toObservable(StartFragmentEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(compositeDisposable::add)
+                .subscribe(event -> start(event.supportFragment));
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 }

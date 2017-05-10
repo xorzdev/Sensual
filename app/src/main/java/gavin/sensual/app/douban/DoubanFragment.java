@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDoubanBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.Single;
@@ -67,7 +69,8 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
         for (Image image : imageList) {
             stringList.add(image.getUrl());
         }
-        start(BigImageMultiFragment.newInstance(stringList, position));
+        RxBus.get().post(new StartFragmentEvent(
+                BigImageMultiFragment.newInstance(stringList, position)));
     }
 
     @Override
