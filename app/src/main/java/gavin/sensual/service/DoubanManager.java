@@ -21,6 +21,8 @@ import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 /**
  * DailyManager
@@ -34,6 +36,28 @@ public class DoubanManager extends BaseManager implements DataLayer.DoubanServic
         return getDoubanApi().getRank(page)
                 .map(responseBody -> extractImg(responseBody.string()))
                 .flatMap(Observable::fromIterable)
+                .map(Image::new)
+                .map(image -> {
+                    try {
+                        Bitmap bm = getBitmap(fragment, image);
+                        image.setWidth(bm.getWidth());
+                        image.setHeight(bm.getHeight());
+                    } catch (InterruptedException | ExecutionException e) {
+                        image.setWidth(500);
+                        image.setHeight(500);
+                    }
+                    return image;
+                })
+                .toList();
+    }
+
+    public Single<List<Image>> getQuestion(Fragment fragment, String url) {
+        return Observable.just(url)
+                .map(connection -> Jsoup.connect(url).get())
+                .map(document -> document.select("div[class=List-item] div[class=ContentItem AnswerItem] div[class=RichContent RichContent--unescapable] img"))
+                .flatMap(Observable::fromIterable)
+                .map(element -> element.attr("src").trim())
+                .filter(s -> !s.startsWith("//"))
                 .map(Image::new)
                 .map(image -> {
                     try {
