@@ -9,27 +9,20 @@
             type="gavin.sensual.app.douban.DoubanViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="false">
+        android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
+        <gavin.sensual.widget.AutoLoadRecyclerView
+            android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            app:layoutManager="StaggeredGridLayoutManager"
+            app:spanCount="2" />
 
-            <gavin.sensual.widget.AutoLoadRecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="4dp"
-                app:layoutManager="StaggeredGridLayoutManager"
-                app:spanCount="2" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </layout>
