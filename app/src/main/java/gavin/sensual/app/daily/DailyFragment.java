@@ -13,7 +13,6 @@ import gavin.sensual.databinding.FragDailyBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -22,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author gavin.xiong 2017/4/26
  */
 public class DailyFragment extends BindingFragment<FragDailyBinding>
-        implements AutoLoadRecyclerView.OnLoadListener, DailyViewModel.Callback {
+        implements AutoLoadRecyclerView.OnLoadListener {
 
     private DailyViewModel mViewModel;
 
@@ -48,23 +47,17 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
         getDaily(binding.recycler.pageNo);
     }
 
-    @Override
-    public void onItemClick(Daily.Story story) {
-        start(NewsFragment.newInstance(story.getId()));
-    }
-
-    @Override
-    public void onBannerItemClick(Daily.Story story) {
-        start(NewsFragment.newInstance(story.getId()));
-    }
-
     private void init() {
-        mViewModel = new DailyViewModel(_mActivity, binding, this);
+        mViewModel = new DailyViewModel(_mActivity, binding);
         binding.setViewModel(mViewModel);
 
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
+
+        binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(mViewModel.topStoryList.get(i).getId())));
+
         binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
         binding.recycler.setOnLoadListener(this);
+        mViewModel.adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(mViewModel.storyList.get(i).getId())));
     }
 
     private void getDaily(int dayDiff) {

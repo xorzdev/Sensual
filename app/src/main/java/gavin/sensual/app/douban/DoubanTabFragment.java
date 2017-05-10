@@ -1,8 +1,10 @@
 package gavin.sensual.app.douban;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingFragment;
@@ -29,11 +31,22 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
         init();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (Build.VERSION.SDK_INT >= 21) {
+            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
+        }
+    }
+
     private void init() {
         binding.toolbar.setTitle("豆瓣妹子");
         binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         binding.toolbar.setNavigationOnClickListener(v -> pop());
         initViewPager();
+        if (Build.VERSION.SDK_INT >= 21) {
+            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
+        }
     }
 
     private void initViewPager() {

@@ -4,15 +4,12 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="@color/colorAccent">
+        android:fitsSystemWindows="true">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/app_name" />
+        <gavin.sensual.widget.banner.BannerView
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
 
     </android.support.design.widget.CoordinatorLayout>
 

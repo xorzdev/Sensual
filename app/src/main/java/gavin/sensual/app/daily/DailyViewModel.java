@@ -14,6 +14,7 @@ import gavin.sensual.R;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.FragDailyBinding;
+import gavin.sensual.widget.banner.BannerModel;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,18 +28,17 @@ import io.reactivex.schedulers.Schedulers;
 public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
 
     private WeakReference<Context> mContext;
-    private Callback callback;
 
-    private List<Daily.Story> storyList = new ArrayList<>();
-    private DailyAdapter adapter;
+    List<Daily.Story> topStoryList;
+    List<Daily.Story> storyList = new ArrayList<>();
+    DailyAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    DailyViewModel(Context context, FragDailyBinding binding, Callback callback) {
+    DailyViewModel(Context context, FragDailyBinding binding) {
         super(binding);
         this.mContext = new WeakReference<>(context);
-        this.callback = callback;
         init();
     }
 
@@ -49,7 +49,6 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
         adapter = new DailyAdapter(mContext.get(), storyList);
-        adapter.setOnItemClickListener(i -> callback.onItemClick(storyList.get(i)));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
@@ -68,7 +67,8 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
     void doOnNext(int dayDiff, Daily daily) {
         daily.getStories().get(0).setDate(dayDiff == 0 ? "今日热文" : daily.getDate());
         if (dayDiff == 0) {
-            initBanner(daily.getTopStories());
+            topStoryList = daily.getTopStories();
+            initBanner();
         }
     }
 
@@ -113,24 +113,16 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
         }
     }
 
-    private void initBanner(List<Daily.Story> topStoryList) {
-        List<String> urlList = new ArrayList<>();
-        List<String> titleList = new ArrayList<>();
-        for (Daily.Story story : topStoryList) {
-            urlList.add(story.getImageUrl());
-            titleList.add(story.getTitle());
+    private void initBanner() {
+        List<BannerModel> modelList = new ArrayList<>();
+        for (Daily.Story t : topStoryList) {
+            modelList.add(new BannerModel(null, t.getImageUrl(), t.getTitle()));
         }
-        binding.banner.setUrlList(urlList, titleList);
-        binding.banner.setOnItemClickListener(i -> callback.onBannerItemClick(topStoryList.get(i)));
+        binding.banner.setModelList(modelList);
     }
 
     void onDestroy() {
         compositeDisposable.dispose();
     }
 
-    interface Callback {
-        void onItemClick(Daily.Story story);
-
-        void onBannerItemClick(Daily.Story story);
-    }
 }
