@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
-import gavin.sensual.net.DBAPI;
+import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
 
 /**
@@ -20,7 +20,7 @@ public abstract class BaseManager {
     @Inject
     GankAPI mGankApi;
     @Inject
-    DBAPI mDBApi;
+    DoubanAPI mDoubanApi;
     @Inject
     Gson mGson;
 
@@ -36,8 +36,8 @@ public abstract class BaseManager {
         return mGankApi;
     }
 
-    public DBAPI getDBApi() {
-        return mDBApi;
+    public DoubanAPI getDoubanApi() {
+        return mDoubanApi;
     }
 
     public Gson getGson() {

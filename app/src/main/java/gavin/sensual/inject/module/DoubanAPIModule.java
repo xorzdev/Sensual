@@ -4,8 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import gavin.sensual.net.DBAPI;
-import gavin.sensual.net.GankAPI;
+import gavin.sensual.net.DoubanAPI;
 import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -17,7 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  * @author gavin.xiong 2017/4/28
  */
 @Module
-public class DBAPIModule {
+public class DoubanAPIModule {
 
     private static final String BASE_URL = "http://www.dbmeinv.com/dbgroup/";
 
@@ -30,14 +29,14 @@ public class DBAPIModule {
      */
     @Singleton
     @Provides
-    public DBAPI provideDBApi(OkHttpClient client, Converter.Factory converterFactory) {
+    public DoubanAPI provideDBApi(OkHttpClient client, Converter.Factory converterFactory) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
-        return retrofit.create(DBAPI.class);
+        return retrofit.create(DoubanAPI.class);
     }
 
 }

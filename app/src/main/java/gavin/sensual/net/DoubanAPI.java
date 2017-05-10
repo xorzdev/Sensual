@@ -10,8 +10,11 @@ import retrofit2.http.Query;
  *
  * @author gavin.xiong 2016/12/9
  */
-public interface DBAPI {
+public interface DoubanAPI {
 
     @GET("rank.htm")
     Observable<ResponseBody> getRank(@Query("pager_offset") int page);
+
+    @GET("show.htm")
+    Observable<ResponseBody> getShow(@Query("cid") String type, @Query("pager_offset") int page);
 }
