@@ -13,6 +13,7 @@ import gavin.sensual.app.capture.CaptureFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
+import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragNavigationBinding;
@@ -76,6 +77,12 @@ public class NavigationFragment extends BindingFragment<FragNavigationBinding> i
                 start(CaptureFragment.newInstance());
                 return false;
             case R.id.nav_unknown:
+                Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
+                return false;
+            case R.id.nav_license:
+                start(LicenseFragment.newInstance());
+                return false;
+            case R.id.nav_about:
                 Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
                 return false;
             case R.id.nav_test:

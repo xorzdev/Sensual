@@ -4,6 +4,8 @@ import android.content.Context;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 
+import com.android.databinding.library.baseAdapters.BR;
+
 import java.util.List;
 
 import gavin.sensual.R;
@@ -15,12 +17,10 @@ import gavin.sensual.R;
  */
 public class BindingAdapter<T> extends RecyclerAdapter<T, ViewDataBinding> {
 
-    private int variableId;
     private OnItemClickListener mListener;
 
-    public BindingAdapter(Context context, List<T> mData, @LayoutRes int layoutId, int variableId) {
+    public BindingAdapter(Context context, List<T> mData, @LayoutRes int layoutId) {
         super(context, mData, layoutId);
-        this.variableId = variableId;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -29,7 +29,7 @@ public class BindingAdapter<T> extends RecyclerAdapter<T, ViewDataBinding> {
 
     @Override
     public void onBind(RecyclerHolder<ViewDataBinding> holder, T t, final int position) {
-        holder.binding.setVariable(variableId, t);
+        holder.binding.setVariable(BR.item, t);
 //        holder.binding.executePendingBindings();
         if (mListener != null) {
             holder.itemView.findViewById(R.id.item).setOnClickListener((v) -> mListener.onItemClick(position));
