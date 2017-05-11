@@ -35,7 +35,6 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        L.e("onSupportVisible");
         if (Build.VERSION.SDK_INT >= 21) {
             _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
         }
@@ -44,7 +43,6 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        L.e("onSupportInvisible");
         if (Build.VERSION.SDK_INT >= 21) {
             _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
         }

@@ -14,7 +14,10 @@ import retrofit2.http.Query;
  */
 public interface ZhihuPicAPI {
 
-    @Headers("authorization: oauth c3cef7c66a1843f8b3a9e6a1e3160e20")
+    @Headers({
+            "authorization: oauth c3cef7c66a1843f8b3a9e6a1e3160e20",
+            "Cache-Control: max-stale=3600"
+    })
     @GET("{question}/answers")
     Observable<ResponseBody> getAnswer(@Path("question") long question, @Query("include") String include, @Query("limit") int limit, @Query("offset") int offset);
 }
