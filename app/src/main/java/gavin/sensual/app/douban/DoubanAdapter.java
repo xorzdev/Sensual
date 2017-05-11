@@ -20,18 +20,18 @@ import gavin.sensual.util.ImageLoader;
  *
  * @author gavin.xiong 2016/12/28
  */
-class DoubanAdapter extends RecyclerHeaderFooterAdapter<Image, ItemDoubanBinding, ViewDataBinding, FooterLoadingBinding> {
+public class DoubanAdapter extends RecyclerHeaderFooterAdapter<Image, ItemDoubanBinding, ViewDataBinding, FooterLoadingBinding> {
 
     private OnItemClickListener mListener;
 
     private int mWidth;
 
-    DoubanAdapter(Context context, List<Image> mData) {
+    public DoubanAdapter(Context context, List<Image> mData) {
         super(context, mData, R.layout.item_douban);
         mWidth = DisplayUtil.getScreenWidth() / 2 - DisplayUtil.dp2px(12);
     }
 
-    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mListener = onItemClickListener;
     }
 
@@ -46,7 +46,7 @@ class DoubanAdapter extends RecyclerHeaderFooterAdapter<Image, ItemDoubanBinding
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 }

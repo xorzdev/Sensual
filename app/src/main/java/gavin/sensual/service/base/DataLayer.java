@@ -21,11 +21,13 @@ public class DataLayer {
     private DailyService mDailyService;
     private GankService mGankService;
     private DoubanService mDoubanService;
+    private ZhihuPicService mZhihuPicService;
 
-    public DataLayer(DailyService dailyService, GankService gankService, DoubanService doubanService) {
+    public DataLayer(DailyService dailyService, GankService gankService, DoubanService doubanService,ZhihuPicService zhihuPicService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
+        mZhihuPicService = zhihuPicService;
     }
 
     public DailyService getDailyService() {
@@ -38,6 +40,10 @@ public class DataLayer {
 
     public DoubanService getDoubanService() {
         return mDoubanService;
+    }
+
+    public ZhihuPicService getZhihuPicService() {
+        return mZhihuPicService;
     }
 
     public interface DailyService {
@@ -81,5 +87,9 @@ public class DataLayer {
         Single<List<Image>> getRank(Fragment fragment, int page);
 
         Single<List<Image>> getShow(Fragment fragment, String type, int page);
+    }
+
+    public interface ZhihuPicService {
+        Single<List<Image>> getPic(Fragment fragment, long question, int limit, int offset);
     }
 }

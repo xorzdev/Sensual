@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="gavin.sensual.app.gank.GankViewModel" />
+            type="gavin.sensual.app.capture.ZhihuQuestionViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

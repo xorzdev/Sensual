@@ -9,11 +9,11 @@ import java.util.List;
  *
  * @author gavin.xiong 2017/5/5
  */
-class DiffCallback extends DiffUtil.Callback {
+public class DiffCallback extends DiffUtil.Callback {
 
     private List<Image> oldList, newList;
 
-    DiffCallback(List<Image> oldList, List<Image> newList) {
+    public DiffCallback(List<Image> oldList, List<Image> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }

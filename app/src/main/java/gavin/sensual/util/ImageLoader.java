@@ -1,9 +1,14 @@
 package gavin.sensual.util;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.Target;
+
+import java.util.concurrent.ExecutionException;
 
 import gavin.sensual.R;
 import gavin.sensual.util.glide.BlurTransformation;
@@ -174,6 +179,18 @@ public class ImageLoader {
 //                .error(R.drawable.bg_default_head_blur)
                 .bitmapTransform(new BlurTransformation(imageView.getContext(), 50))
                 .into(imageView);
+    }
+
+    /**
+     * 获取 bitmap 对象 可用来获取尺寸等
+     */
+    public static Bitmap getBitmap(Fragment fragment, String url) throws InterruptedException, ExecutionException {
+        return Glide.with(fragment)
+                .load(url)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .get();
     }
 
     /**

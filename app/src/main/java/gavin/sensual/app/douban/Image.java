@@ -1,6 +1,12 @@
 package gavin.sensual.app.douban;
 
+import android.graphics.Bitmap;
+import android.support.v4.app.Fragment;
+
 import java.io.Serializable;
+import java.util.concurrent.ExecutionException;
+
+import gavin.sensual.util.ImageLoader;
 
 public class Image implements Serializable {
 
@@ -10,10 +16,6 @@ public class Image implements Serializable {
 
     private int width;
     private int height;
-
-    public Image(String url) {
-        this.url = url;
-    }
 
     public String getId() {
         return id;
@@ -52,5 +54,19 @@ public class Image implements Serializable {
                 ", width=" + width +
                 ", height=" + height +
                 '}';
+    }
+
+    public static Image newImage(Fragment fragment, String url) {
+        Image image = new Image();
+        image.url = url;
+        try {
+            Bitmap bm = ImageLoader.getBitmap(fragment, url);
+            image.setWidth(bm.getWidth());
+            image.setHeight(bm.getHeight());
+        } catch (InterruptedException | ExecutionException e) {
+            image.setWidth(500);
+            image.setHeight(500);
+        }
+        return image;
     }
 }

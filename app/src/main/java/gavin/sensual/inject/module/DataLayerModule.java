@@ -7,6 +7,7 @@ import dagger.Provides;
 import gavin.sensual.service.DailyManager;
 import gavin.sensual.service.DoubanManager;
 import gavin.sensual.service.GankManager;
+import gavin.sensual.service.ZhihuPicManager;
 import gavin.sensual.service.base.DataLayer;
 
 /**
@@ -37,7 +38,13 @@ public class DataLayerModule {
 
     @Singleton
     @Provides
-    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager, DoubanManager doubanManager) {
-        return new DataLayer(dailyManager, gankManager, doubanManager);
+    public ZhihuPicManager provideZhihuPicAManager() {
+        return new ZhihuPicManager();
+    }
+
+    @Singleton
+    @Provides
+    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager, DoubanManager doubanManager, ZhihuPicManager zhihuPicManager) {
+        return new DataLayer(dailyManager, gankManager, doubanManager, zhihuPicManager);
     }
 }

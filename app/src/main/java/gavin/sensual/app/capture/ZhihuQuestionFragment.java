@@ -3,23 +3,41 @@ package gavin.sensual.app.capture;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gavin.sensual.R;
-import gavin.sensual.base.BindingAdapter;
+import gavin.sensual.app.douban.Image;
+import gavin.sensual.app.main.StartFragmentEvent;
+import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
+import gavin.sensual.base.BundleKey;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragZhihuQuestionBinding;
-import gavin.sensual.service.DoubanManager;
-import gavin.sensual.util.L;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Gavin on 2017/5/10.
+ * 这里是萌萌哒注释君
+ *
+ * @author gavin.xiong 2017/5/11
  */
+public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBinding>
+        implements ZhihuQuestionViewModel.Callback {
 
-public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBinding> {
+    private long question;
 
-    public static ZhihuQuestionFragment newInstance() {
-        return new ZhihuQuestionFragment();
+    private ZhihuQuestionViewModel mViewModel;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public static ZhihuQuestionFragment newInstance(long question) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(BundleKey.PAGE_TYPE, question);
+        ZhihuQuestionFragment fragment = new ZhihuQuestionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -29,13 +47,62 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        DoubanManager m = (DoubanManager)getDataLayer().getDoubanService();
-        m.getQuestion(this, "https://www.zhihu.com/question/37787176")
+        init();
+        getPic(false);
+    }
+
+    @Override
+    public void onItemClick(List<Image> imageList, int position) {
+        ArrayList<String> stringList = new ArrayList<>();
+        for (Image image : imageList) {
+            stringList.add(image.getUrl());
+        }
+        RxBus.get().post(new StartFragmentEvent(
+                BigImageMultiFragment.newInstance(stringList, position)));
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mViewModel != null) {
+            mViewModel.onDestroy();
+        }
+        compositeDisposable.dispose();
+    }
+
+    private void init() {
+        question = getArguments().getLong(BundleKey.PAGE_TYPE);
+
+        mViewModel = new ZhihuQuestionViewModel(_mActivity, binding, this);
+        binding.setViewModel(mViewModel);
+
+        binding.refreshLayout.setOnRefreshListener(() -> getPic(false));
+        binding.recycler.setOnLoadListener(() -> getPic(true));
+    }
+
+    private void getPic(boolean isMore) {
+        getDataLayer().getZhihuPicService().getPic(this, question, 20, isMore ? binding.recycler.pageNo : 0)
                 .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> {
+                    compositeDisposable.add(disposable);
+                    mViewModel.doOnSubscribe(isMore);
+                    binding.recycler.loadData(isMore);
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterSuccess(arg0 -> {
+                    mViewModel.doOnComplete();
+                    binding.recycler.loadingMore = false;
+                })
+                .doOnError(throwable -> {
+                    mViewModel.doOnError(isMore);
+                    binding.recycler.loadingMore = false;
+                    binding.recycler.pageNo--;
+                })
                 .subscribe(images -> {
-                    L.e(images);
-                    binding.recycler.setAdapter(new CaptureAdapter(_mActivity, images));
-                }, L::e);
+                    binding.recycler.haveMore = true;
+                    mViewModel.onNext(isMore, images);
+                }, e -> mViewModel.onError(e, isMore));
     }
 }

@@ -1,4 +1,4 @@
-package gavin.sensual.app.douban;
+package gavin.sensual.app.capture;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.DiffCallback;
+import gavin.sensual.app.douban.DoubanAdapter;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.FragDoubanBinding;
+import gavin.sensual.databinding.FragZhihuQuestionBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/8
  */
-public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
+public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBinding> {
 
     private WeakReference<Context> mContext;
     private Callback callback;
@@ -35,7 +38,7 @@ public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    DoubanViewModel(Context context, FragDoubanBinding binding, Callback callback) {
+    ZhihuQuestionViewModel(Context context, FragZhihuQuestionBinding binding, Callback callback) {
         super(binding);
         this.mContext = new WeakReference<>(context);
         this.callback = callback;

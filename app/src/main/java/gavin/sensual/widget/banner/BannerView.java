@@ -113,7 +113,7 @@ public class BannerView extends FrameLayout {
     }
 
     private void refreshTip(int position) {
-        if (modelList.size() < 2) return;
+        if (modelList.size() < 2 || position < 0) return;
         for (ImageView img : bannerTipList)
             img.setEnabled(false);
         bannerTipList.get(position).setEnabled(true);

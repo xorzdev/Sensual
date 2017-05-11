@@ -48,7 +48,8 @@ public class CaptureFragment extends BindingFragment<FragCaptureBinding> {
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture, BR.item);
         binding.recycler.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
-            start(ZhihuQuestionFragment.newInstance());
+            start(ZhihuQuestionFragment.newInstance(37787176));
+//            start(ZhihuQuestionFragment.newInstance(20843119));
         });
     }
 }
