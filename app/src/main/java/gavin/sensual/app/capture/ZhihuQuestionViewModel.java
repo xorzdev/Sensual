@@ -46,6 +46,8 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
     }
 
     private void init() {
+        binding.toolbar.setTitle("知乎看图");
+        binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
         adapter = new DoubanAdapter(mContext.get(), welfareList);

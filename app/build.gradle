@@ -83,7 +83,7 @@ andResGuard {
         artifact = 'com.tencent.mm:SevenZip:1.2.0'
         //path = "/usr/local/bin/7za"
     }
-    // gradle resguardRelease
+    // gradlew resguardRelease
     // adb shell monkey -p gavin.sensual -v 500
 }
 

@@ -77,6 +77,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
         mViewModel = new ZhihuQuestionViewModel(_mActivity, binding, this);
         binding.setViewModel(mViewModel);
 
+        binding.toolbar.setNavigationOnClickListener(v -> pop());
         binding.refreshLayout.setOnRefreshListener(() -> getPic(false));
         binding.recycler.setOnLoadListener(() -> getPic(true));
     }

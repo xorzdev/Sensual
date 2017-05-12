@@ -15,7 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 
 import gavin.sensual.R;
-import gavin.sensual.app.main.NavigationFragment;
+import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RequestCode;
 import gavin.sensual.databinding.LayoutBlankBinding;
@@ -50,7 +50,7 @@ public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
                 || !(ContextCompat.checkSelfPermission(_mActivity, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED)) {
             requestPermission();
         } else {
-            Observable.just(NavigationFragment.newInstance())
+            Observable.just(DailyFragment.newInstance())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::startWithPop);
         }
