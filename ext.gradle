@@ -4,6 +4,7 @@ def fragmentationVersion = "0.10.3"
 def fragmentationSwipeBackVersion = "0.7.9"
 def rxJavaVersion = "2.0.9"
 def rxAndroidVersion = "2.0.1"
+def rxPermissionsVersion = "0.9.4@aar"
 def retrofitVersion = "2.2.0"
 def gsonVersion = "2.8.0"
 def okHttpVersion = "3.6.0"
@@ -42,6 +43,7 @@ ext {
 
     libRxJava = "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
     libRxAndroid = "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    libRxPermissions = "com.tbruyelle.rxpermissions2:rxpermissions:${rxPermissionsVersion}"
 
     libRetrofit = "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     libRetrofitConverterGson = "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
