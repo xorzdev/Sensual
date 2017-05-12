@@ -18,13 +18,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:lineSpacingMultiplier="1.2"
                 android:autoLink="web|email"
+                android:lineSpacingMultiplier="1.2"
+                android:padding="@dimen/activity_horizontal_margin"
                 android:text="项目是业余时间所为，更新不稳定，内容均来自网络，源代码已上传至 github。
                 \n欢迎交流 star
                 \n源码： https://github.com/gavinxxxxxx/Sensual
-                \n邮件： gavinxxxxxx@gmail.com" />
+                \n邮件： gavinxxxxxx@gmail.com
+                \n" />
 
         </LinearLayout>
 
