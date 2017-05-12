@@ -115,7 +115,7 @@ public class BigImage2 extends BindingFragment<FragBigImageMultiBinding> impleme
 
         @Override
         public Fragment getItem(int position) {
-            return BigImageSingleFragment.newInstance(sharedPager.list.get(position).getUrl());
+            return BigImageSingleFragment.newInstance(sharedPager.list.get(position).getUrl(), true);
         }
 
         @Override

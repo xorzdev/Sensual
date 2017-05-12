@@ -15,7 +15,7 @@ import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDoubanBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
-import io.reactivex.Single;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -92,7 +92,7 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
         binding.recycler.setOnLoadListener(this);
     }
 
-    private Single<List<Image>> getResult(boolean isMore) {
+    private Observable<Image> getResult(boolean isMore) {
         if (TextUtils.isEmpty(cid)) {
             return getDataLayer().getDoubanService().getRank(this, isMore ? binding.recycler.pageNo + 1 : 1);
         } else {
@@ -110,7 +110,7 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterSuccess(arg0 -> {
+                .doOnComplete(() -> {
                     mViewModel.doOnComplete();
                     binding.recycler.loadingMore = false;
                 })
@@ -119,9 +119,9 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
-                .subscribe(images -> {
+                .subscribe(image -> {
                     binding.recycler.haveMore = true;
-                    mViewModel.onNext(isMore, images);
+                    mViewModel.onNext(image);
                 }, e -> mViewModel.onError(e, isMore));
     }
 

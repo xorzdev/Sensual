@@ -96,6 +96,8 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
+                // 使用 DiffUtil 刷新数据时 adapter 数据列表在 dispatchUpdatesTo 后更新有可能会报 IndexOutOfBoundsException
+                // 将 adapter 更新数据放在 dispatchUpdatesTo 前面，待跟进
                 .doOnNext(diffResult -> {
                     if (dayDiff == 0) storyList.clear();
                     storyList.addAll(daily.getStories());

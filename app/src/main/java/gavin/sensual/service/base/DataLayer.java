@@ -84,12 +84,12 @@ public class DataLayer {
     }
 
     public interface DoubanService {
-        Single<List<Image>> getRank(Fragment fragment, int page);
+        Observable<Image> getRank(Fragment fragment, int page);
 
-        Single<List<Image>> getShow(Fragment fragment, String type, int page);
+        Observable<Image> getShow(Fragment fragment, String type, int page);
     }
 
     public interface ZhihuPicService {
-        Single<List<Image>> getPic(Fragment fragment, long question, int limit, int offset);
+        Observable<Image> getPic(Fragment fragment, long question, int limit, int offset);
     }
 }

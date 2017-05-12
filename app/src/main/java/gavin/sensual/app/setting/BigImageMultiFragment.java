@@ -62,7 +62,7 @@ public class BigImageMultiFragment extends BindingFragment<FragBigImageMultiBind
 
         @Override
         public Fragment getItem(int position) {
-            return BigImageSingleFragment.newInstance(urlList.get(position));
+            return BigImageSingleFragment.newInstance(urlList.get(position), true);
         }
     }
 }

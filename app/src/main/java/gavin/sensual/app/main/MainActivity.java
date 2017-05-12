@@ -17,6 +17,7 @@ import gavin.sensual.app.capture.CaptureFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
+import gavin.sensual.app.setting.AboutFragment;
 import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.app.setting.PermissionFragment;
 import gavin.sensual.base.BindingActivity;
@@ -76,7 +77,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                 startDelay(LicenseFragment.newInstance());
                 return false;
             case R.id.nav_about:
-                Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
+                startDelay(AboutFragment.newInstance());
                 return false;
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());

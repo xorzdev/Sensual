@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.setting.BigImageMultiFragment;
+import gavin.sensual.app.setting.BigImageSingleFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.TestFragBinding;
 import gavin.sensual.widget.banner.BannerModel;
@@ -29,7 +31,7 @@ public class TestFragment extends BindingFragment<TestFragBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        List<String> urlList = new ArrayList<>();
+        ArrayList<String> urlList = new ArrayList<>();
         urlList.add("http://i2.hdslb.com/bfs/archive/d4f02bfb6bd5ea22c8ca9f082dac9429ff6fe399.jpg");
         urlList.add("http://i0.hdslb.com/bfs/space/42401a068c2d6d4b254b7c53348fc8929ad4d8e9.jpg");
         urlList.add("http://i0.hdslb.com/bfs/space/e138569049093b9114f988d198b5e299975a5389.jpg");
@@ -38,5 +40,18 @@ public class TestFragment extends BindingFragment<TestFragBinding> {
             modelList.add(new BannerModel(0L, s, s));
         }
         binding.banner.setModelList(modelList);
+        binding.banner.setOnItemClickListener(position -> {
+            switch (position) {
+                case 0:
+                    start(BigImageSingleFragment.newInstance(urlList.get(position), false));
+                    break;
+                case 1:
+                    start(BigImageMultiFragment.newInstance(urlList, position));
+                    break;
+                default:
+                    break;
+
+            }
+        });
     }
 }

@@ -1,7 +1,9 @@
-package gavin.sensual.app.capture;
+package gavin.sensual.app.zhihu;
+
+import gavin.sensual.app.capture.Target;
 
 /**
- * 这里是萌萌哒注释君
+ * 知乎看图
  *
  * @author gavin.xiong 2017/5/10
  */

@@ -1,4 +1,4 @@
-package gavin.sensual.app.capture;
+package gavin.sensual.app.zhihu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -92,7 +92,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterSuccess(arg0 -> {
+                .doOnComplete(() -> {
                     mViewModel.doOnComplete();
                     binding.recycler.loadingMore = false;
                 })
@@ -101,9 +101,9 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
                     binding.recycler.loadingMore = false;
                     binding.recycler.pageNo--;
                 })
-                .subscribe(images -> {
+                .subscribe(image -> {
                     binding.recycler.haveMore = true;
-                    mViewModel.onNext(isMore, images);
+                    mViewModel.onNext(image);
                 }, e -> mViewModel.onError(e, isMore));
     }
 }

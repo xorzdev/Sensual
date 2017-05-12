@@ -129,4 +129,6 @@ dependencies {
     compile rootProject.ext.libPhotoView
 
     compile rootProject.ext.libJsoup
+
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 }

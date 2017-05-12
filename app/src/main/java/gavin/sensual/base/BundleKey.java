@@ -34,6 +34,7 @@ public class BundleKey {
 
     public static final String IMAGE_URL = "imageUrl";
     public static final String POSITION = "position";
+    public static final String POP_INTERCEPT = "popIntercept";
     public static final String SHARED_PAGER = "sharedPager";
     public static final String PAGE_TYPE = "pageType";
 }

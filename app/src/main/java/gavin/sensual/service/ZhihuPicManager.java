@@ -21,7 +21,7 @@ import okhttp3.ResponseBody;
 public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicService {
 
     @Override
-    public Single<List<Image>> getPic(Fragment fragment, long question, int limit, int offset) {
+    public Observable<Image> getPic(Fragment fragment, long question, int limit, int offset) {
         return getZhihuPicApi().getAnswer(question, "data[*].is_normal,content", limit, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
@@ -30,8 +30,7 @@ public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicSe
                 .map(element -> element.attr("data-actualsrc"))
                 .filter(s -> s.length() > 6)
                 .map(s -> s.substring(2, s.length() - 2))
-                .map(s -> Image.newImage(fragment, s))
-                .toList();
+                .map(s -> Image.newImage(fragment, s));
     }
 
 }

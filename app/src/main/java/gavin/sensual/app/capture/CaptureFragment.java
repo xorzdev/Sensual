@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.zhihu.ZhihuFragment;
+import gavin.sensual.app.zhihu.ZhihuQuestion;
+import gavin.sensual.app.zhihu.ZhihuQuestionFragment;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.databinding.FragCaptureBinding;
@@ -16,7 +19,7 @@ import gavin.sensual.databinding.FragCaptureBinding;
  *
  * @author gavin.xiong 2017/5/10
  */
-public class CaptureFragment extends BindingFragment<FragCaptureBinding> {
+public class CaptureFragment extends BindingFragment<FragCaptureBinding> implements BindingAdapter.OnItemClickListener {
 
     private List<ZhihuQuestion> targetList;
 
@@ -38,16 +41,23 @@ public class CaptureFragment extends BindingFragment<FragCaptureBinding> {
         init();
     }
 
+    @Override
+    public void onItemClick(int position) {
+        switch (position) {
+            case 0:
+                start(ZhihuFragment.newInstance());
+                break;
+            default:
+                break;
+        }
+    }
+
     private void init() {
         targetList = new ArrayList<>();
-        targetList.add(new ZhihuQuestion(37787176L, "当一个颜值很高的程序员是怎样一番体验？", "https://pic1.zhimg.com/27a1a0c48a799f60b655d8949879949c_b.png"));
-        targetList.add(new ZhihuQuestion(20843119L, "拍照的时候怎么让表情自然？", "https://pic1.zhimg.com/27a1a0c48a799f60b655d8949879949c_b.png"));
-        targetList.add(new ZhihuQuestion(29905249L, "在学校穿女子高生制服（JK制服）是怎样一种体验？", "https://pic1.zhimg.com/27a1a0c48a799f60b655d8949879949c_b.png"));
+        targetList.add(new ZhihuQuestion(0L, "知乎看图", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
-        adapter.setOnItemClickListener(position -> {
-            start(ZhihuQuestionFragment.newInstance(targetList.get(position).getId()));
-        });
+        adapter.setOnItemClickListener(this);
     }
 }

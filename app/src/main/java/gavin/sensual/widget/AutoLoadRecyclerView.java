@@ -13,6 +13,7 @@ import android.view.View;
 public class AutoLoadRecyclerView extends RecyclerView {
 
     public boolean haveMore = false;
+    // TODO: 2017/5/12 loading
     public boolean loadingMore = false;
     public int pageSize = 15;
     public int pageNo = 1;
@@ -36,6 +37,7 @@ public class AutoLoadRecyclerView extends RecyclerView {
     }
 
     public void loadData(boolean isMore) {
+        loadingMore = true;
         if (isMore) {
             pageNo++;
         } else {
