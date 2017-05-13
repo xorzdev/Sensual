@@ -12,20 +12,20 @@
             android:title="知乎日报" />
         <item
             android:id="@+id/nav_gank"
-            android:icon="@drawable/vt_gank"
+            android:icon="@drawable/vt_code_24dp"
             android:title="干货集中营" />
         <item
             android:id="@+id/nav_douban"
             android:icon="@drawable/vt_douban"
             android:title="豆瓣妹子" />
         <item
+            android:id="@+id/nav_meizi"
+            android:icon="@drawable/vt_meizi"
+            android:title="妹子图" />
+        <item
             android:id="@+id/nav_capture"
             android:icon="@drawable/vt_crop_24dp"
             android:title="抓图" />
-        <item
-            android:id="@+id/nav_unknown"
-            android:icon="@drawable/vt_code_24dp"
-            android:title="敬请期待" />
     </group>
 
     <group>

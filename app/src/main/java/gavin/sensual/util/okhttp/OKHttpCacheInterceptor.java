@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import java.io.IOException;
 
 import gavin.sensual.base.App;
-import gavin.sensual.net.ClientAPI;
+import gavin.sensual.inject.module.ClientAPIModule;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -16,7 +16,7 @@ import okhttp3.Response;
 
 
 /**
- * OkHttp3 缓存拦截器 使用{@link ClientAPI}
+ * OkHttp3 缓存拦截器 使用{@link ClientAPIModule}
  * 配合 {@link retrofit2.http.Header}、{@link retrofit2.http.Headers}
  *
  * @author gavin.xiong 2017/4/28

@@ -2,25 +2,21 @@ package gavin.sensual.app.setting;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
+
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import gavin.sensual.R;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RequestCode;
 import gavin.sensual.databinding.LayoutBlankBinding;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Android 6.0 需要时权限
@@ -28,6 +24,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * @author gavin.xiong 2017/4/25
  */
 public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static PermissionFragment newInstance() {
         return new PermissionFragment();
@@ -41,78 +39,52 @@ public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            checkPermission();
+            requestPermission();
         }
+        binding.root.setOnClickListener(v -> requestPermission());
     }
 
-    private void checkPermission() {
-        if (!(ContextCompat.checkSelfPermission(_mActivity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)
-                || !(ContextCompat.checkSelfPermission(_mActivity, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED)) {
-            requestPermission();
-        } else {
-            Observable.just(DailyFragment.newInstance())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::startWithPop);
-        }
+    @Override
+    public boolean onBackPressedSupport() {
+        _mActivity.finish();
+        return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        compositeDisposable.dispose();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        requestPermission();
     }
 
     private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(_mActivity, Manifest.permission.READ_PHONE_STATE)) {
-            Snackbar.make(binding.root, "应用需要获取您的设备信息", Snackbar.LENGTH_INDEFINITE).show();
-        }
-        requestPermissions(new String[]{
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.INTERNET
-        }, RequestCode.PERMISSION_NEEDFUL);
-    }
-
-    private void showDialog() {
-//        Snackbar.make(binding.root, "应用缺少必要权限", Snackbar.LENGTH_INDEFINITE)
-//                .setAction("设置", (v) -> openAppSetting())
-//                .show();
-        new AlertDialog.Builder(_mActivity)
-                .setTitle("应用缺少必要权限")
-                .setMessage("是否前往设置页打开权限？")
-                .setCancelable(false)
-                .setNegativeButton("退出", (a0, a1) -> {
-                    _mActivity.finish();
-                    System.exit(0);
-                })
-                .setPositiveButton("设置", (a0, a1) -> openAppSetting())
-                .setOnKeyListener((inter, i, event) -> {
-                    if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                        inter.cancel();
-                        _mActivity.finish();
-                        System.exit(0);
+        new RxPermissions(_mActivity)
+                .requestEach(Manifest.permission.READ_PHONE_STATE)
+                .doOnSubscribe(compositeDisposable::add)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(permission -> {
+                    if (permission.granted) {
+                        startWithPop(DailyFragment.newInstance());
+                    } else if (permission.shouldShowRequestPermissionRationale) {
+                        Snackbar.make(binding.root, "应用需要获取您的设备信息", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("重试", v -> requestPermission())
+                                .show();
+                    } else {
+                        Snackbar.make(binding.root, "应用缺少必要权限", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("开启", v -> openAppSetting())
+                                .show();
                     }
-                    return true;
-                })
-                .show();
+                });
     }
 
     private void openAppSetting() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + _mActivity.getPackageName()));
         startActivityForResult(intent, RequestCode.PERMISSION_SETTING);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RequestCode.PERMISSION_NEEDFUL) {
-            for (int result : grantResults) {
-                if (result == -1) {
-                    showDialog();
-                    return;
-                }
-            }
-            checkPermission();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        checkPermission();
     }
 }

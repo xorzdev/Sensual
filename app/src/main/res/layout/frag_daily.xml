@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 app:titleEnabled="false">
 
                 <gavin.sensual.widget.banner.BannerView

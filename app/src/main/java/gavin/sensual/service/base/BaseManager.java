@@ -8,6 +8,7 @@ import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
 import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
+import gavin.sensual.net.MeiziAPI;
 import gavin.sensual.net.ZhihuPicAPI;
 
 /**
@@ -24,6 +25,8 @@ public abstract class BaseManager {
     DoubanAPI mDoubanApi;
     @Inject
     ZhihuPicAPI mZhihuPicApi;
+    @Inject
+    MeiziAPI mMeiziAPI;
     @Inject
     Gson mGson;
 
@@ -45,6 +48,10 @@ public abstract class BaseManager {
 
     public ZhihuPicAPI getZhihuPicApi() {
         return mZhihuPicApi;
+    }
+
+    public MeiziAPI getMeiziAPI() {
+        return mMeiziAPI;
     }
 
     public Gson getGson() {

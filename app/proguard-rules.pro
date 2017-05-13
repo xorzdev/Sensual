@@ -81,3 +81,7 @@
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 ################################## Glide #############################
 
+# app:actionViewClass="android.support.v7.widget.SearchView" 混淆报错解决方法
+#-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
+-keep class android.support.v7.widget.SearchView {*;}
+

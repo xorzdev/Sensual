@@ -14,6 +14,7 @@ import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
 import gavin.sensual.net.ClientAPI;
 import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;
+import gavin.sensual.util.okhttp.OKHttpCacheNetworkInterceptor;
 import gavin.sensual.util.okhttp.OKHttpLoggingInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -95,14 +96,15 @@ public class ClientAPIModule {
     @Singleton
     @Provides
     public OkHttpClient provideClient(HttpLoggingInterceptor logging, OKHttpLoggingInterceptor logging2,
-                                      OKHttpCacheInterceptor cacheInterceptor, Cache cache) {
+                                      OKHttpCacheInterceptor cacheInterceptor, OKHttpCacheNetworkInterceptor cacheNetworkInterceptor, Cache cache) {
         return new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(5, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .addInterceptor(logging2)
                 .addInterceptor(cacheInterceptor)
+                .addNetworkInterceptor(cacheNetworkInterceptor)
                 .cache(cache)
                 .build();
     }
@@ -139,6 +141,17 @@ public class ClientAPIModule {
     @Provides
     public OKHttpCacheInterceptor provideCacheInterceptor() {
         return new OKHttpCacheInterceptor();
+    }
+
+    /**
+     * OKHttp 缓存网络拦截器
+     *
+     * @return OKHttpCacheNetworkInterceptor
+     */
+    @Singleton
+    @Provides
+    public OKHttpCacheNetworkInterceptor provideCacheNetworkInterceptor() {
+        return new OKHttpCacheNetworkInterceptor();
     }
 
     /**

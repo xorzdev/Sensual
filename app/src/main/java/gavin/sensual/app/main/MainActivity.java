@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import gavin.sensual.app.capture.CaptureFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
+import gavin.sensual.app.meizi.MeiziTabFragment;
 import gavin.sensual.app.setting.AboutFragment;
 import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.app.setting.PermissionFragment;
@@ -67,11 +67,11 @@ public class MainActivity extends BindingActivity<ActMainBinding>
             case R.id.nav_douban:
                 startDelay(DoubanTabFragment.newInstance());
                 return false;
+            case R.id.nav_meizi:
+                startDelay(MeiziTabFragment.newInstance());
+                return false;
             case R.id.nav_capture:
                 startDelay(CaptureFragment.newInstance());
-                return false;
-            case R.id.nav_unknown:
-                Snackbar.make(binding.drawer, item.getTitle(), Snackbar.LENGTH_LONG).show();
                 return false;
             case R.id.nav_license:
                 startDelay(LicenseFragment.newInstance());
@@ -86,7 +86,6 @@ public class MainActivity extends BindingActivity<ActMainBinding>
         }
         return false;
     }
-
 
     @Override
     public void onBackPressedSupport() {
