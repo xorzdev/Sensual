@@ -26,11 +26,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBinding>
         implements ZhihuQuestionViewModel.Callback {
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private long question;
 
     private ZhihuQuestionViewModel mViewModel;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static ZhihuQuestionFragment newInstance(long question) {
         Bundle bundle = new Bundle();

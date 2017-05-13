@@ -80,6 +80,11 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
     }
 
     void onNext(Image image) {
+        for (Image img : welfareList) {
+            if (img.getUrl().equals(image.getUrl())) {
+                return;
+            }
+        }
         welfareList.add(image);
         adapter.notifyItemInserted(welfareList.size() - 1);
     }

@@ -67,14 +67,11 @@ public class ZhihuFragment extends BindingFragment<FragCaptureBinding> {
         targetList = new ArrayList<>();
         targetList.add(new ZhihuQuestion(37787176L, "37787176 - 当一个颜值很高的程序员是怎样一番体验？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
         targetList.add(new ZhihuQuestion(20843119L, "20843119 - 拍照的时候怎么让表情自然？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
-        targetList.add(new ZhihuQuestion(29905249L, "29905249 - 在学校穿女子高生制服（JK制服）是怎样一种体验？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
         targetList.add(new ZhihuQuestion(22212644L, "22212644 - 胸大怎么搭配衣服？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
         targetList.add(new ZhihuQuestion(38285230L, "38285230 - 有一群漂亮的朋友是什么体验？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
-        adapter.setOnItemClickListener(position -> {
-            start(ZhihuQuestionFragment.newInstance(targetList.get(position).getId()));
-        });
+        adapter.setOnItemClickListener(position -> start(ZhihuQuestionFragment.newInstance(targetList.get(position).getId())));
     }
 }
