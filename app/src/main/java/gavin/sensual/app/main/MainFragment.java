@@ -84,16 +84,6 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
     }
 
     @Override
-    public boolean onBackPressedSupport() {
-        if (currPoint != FIRST) {
-            showHideFragment(mFragments[FIRST], mFragments[currPoint]);
-            currPoint = FIRST;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.dispose();
@@ -108,6 +98,19 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
                     if (event.position != currPoint) {
                         showHideFragment(mFragments[event.position], mFragments[currPoint]);
                         currPoint = event.position;
+                    }
+                });
+
+        RxBus.get().toObservable(BackPressedEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(compositeDisposable::add)
+                .subscribe(event -> {
+                    if (currPoint != FIRST) {
+                        showHideFragment(mFragments[FIRST], mFragments[currPoint]);
+                        RxBus.get().post(new NavigationItemCheckedEvent(R.id.nav_news));
+                        currPoint = FIRST;
+                    } else {
+                        _mActivity.finish();
                     }
                 });
     }

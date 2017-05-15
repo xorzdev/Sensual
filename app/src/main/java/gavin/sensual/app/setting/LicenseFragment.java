@@ -58,6 +58,8 @@ public class LicenseFragment extends BindingFragment<FragToobleRecyclerBinding> 
         binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
 
+        binding.refreshLayout.setEnabled(false);
+
         binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
     }
 

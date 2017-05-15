@@ -88,6 +88,8 @@ public class MainActivity extends BindingActivity<ActMainBinding>
     public void onBackPressedSupport() {
         if (binding.drawer.isDrawerOpen(Gravity.START)) {
             binding.drawer.closeDrawer(Gravity.START);
+        } else if (getTopFragment() instanceof MainFragment) {
+            RxBus.get().post(new BackPressedEvent());
         } else {
             super.onBackPressedSupport();
         }
@@ -129,5 +131,10 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                         binding.drawer.closeDrawer(Gravity.START);
                     }
                 }));
+
+        RxBus.get().toObservable(NavigationItemCheckedEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(compositeDisposable::add)
+                .subscribe(event -> binding.navigation.getMenu().findItem(event.itemId).setChecked(true));
     }
 }

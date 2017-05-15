@@ -21,7 +21,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 这里是萌萌哒注释君
+ * 豆瓣图片列表页
  *
  * @author gavin.xiong 2017/5/9
  */

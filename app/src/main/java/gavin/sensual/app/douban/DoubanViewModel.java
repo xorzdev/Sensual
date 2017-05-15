@@ -16,7 +16,7 @@ import gavin.sensual.databinding.FragDoubanBinding;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
- * 干货集中营 - 福利
+ * 豆瓣妹子 ViewModel
  *
  * @author gavin.xiong 2017/5/8
  */

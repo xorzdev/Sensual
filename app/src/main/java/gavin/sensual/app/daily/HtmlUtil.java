@@ -3,8 +3,9 @@ package gavin.sensual.app.daily;
 import java.util.List;
 
 /**
- * @author lsxiao
- * @date 2015-11-05 10:45
+ * HtmlUtil
+ *
+ * @author lsxiao 2015-11-05 10:45
  */
 public class HtmlUtil {
     //css样式,隐藏header

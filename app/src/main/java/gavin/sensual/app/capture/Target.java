@@ -1,7 +1,7 @@
 package gavin.sensual.app.capture;
 
 /**
- * 这里是萌萌哒注释君
+ * 抓图
  *
  * @author gavin.xiong 2017/5/10
  */

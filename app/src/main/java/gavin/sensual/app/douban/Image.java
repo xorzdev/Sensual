@@ -16,6 +16,7 @@ public class Image implements Serializable {
 
     private int width;
     private int height;
+    private boolean error;
 
     public String getId() {
         return id;
@@ -45,6 +46,10 @@ public class Image implements Serializable {
         this.height = height;
     }
 
+    public boolean isError() {
+        return error;
+    }
+
     @Override
     public String toString() {
         return "Image{" +
@@ -66,6 +71,7 @@ public class Image implements Serializable {
         } catch (InterruptedException | ExecutionException e) {
             image.setWidth(500);
             image.setHeight(500);
+            image.error = true;
         }
         return image;
     }

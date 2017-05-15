@@ -101,5 +101,7 @@ public class DataLayer {
 
     public interface MeiziPicService {
         Observable<Image> getPic(Fragment fragment, String type, int offset);
+
+        Observable<Image> getPic2(Fragment fragment, String url);
     }
 }

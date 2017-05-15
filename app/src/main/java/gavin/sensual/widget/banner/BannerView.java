@@ -78,19 +78,22 @@ public class BannerView extends FrameLayout {
     private void initBanner() {
         binding.recycler.setAdapter(new BannerAdapter(getContext(), modelList, this));
         binding.recycler.scrollToPosition(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % modelList.size());
-        binding.recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (RecyclerView.SCROLL_STATE_IDLE == newState
-                        && linearLayoutManager.findFirstVisibleItemPosition() == linearLayoutManager.findLastVisibleItemPosition()) {
-                    int position = linearLayoutManager.findLastVisibleItemPosition() % modelList.size();
-                    refreshTip(position);
-                    initTimer();
-                }
-            }
-        });
+        binding.recycler.removeOnScrollListener(onScrollListener);
+        binding.recycler.addOnScrollListener(onScrollListener);
     }
+
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (RecyclerView.SCROLL_STATE_IDLE == newState
+                    && linearLayoutManager.findFirstVisibleItemPosition() == linearLayoutManager.findLastVisibleItemPosition()) {
+                int position = linearLayoutManager.findLastVisibleItemPosition() % modelList.size();
+                refreshTip(position);
+                initTimer();
+            }
+        }
+    };
 
     /**
      * 创建通知栏下面的页码小图标*

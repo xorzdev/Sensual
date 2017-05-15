@@ -6,8 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author lsxiao
- * @date 2015-11-03 22:40
+ * News
+ *
+ * @author lsxiao 2015-11-05 10:45
  */
 public class News implements Serializable {
     //新闻的 id

@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
- * ClientAPIModule
+ * GankAPIModule
  *
  * @author gavin.xiong 2017/4/28
  */

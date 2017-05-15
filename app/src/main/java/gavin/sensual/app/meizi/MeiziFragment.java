@@ -64,12 +64,17 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
 
     @Override
     public void onItemClick(List<Image> imageList, int position) {
-        ArrayList<String> stringList = new ArrayList<>();
-        for (Image image : imageList) {
-            stringList.add(image.getUrl());
+        if ("zipai".equals(type)) {
+            ArrayList<String> stringList = new ArrayList<>();
+            for (Image image : imageList) {
+                stringList.add(image.getUrl());
+            }
+            RxBus.get().post(new StartFragmentEvent(
+                    BigImageMultiFragment.newInstance(stringList, position)));
+        } else {
+            RxBus.get().post(new StartFragmentEvent(
+                    MeiziDetailFragment.newInstance(imageList.get(position).getUrl())));
         }
-        RxBus.get().post(new StartFragmentEvent(
-                BigImageMultiFragment.newInstance(stringList, position)));
     }
 
     @Override
