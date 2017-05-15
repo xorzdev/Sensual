@@ -94,11 +94,11 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
                     mViewModel.doOnComplete();
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                 })
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                     binding.recycler.pageNo--;
                 })
                 .subscribe(image -> {

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
 import gavin.sensual.app.main.DrawerToggleEvent;
+import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
@@ -57,7 +58,8 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
 
         binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
         binding.recycler.setOnLoadListener(this);
-        mViewModel.adapter.setOnItemClickListener(i -> start(NewsFragment.newInstance(mViewModel.storyList.get(i).getId())));
+        mViewModel.adapter.setOnItemClickListener(i ->
+                RxBus.get().post(new StartFragmentEvent(NewsFragment.newInstance(mViewModel.storyList.get(i).getId()))));
     }
 
     private void getDaily(int dayDiff) {
@@ -78,11 +80,11 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                 })
                 .doOnComplete(() -> {
                     mViewModel.doOnComplete();
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                 })
                 .doOnError(throwable -> {
                     mViewModel.doOnError();
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                     binding.recycler.pageNo--;
                 })
                 .doAfterNext(daily -> {

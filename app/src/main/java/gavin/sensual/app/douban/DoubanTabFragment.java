@@ -1,15 +1,14 @@
 package gavin.sensual.app.douban;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 
 import gavin.sensual.R;
+import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDoubanTabBinding;
-import gavin.sensual.util.L;
 
 /**
  * 豆瓣妹子
@@ -32,39 +31,28 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
         init();
     }
 
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (Build.VERSION.SDK_INT >= 21) {
-            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
-        }
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        if (Build.VERSION.SDK_INT >= 21) {
-            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
-        }
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        L.e("onHiddenChanged - " + hidden);
-        if (Build.VERSION.SDK_INT >= 21) {
-            if (hidden) {
-                _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
-            } else {
-                _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
-            }
-        }
-    }
+//    @Override
+//    public void onSupportVisible() {
+//        L.e("onSupportVisible");
+//        super.onSupportVisible();
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
+//        }
+//    }
+//
+//    @Override
+//    public void onSupportInvisible() {
+//        L.e("onSupportInvisible");
+//        super.onSupportInvisible();
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
+//        }
+//    }
 
     private void init() {
         binding.toolbar.setTitle("豆瓣妹子");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
-        binding.toolbar.setNavigationOnClickListener(v -> pop());
+        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
+        binding.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
         initViewPager();
     }
 

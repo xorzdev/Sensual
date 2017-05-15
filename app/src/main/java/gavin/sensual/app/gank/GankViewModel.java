@@ -44,7 +44,7 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
 
     private void init() {
         binding.toolbar.setTitle("干货集中营");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
+        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 

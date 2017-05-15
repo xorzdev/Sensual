@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.main.DrawerToggleEvent;
+import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.app.zhihu.ZhihuFragment;
 import gavin.sensual.app.zhihu.ZhihuQuestion;
-import gavin.sensual.app.zhihu.ZhihuQuestionFragment;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragCaptureBinding;
 
 /**
@@ -35,8 +37,8 @@ public class CaptureFragment extends BindingFragment<FragCaptureBinding> impleme
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         binding.toolbar.setTitle("抓图");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
-        binding.toolbar.setNavigationOnClickListener(v -> pop());
+        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
+        binding.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
 
         init();
     }
@@ -45,7 +47,7 @@ public class CaptureFragment extends BindingFragment<FragCaptureBinding> impleme
     public void onItemClick(int position) {
         switch (position) {
             case 0:
-                start(ZhihuFragment.newInstance());
+                RxBus.get().post(new StartFragmentEvent(ZhihuFragment.newInstance()));
                 break;
             default:
                 break;

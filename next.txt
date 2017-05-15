@@ -1,4 +1,0 @@
-图片分享
-www.mzitu.com/zipai/
-div[class="postlist"] div[class="comment-meta commentmetadata"] img
-src

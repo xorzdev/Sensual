@@ -11,7 +11,7 @@ import android.support.design.widget.Snackbar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import gavin.sensual.R;
-import gavin.sensual.app.daily.DailyFragment;
+import gavin.sensual.app.main.MainFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RequestCode;
 import gavin.sensual.databinding.LayoutBlankBinding;
@@ -45,12 +45,6 @@ public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
     }
 
     @Override
-    public boolean onBackPressedSupport() {
-        _mActivity.finish();
-        return true;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.dispose();
@@ -69,7 +63,7 @@ public class PermissionFragment extends BindingFragment<LayoutBlankBinding> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(permission -> {
                     if (permission.granted) {
-                        startWithPop(DailyFragment.newInstance());
+                        startWithPop(MainFragment.newInstance());
                     } else if (permission.shouldShowRequestPermissionRationale) {
                         Snackbar.make(binding.root, "应用需要获取您的设备信息", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("重试", v -> requestPermission())

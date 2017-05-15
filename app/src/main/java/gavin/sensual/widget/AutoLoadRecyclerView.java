@@ -13,8 +13,7 @@ import android.view.View;
 public class AutoLoadRecyclerView extends RecyclerView {
 
     public boolean haveMore = false;
-    // TODO: 2017/5/12 loading
-    public boolean loadingMore = false;
+    public boolean loading = false;
     public int pageSize = 15;
     public int pageNo = 1;
 
@@ -37,7 +36,7 @@ public class AutoLoadRecyclerView extends RecyclerView {
     }
 
     public void loadData(boolean isMore) {
-        loadingMore = true;
+        loading = true;
         if (isMore) {
             pageNo++;
         } else {
@@ -62,8 +61,8 @@ public class AutoLoadRecyclerView extends RecyclerView {
                 int lastPosition = recyclerView.getLayoutManager().getPosition(lastChildView);
                 //判断lastPosition是不是最后一个position
                 if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-                    if (onLoadListener != null && haveMore && !loadingMore) {
-                        loadingMore = true;
+                    if (onLoadListener != null && haveMore && !loading) {
+                        loading = true;
                         onLoadListener.onLoad();
                     }
                 }

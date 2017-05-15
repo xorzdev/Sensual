@@ -6,7 +6,10 @@ import android.support.annotation.Nullable;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.main.DrawerToggleEvent;
+import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.base.BindingFragment;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragGankBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,11 +24,13 @@ import io.reactivex.schedulers.Schedulers;
 public class GankFragment extends BindingFragment<FragGankBinding>
         implements AutoLoadRecyclerView.OnLoadListener, GankViewModel.Callback {
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private final int limit = 10;
 
     private GankViewModel mViewModel;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private SharedPager<Welfare> sharedPager;
 
     public static GankFragment newInstance() {
         return new GankFragment();
@@ -54,20 +59,16 @@ public class GankFragment extends BindingFragment<FragGankBinding>
         sharedPager.limit = limit;
         sharedPager.no = binding.recycler.pageNo;
         sharedPager.index = position;
-        startForResult(BigImage2.newInstance(sharedPager), 999);
+        RxBus.get().post(new StartFragmentEvent(BigImage2.newInstance(sharedPager)));
     }
 
-    SharedPager<Welfare> sharedPager;
-
     @Override
-    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
-        super.onFragmentResult(requestCode, resultCode, data);
-        if (requestCode == 999) {
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if (sharedPager != null && binding.recycler.getAdapter() != null) {
             binding.recycler.pageNo = sharedPager.no;
-            if (binding.recycler.getAdapter() != null) {
-                binding.recycler.getAdapter().notifyDataSetChanged();
-                binding.recycler.smoothScrollToPosition(sharedPager.index);
-            }
+            binding.recycler.getAdapter().notifyDataSetChanged();
+            binding.recycler.smoothScrollToPosition(sharedPager.index);
         }
     }
 
@@ -82,7 +83,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
         mViewModel = new GankViewModel(_mActivity, binding, this);
         binding.setViewModel(mViewModel);
 
-        binding.toolbar.setNavigationOnClickListener((v) -> pop());
+        binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
         binding.refreshLayout.setOnRefreshListener(() -> getWelfare(false));
         binding.recycler.setOnLoadListener(this);
     }
@@ -99,11 +100,11 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterSuccess(arg0 -> {
                     mViewModel.doOnComplete();
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                 })
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
-                    binding.recycler.loadingMore = false;
+                    binding.recycler.loading = false;
                     binding.recycler.pageNo--;
                 })
                 .subscribe(welfareList -> {

@@ -12,11 +12,6 @@ import android.view.View;
 import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
-import gavin.sensual.app.capture.CaptureFragment;
-import gavin.sensual.app.daily.DailyFragment;
-import gavin.sensual.app.douban.DoubanTabFragment;
-import gavin.sensual.app.gank.GankFragment;
-import gavin.sensual.app.meizi.MeiziTabFragment;
 import gavin.sensual.app.setting.AboutFragment;
 import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.app.setting.PermissionFragment;
@@ -53,6 +48,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
 
         subscribeEvent();
         binding.navigation.setNavigationItemSelectedListener(this);
+        binding.navigation.getMenu().findItem(R.id.nav_news).setChecked(true);
     }
 
     @Override
@@ -60,19 +56,20 @@ public class MainActivity extends BindingActivity<ActMainBinding>
         binding.drawer.closeDrawer(Gravity.START);
         switch (item.getItemId()) {
             case R.id.nav_news:
+                showHideFragmentDelay(0);
                 return true;
             case R.id.nav_gank:
-                startDelay(GankFragment.newInstance());
-                return false;
+                showHideFragmentDelay(1);
+                return true;
             case R.id.nav_douban:
-                startDelay(DoubanTabFragment.newInstance());
-                return false;
+                showHideFragmentDelay(2);
+                return true;
             case R.id.nav_meizi:
-                startDelay(MeiziTabFragment.newInstance());
-                return false;
+                showHideFragmentDelay(3);
+                return true;
             case R.id.nav_capture:
-                startDelay(CaptureFragment.newInstance());
-                return false;
+                showHideFragmentDelay(4);
+                return true;
             case R.id.nav_license:
                 startDelay(LicenseFragment.newInstance());
                 return false;
@@ -82,7 +79,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());
                 startDelay(TestFragment.newInstance());
-                return true;
+                return false;
         }
         return false;
     }
@@ -91,10 +88,8 @@ public class MainActivity extends BindingActivity<ActMainBinding>
     public void onBackPressedSupport() {
         if (binding.drawer.isDrawerOpen(Gravity.START)) {
             binding.drawer.closeDrawer(Gravity.START);
-        } else if (!(getTopFragment() instanceof DailyFragment)) {
-            pop();
         } else {
-            finish();
+            super.onBackPressedSupport();
         }
     }
 
@@ -102,6 +97,11 @@ public class MainActivity extends BindingActivity<ActMainBinding>
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
+    }
+
+    private void showHideFragmentDelay(int position) {
+        popTo(MainFragment.class, false);
+        RxBus.get().post(new ShowHideFragmentEvent(position, 380));
     }
 
     private void startDelay(SupportFragment fragment) {

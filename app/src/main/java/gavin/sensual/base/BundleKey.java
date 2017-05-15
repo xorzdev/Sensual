@@ -37,4 +37,8 @@ public class BundleKey {
     public static final String POP_INTERCEPT = "popIntercept";
     public static final String SHARED_PAGER = "sharedPager";
     public static final String PAGE_TYPE = "pageType";
+    /**
+     * 主页当前页面
+     */
+    public static final String MAIN_CURR_POSITION = "currPosition";
 }
