@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import gavin.sensual.R;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.databinding.FragToobleRecyclerBinding;
+import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
 import gavin.sensual.util.JsonUtil;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/4/24
  */
-public class LicenseFragment extends BindingFragment<FragToobleRecyclerBinding> {
+public class LicenseFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     private Disposable disposable;
 
@@ -36,7 +36,7 @@ public class LicenseFragment extends BindingFragment<FragToobleRecyclerBinding> 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_tooble_recycler;
+        return R.layout.layout_tooble_recycler;
     }
 
     @Override

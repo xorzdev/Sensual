@@ -14,7 +14,7 @@ import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
-import gavin.sensual.databinding.FragToobleRecyclerBinding;
+import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/15
  */
-public class MeiziDetailFragment extends BindingFragment<FragToobleRecyclerBinding> {
+public class MeiziDetailFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -41,7 +41,7 @@ public class MeiziDetailFragment extends BindingFragment<FragToobleRecyclerBindi
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_tooble_recycler;
+        return R.layout.layout_tooble_recycler;
     }
 
     @Override
