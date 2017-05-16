@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import gavin.sensual.R;
 import gavin.sensual.app.setting.AboutFragment;
 import gavin.sensual.app.setting.LicenseFragment;
-import gavin.sensual.app.setting.PermissionFragment;
 import gavin.sensual.base.BindingActivity;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.ActMainBinding;
@@ -43,7 +42,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.holder, PermissionFragment.newInstance());
+            loadRootFragment(R.id.holder, MainFragment.newInstance());
         }
 
         subscribeEvent();

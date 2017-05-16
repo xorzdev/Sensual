@@ -1,13 +1,11 @@
 package gavin.sensual.app.setting;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -21,17 +19,13 @@ import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
-import gavin.sensual.base.CacheHelper;
-import gavin.sensual.base.RequestCode;
 import gavin.sensual.databinding.FragBigImageSingleBinding;
 import gavin.sensual.util.ImageLoader;
-import gavin.sensual.util.L;
 import gavin.sensual.util.ShareUtil;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -110,7 +104,7 @@ public class BigImageSingleFragment extends BindingFragment<FragBigImageSingleBi
 
     @Override
     public boolean onLongClick(View v) {
-        String[] items = new String[]{"保存到手机", "分享", "其他"};
+        String[] items = new String[]{"保存到手机", "分享"};
         new AlertDialog.Builder(_mActivity)
                 .setItems(items, this)
                 .show();
@@ -121,7 +115,7 @@ public class BigImageSingleFragment extends BindingFragment<FragBigImageSingleBi
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case 0:
-                requestPermission();
+                createFile(imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.lastIndexOf(".")) + ".jpg");
                 break;
             case 1:
                 shareImage();
@@ -129,47 +123,37 @@ public class BigImageSingleFragment extends BindingFragment<FragBigImageSingleBi
         }
     }
 
-    private void requestPermission() {
-        new RxPermissions(_mActivity)
-                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .doOnSubscribe(compositeDisposable::add)
-                .subscribe(permission -> {
-                    if (permission.granted) {
-                        saveBitmap();
-                    } else if (permission.shouldShowRequestPermissionRationale) {
-                        Snackbar.make(binding.photoView, "无写入 sdcard 卡权限", Snackbar.LENGTH_LONG)
-                                .setAction("重试", v -> requestPermission())
-                                .show();
-                    } else {
-                        Snackbar.make(binding.photoView, "无写入 sdcard 卡权限", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("开启", v -> openAppSetting())
-                                .show();
-                    }
-                });
-    }
-
-    private void openAppSetting() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + _mActivity.getPackageName()));
-        startActivityForResult(intent, RequestCode.PERMISSION_SETTING);
+    private void createFile(String fileName) {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/jpeg");
+        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+        startActivityForResult(intent, 99);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        requestPermission();
+        if (requestCode == 99 && resultCode == RESULT_OK && data.getData() != null) {
+            saveBitmap(data.getData());
+        }
     }
 
-    private void saveBitmap() {
-        Observable.just(imageUrl)
-                .map(permission -> ImageLoader.getBitmap(this, imageUrl))
+    private void saveBitmap(Uri uri) {
+        Observable.just(uri)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .map(uri1 -> _mActivity.getContentResolver().openOutputStream(uri1))
+                .filter(outputStream -> outputStream != null)
                 .doOnSubscribe(compositeDisposable::add)
-                .subscribe(bitmap -> {
-                    L.e(Looper.myLooper() == Looper.getMainLooper());
-                    CacheHelper.saveBitmap(bitmap, imageUrl.substring(imageUrl.lastIndexOf("/"), imageUrl.lastIndexOf(".")));
-                    Snackbar.make(binding.photoView, "保存成功", Snackbar.LENGTH_LONG).show();
+                .subscribe(outputStream -> {
+                    try {
+                        Bitmap bitmap = ImageLoader.getBitmap(this, imageUrl);
+                        boolean state = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        Snackbar.make(binding.photoView, state ? "保存成功" : "保存失败", Snackbar.LENGTH_LONG).show();
+                    } finally {
+                        outputStream.close();
+                    }
                 }, throwable -> Snackbar.make(binding.photoView, throwable.getMessage(), Snackbar.LENGTH_LONG).show());
     }
 
