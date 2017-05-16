@@ -15,6 +15,7 @@ import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
+import gavin.sensual.util.DisplayUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -57,6 +58,10 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToobleRecyclerBin
 
         binding.refreshLayout.setEnabled(false);
 
+        int padding = DisplayUtil.dp2px(4);
+        binding.recycler.setPadding(padding, padding, padding, padding);
+        binding.recycler.setClipToPadding(false);
+        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         imageList = new ArrayList<>();
         adapter = new DoubanAdapter(_mActivity, imageList);
         adapter.setOnItemClickListener(position -> {
@@ -66,7 +71,6 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToobleRecyclerBin
             }
             start(BigImageMultiFragment.newInstance(stringList, position));
         });
-        binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         binding.recycler.setAdapter(adapter);
 
         getDataLayer().getMeiziPicService()
