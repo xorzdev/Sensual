@@ -83,7 +83,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
     }
 
     private void getPic(boolean isMore) {
-        getDataLayer().getZhihuPicService().getPic(this, question, 20, isMore ? binding.recycler.pageNo : 0)
+        getDataLayer().getZhihuPicService().getPic(this, question, 20, isMore ? binding.recycler.offset : 0)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -99,7 +99,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
                     binding.recycler.loading = false;
-                    binding.recycler.pageNo--;
+                    binding.recycler.offset--;
                 })
                 .subscribe(image -> {
                     binding.recycler.haveMore = true;

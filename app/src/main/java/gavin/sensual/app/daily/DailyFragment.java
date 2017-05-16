@@ -45,7 +45,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
 
     @Override
     public void onLoad() {
-        getDaily(binding.recycler.pageNo);
+        getDaily(binding.recycler.offset);
     }
 
     private void init() {
@@ -85,7 +85,7 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
                 .doOnError(throwable -> {
                     mViewModel.doOnError();
                     binding.recycler.loading = false;
-                    binding.recycler.pageNo--;
+                    binding.recycler.offset--;
                 })
                 .doAfterNext(daily -> {
                     if (autoLoadMore(dayDiff, daily))

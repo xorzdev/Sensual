@@ -94,9 +94,9 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
 
     private Observable<Image> getResult(boolean isMore) {
         if (TextUtils.isEmpty(cid)) {
-            return getDataLayer().getDoubanService().getRank(this, isMore ? binding.recycler.pageNo + 1 : 1);
+            return getDataLayer().getDoubanService().getRank(this, isMore ? binding.recycler.offset + 1 : 1);
         } else {
-            return getDataLayer().getDoubanService().getShow(this, cid, isMore ? binding.recycler.pageNo + 1 : 1);
+            return getDataLayer().getDoubanService().getShow(this, cid, isMore ? binding.recycler.offset + 1 : 1);
         }
     }
 
@@ -117,7 +117,7 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
                     binding.recycler.loading = false;
-                    binding.recycler.pageNo--;
+                    binding.recycler.offset--;
                 })
                 .subscribe(image -> {
                     binding.recycler.haveMore = true;

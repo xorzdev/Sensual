@@ -26,8 +26,6 @@ public class GankFragment extends BindingFragment<FragGankBinding>
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final int limit = 10;
-
     private GankViewModel mViewModel;
 
     private SharedPager<Welfare> sharedPager;
@@ -56,8 +54,8 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     public void onItemClick(List<Welfare> welfareList, int position) {
         sharedPager = new SharedPager<>();
         sharedPager.list = welfareList;
-        sharedPager.limit = limit;
-        sharedPager.no = binding.recycler.pageNo;
+        sharedPager.limit = binding.recycler.limit;
+        sharedPager.no = binding.recycler.offset;
         sharedPager.index = position;
         RxBus.get().post(new StartFragmentEvent(BigImage2.newInstance(sharedPager)));
     }
@@ -66,7 +64,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     public void onSupportVisible() {
         super.onSupportVisible();
         if (sharedPager != null && binding.recycler.getAdapter() != null) {
-            binding.recycler.pageNo = sharedPager.no;
+            binding.recycler.offset = sharedPager.no;
             binding.recycler.getAdapter().notifyDataSetChanged();
             binding.recycler.smoothScrollToPosition(sharedPager.index);
         }
@@ -89,7 +87,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     }
 
     private void getWelfare(boolean isMore) {
-        getDataLayer().getGankService().getWelfare(this, limit, isMore ? binding.recycler.pageNo + 1 : 1)
+        getDataLayer().getGankService().getWelfare(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -105,10 +103,10 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
                     binding.recycler.loading = false;
-                    binding.recycler.pageNo--;
+                    binding.recycler.offset--;
                 })
                 .subscribe(welfareList -> {
-                    binding.recycler.haveMore = limit == welfareList.size();
+                    binding.recycler.haveMore = binding.recycler.limit == welfareList.size();
                     mViewModel.onNext(isMore, welfareList);
                 }, e -> mViewModel.onError(e, isMore));
     }

@@ -14,8 +14,8 @@ public class AutoLoadRecyclerView extends RecyclerView {
 
     public boolean haveMore = false;
     public boolean loading = false;
-    public int pageSize = 15;
-    public int pageNo = 1;
+    public int limit = 15;
+    public int offset = 1;
 
     private OnLoadListener onLoadListener;
 
@@ -38,9 +38,9 @@ public class AutoLoadRecyclerView extends RecyclerView {
     public void loadData(boolean isMore) {
         loading = true;
         if (isMore) {
-            pageNo++;
+            offset++;
         } else {
-            pageNo = 1;
+            offset = 1;
         }
     }
 

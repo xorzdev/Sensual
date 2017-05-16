@@ -97,7 +97,7 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
     }
 
     private void getData(boolean isMore) {
-        getDataLayer().getMeiziPicService().getPic(this, type, isMore ? binding.recycler.pageNo + 1 : 1)
+        getDataLayer().getMeiziPicService().getPic(this, type, isMore ? binding.recycler.offset + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -113,7 +113,7 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
                 .doOnError(throwable -> {
                     mViewModel.doOnError(isMore);
                     binding.recycler.loading = false;
-                    binding.recycler.pageNo--;
+                    binding.recycler.offset--;
                 })
                 .subscribe(image -> {
                     binding.recycler.haveMore = true;
