@@ -27,7 +27,7 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
     private WeakReference<Context> mContext;
     private Callback callback;
 
-    private List<Image> welfareList = new ArrayList<>();
+    private List<Image> imageList = new ArrayList<>();
     private DoubanAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
@@ -45,8 +45,8 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
         binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new DoubanAdapter(mContext.get(), welfareList);
-        adapter.setOnItemClickListener(i -> callback.onItemClick(welfareList, i));
+        adapter = new DoubanAdapter(mContext.get(), imageList);
+        adapter.setOnItemClickListener(i -> callback.onItemClick(imageList, i));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
@@ -59,7 +59,7 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
             loadingBinding.textView.setText("加载中...");
         } else {
             binding.refreshLayout.setRefreshing(true);
-            welfareList.clear();
+            imageList.clear();
             adapter.notifyDataSetChanged();
         }
     }
@@ -80,13 +80,13 @@ public class ZhihuQuestionViewModel extends BindingViewModel<FragZhihuQuestionBi
     }
 
     void onNext(Image image) {
-        for (Image img : welfareList) {
+        for (Image img : imageList) {
             if (img.getUrl().equals(image.getUrl())) {
                 return;
             }
         }
-        welfareList.add(image);
-        adapter.notifyItemInserted(welfareList.size() - 1);
+        imageList.add(image);
+        adapter.notifyItemInserted(imageList.size() - 1);
     }
 
     void onError(Throwable e, boolean isMore) {

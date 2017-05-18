@@ -6,10 +6,11 @@ import android.databinding.ViewDataBinding;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.base.RecyclerHeaderFooterAdapter;
 import gavin.sensual.base.RecyclerHolder;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.ItemWelfareBinding;
+import gavin.sensual.databinding.ItemImageBinding;
 import gavin.sensual.util.DisplayUtil;
 import gavin.sensual.util.ImageLoader;
 
@@ -18,14 +19,14 @@ import gavin.sensual.util.ImageLoader;
  *
  * @author gavin.xiong 2016/12/28
  */
-public class GankAdapter extends RecyclerHeaderFooterAdapter<Welfare, ItemWelfareBinding, ViewDataBinding, FooterLoadingBinding> {
+public class GankAdapter extends RecyclerHeaderFooterAdapter<Image, ItemImageBinding, ViewDataBinding, FooterLoadingBinding> {
 
     private OnItemClickListener mListener;
 
     private int mWidth;
 
-    public GankAdapter(Context context, List<Welfare> mData) {
-        super(context, mData, R.layout.item_welfare);
+    public GankAdapter(Context context, List<Image> mData) {
+        super(context, mData, R.layout.item_image);
         mWidth = DisplayUtil.getScreenWidth() / 2 - DisplayUtil.dp2px(12);
     }
 
@@ -34,7 +35,7 @@ public class GankAdapter extends RecyclerHeaderFooterAdapter<Welfare, ItemWelfar
     }
 
     @Override
-    public void onBind(RecyclerHolder<ItemWelfareBinding> holder, int position, Welfare t) {
+    public void onBind(RecyclerHolder<ItemImageBinding> holder, int position, Image t) {
         int tempHeight = (int)(t.getHeight() / (t.getWidth() + 0f) * mWidth);
         holder.binding.imageView.getLayoutParams().height = tempHeight;
         ImageLoader.loadImage(holder.binding.imageView, t.getUrl(), mWidth, tempHeight);

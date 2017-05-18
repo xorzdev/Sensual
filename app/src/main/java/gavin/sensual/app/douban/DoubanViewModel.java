@@ -25,7 +25,7 @@ public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
     private WeakReference<Context> mContext;
     private Callback callback;
 
-    private List<Image> welfareList = new ArrayList<>();
+    private List<Image> imageList = new ArrayList<>();
     private DoubanAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
@@ -41,8 +41,8 @@ public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
     private void init() {
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new DoubanAdapter(mContext.get(), welfareList);
-        adapter.setOnItemClickListener(i -> callback.onItemClick(welfareList, i));
+        adapter = new DoubanAdapter(mContext.get(), imageList);
+        adapter.setOnItemClickListener(i -> callback.onItemClick(imageList, i));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
@@ -74,8 +74,8 @@ public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
     }
 
     void onNext(Image image) {
-        welfareList.add(image);
-        adapter.notifyItemInserted(welfareList.size() - 1);
+        imageList.add(image);
+        adapter.notifyItemInserted(imageList.size() - 1);
     }
 
     void onError(Throwable e, boolean isMore) {

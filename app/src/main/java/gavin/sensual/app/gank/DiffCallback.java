@@ -4,6 +4,8 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
+import gavin.sensual.app.douban.Image;
+
 /**
  * 日报列表数据比对器
  *
@@ -11,9 +13,9 @@ import java.util.List;
  */
 public class DiffCallback extends DiffUtil.Callback {
 
-    private List<Welfare> oldList, newList;
+    private List<Image> oldList, newList;
 
-    public DiffCallback(List<Welfare> oldList, List<Welfare> newList) {
+    public DiffCallback(List<Image> oldList, List<Image> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }
@@ -30,11 +32,11 @@ public class DiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getId().equals(newList.get(newItemPosition).getId());
+        return oldList.get(oldItemPosition).getUrl().equals(newList.get(newItemPosition).getUrl());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getUrl().equals(newList.get(newItemPosition).getUrl());
+        return true;
     }
 }

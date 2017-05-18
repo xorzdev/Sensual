@@ -7,7 +7,6 @@ import java.util.List;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.douban.Image;
-import gavin.sensual.app.gank.Welfare;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -86,7 +85,7 @@ public class DataLayer {
          * @param no    页码
          * @return Result
          */
-        Single<List<Welfare>> getWelfare(Fragment fragment, int limit, int no);
+        Single<List<Image>> getImage(Fragment fragment, int limit, int no);
     }
 
     public interface DoubanService {

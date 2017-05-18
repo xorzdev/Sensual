@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.FragGankBinding;
@@ -29,7 +30,7 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
     private WeakReference<Context> mContext;
     private Callback callback;
 
-    private List<Welfare> welfareList = new ArrayList<>();
+    private List<Image> imageList = new ArrayList<>();
     private GankAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
@@ -48,8 +49,8 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new GankAdapter(mContext.get(), welfareList);
-        adapter.setOnItemClickListener(i -> callback.onItemClick(welfareList, i));
+        adapter = new GankAdapter(mContext.get(), imageList);
+        adapter.setOnItemClickListener(i -> callback.onItemClick(imageList, i));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
@@ -80,25 +81,25 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
         loadingBinding.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
     }
 
-    void onNext(boolean isMore, List<Welfare> list) {
-        if (!isMore && welfareList.isEmpty()) {
-            welfareList.addAll(list);
+    void onNext(boolean isMore, List<Image> list) {
+        if (!isMore && imageList.isEmpty()) {
+            imageList.addAll(list);
             adapter.notifyDataSetChanged();
             return;
         }
-        List<Welfare> newList = new ArrayList<>();
-        if (isMore) newList.addAll(welfareList);
+        List<Image> newList = new ArrayList<>();
+        if (isMore) newList.addAll(imageList);
         newList.addAll(list);
         Observable.just(newList)
-                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(welfareList, stories)))
+                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(imageList, stories)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
                 // 使用 DiffUtil 刷新数据时 adapter 数据列表在 dispatchUpdatesTo 后更新有可能会报 IndexOutOfBoundsException
                 // 将 adapter 更新数据放在 dispatchUpdatesTo 前面，待跟进
                 .doOnNext(diffResult -> {
-                    if (!isMore) welfareList.clear();
-                    welfareList.addAll(list);
+                    if (!isMore) imageList.clear();
+                    imageList.addAll(list);
                 })
                 .doOnComplete(() -> {
                     binding.refreshLayout.setRefreshing(false);
@@ -121,7 +122,7 @@ public class GankViewModel extends BindingViewModel<FragGankBinding> {
     }
 
     interface Callback {
-        void onItemClick(List<Welfare> welfareList, int position);
+        void onItemClick(List<Image> imageList, int position);
     }
 
 }

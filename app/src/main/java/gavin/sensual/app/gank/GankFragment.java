@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.base.BindingFragment;
@@ -28,7 +29,7 @@ public class GankFragment extends BindingFragment<FragGankBinding>
 
     private GankViewModel mViewModel;
 
-    private SharedPager<Welfare> sharedPager;
+    private SharedPager<Image> sharedPager;
 
     public static GankFragment newInstance() {
         return new GankFragment();
@@ -42,18 +43,18 @@ public class GankFragment extends BindingFragment<FragGankBinding>
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         init();
-        getWelfare(false);
+        getImage(false);
     }
 
     @Override
     public void onLoad() {
-        getWelfare(true);
+        getImage(true);
     }
 
     @Override
-    public void onItemClick(List<Welfare> welfareList, int position) {
+    public void onItemClick(List<Image> imageList, int position) {
         sharedPager = new SharedPager<>();
-        sharedPager.list = welfareList;
+        sharedPager.list = imageList;
         sharedPager.limit = binding.recycler.limit;
         sharedPager.no = binding.recycler.offset;
         sharedPager.index = position;
@@ -82,12 +83,12 @@ public class GankFragment extends BindingFragment<FragGankBinding>
         binding.setViewModel(mViewModel);
 
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
-        binding.refreshLayout.setOnRefreshListener(() -> getWelfare(false));
+        binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
         binding.recycler.setOnLoadListener(this);
     }
 
-    private void getWelfare(boolean isMore) {
-        getDataLayer().getGankService().getWelfare(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
+    private void getImage(boolean isMore) {
+        getDataLayer().getGankService().getImage(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -105,9 +106,9 @@ public class GankFragment extends BindingFragment<FragGankBinding>
                     binding.recycler.loading = false;
                     binding.recycler.offset--;
                 })
-                .subscribe(welfareList -> {
-                    binding.recycler.haveMore = binding.recycler.limit == welfareList.size();
-                    mViewModel.onNext(isMore, welfareList);
+                .subscribe(images -> {
+                    binding.recycler.haveMore = binding.recycler.limit == images.size();
+                    mViewModel.onNext(isMore, images);
                 }, e -> mViewModel.onError(e, isMore));
     }
 }

@@ -22,5 +22,5 @@ public interface GankAPI {
      */
     @Headers("Cache-Control: max-stale=1800")
     @GET("data/福利/{limit}/{no}")
-    Observable<Result> getWelfare(@Path("limit") int limit, @Path("no") int no);
+    Observable<Result> getImage(@Path("limit") int limit, @Path("no") int no);
 }

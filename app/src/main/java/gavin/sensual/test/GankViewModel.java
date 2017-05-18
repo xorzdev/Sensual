@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.gank.DiffCallback;
 import gavin.sensual.app.gank.GankAdapter;
-import gavin.sensual.app.gank.Welfare;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FooterLoadingBinding;
@@ -40,7 +40,7 @@ public class GankViewModel extends BindingViewModel<TestFragBinding> {
     private WeakReference<Context> mContext;
     private WeakReference<Fragment> mFragment;
 
-    private List<Welfare> welfareList = new ArrayList<>();
+    private List<Image> imageList = new ArrayList<>();
     private GankAdapter adapter;
     private TestAdapter adapter2;
     private PagerSnapHelper snapHelper;
@@ -62,13 +62,13 @@ public class GankViewModel extends BindingViewModel<TestFragBinding> {
 
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new GankAdapter(mContext.get(), welfareList);
+        adapter = new GankAdapter(mContext.get(), imageList);
         adapter.setOnItemClickListener(this::change);
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter.setFooterBinding(loadingBinding);
 
-        adapter2 = new TestAdapter(mContext.get(), mFragment.get(), welfareList);
+        adapter2 = new TestAdapter(mContext.get(), mFragment.get(), imageList);
         loadingBinding2 = RighterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
         adapter2.setFooterBinding(loadingBinding2);
         snapHelper = new PagerSnapHelper();
@@ -95,6 +95,7 @@ public class GankViewModel extends BindingViewModel<TestFragBinding> {
             snapHelper.attachToRecyclerView(null);
             binding.recycler.setAdapter(adapter);
             binding.recycler.scrollToPosition(position);
+            binding.recycler.preCount = 0;
         } else if (layoutManager instanceof StaggeredGridLayoutManager){
             binding.recycler.setAdapter(null);
             binding.root.setFitsSystemWindows(false);
@@ -106,6 +107,7 @@ public class GankViewModel extends BindingViewModel<TestFragBinding> {
             snapHelper.attachToRecyclerView(binding.recycler);
             binding.recycler.setAdapter(adapter2);
             binding.recycler.scrollToPosition(position);
+            binding.recycler.preCount = 3;
         }
     }
 
@@ -153,25 +155,26 @@ public class GankViewModel extends BindingViewModel<TestFragBinding> {
         loadingBinding2.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
     }
 
-    void onNext(boolean isMore, List<Welfare> list) {
-        if (!isMore && welfareList.isEmpty()) {
-            welfareList.addAll(list);
+    void onNext(boolean isMore, List<Image> list) {
+        if (!isMore && imageList.isEmpty()) {
+            imageList.addAll(list);
             adapter.notifyDataSetChanged();
             return;
         }
-        List<Welfare> newList = new ArrayList<>();
-        if (isMore) newList.addAll(welfareList);
+        List<Image> newList = new ArrayList<>();
+        if (isMore) newList.addAll(imageList);
         newList.addAll(list);
         Observable.just(newList)
-                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(welfareList, stories)))
+                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(imageList
+                        , stories)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
                 // 使用 DiffUtil 刷新数据时 adapter 数据列表在 dispatchUpdatesTo 后更新有可能会报 IndexOutOfBoundsException
                 // 将 adapter 更新数据放在 dispatchUpdatesTo 前面，待跟进
                 .doOnNext(diffResult -> {
-                    if (!isMore) welfareList.clear();
-                    welfareList.addAll(list);
+                    if (!isMore) imageList.clear();
+                    imageList.addAll(list);
                 })
                 .doOnComplete(() -> {
                     binding.refreshLayout.setRefreshing(false);

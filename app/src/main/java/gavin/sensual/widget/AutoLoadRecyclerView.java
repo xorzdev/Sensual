@@ -16,19 +16,12 @@ public class AutoLoadRecyclerView extends RecyclerView {
     public boolean loading = false;
     public int limit = 15;
     public int offset = 1;
+    public int preCount = 0;
 
     private OnLoadListener onLoadListener;
 
-    public AutoLoadRecyclerView(Context context) {
-        super(context);
-    }
-
     public AutoLoadRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public AutoLoadRecyclerView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
     }
 
     public void setOnLoadListener(OnLoadListener onLoadListener) {
@@ -60,7 +53,7 @@ public class AutoLoadRecyclerView extends RecyclerView {
                 //通过这个lastChildView得到这个view当前的position值
                 int lastPosition = recyclerView.getLayoutManager().getPosition(lastChildView);
                 //判断lastPosition是不是最后一个position
-                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                if (lastPosition > recyclerView.getLayoutManager().getItemCount() - 2 - preCount) {
                     if (onLoadListener != null && haveMore && !loading) {
                         loading = true;
                         onLoadListener.onLoad();

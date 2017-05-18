@@ -6,12 +6,10 @@ import android.databinding.ViewDataBinding;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.gank.Welfare;
 import gavin.sensual.base.RecyclerHeaderFooterAdapter;
 import gavin.sensual.base.RecyclerHolder;
 import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.ItemDoubanBinding;
-import gavin.sensual.databinding.ItemWelfareBinding;
 import gavin.sensual.util.DisplayUtil;
 import gavin.sensual.util.ImageLoader;
 

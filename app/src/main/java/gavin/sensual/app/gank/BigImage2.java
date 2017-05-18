@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import gavin.sensual.R;
+import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.setting.BigImageSingleFragment;
 import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.BindingFragment;
@@ -24,13 +25,13 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BigImage2 extends BindingFragment<FragBigImageMultiBinding> implements ViewPager.OnPageChangeListener {
 
-    private SharedPager<Welfare> sharedPager;
+    private SharedPager<Image> sharedPager;
     private boolean haveMore = true;
     private boolean loadingMore = false;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public static BaseFragment newInstance(SharedPager<Welfare> sharedPager) {
+    public static BaseFragment newInstance(SharedPager<Image> sharedPager) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleKey.SHARED_PAGER, sharedPager);
         BaseFragment fragment = new BigImage2();
@@ -57,7 +58,7 @@ public class BigImage2 extends BindingFragment<FragBigImageMultiBinding> impleme
     public void onPageSelected(int position) {
         sharedPager.index = position;
         if (haveMore && !loadingMore && position == sharedPager.list.size() - 4) {
-            getWelfare();
+            getImage();
         }
     }
 
@@ -74,15 +75,15 @@ public class BigImage2 extends BindingFragment<FragBigImageMultiBinding> impleme
     }
 
     private void init() {
-        sharedPager = (SharedPager<Welfare>) getArguments().getSerializable(BundleKey.SHARED_PAGER);
+        sharedPager = (SharedPager<Image>) getArguments().getSerializable(BundleKey.SHARED_PAGER);
         ImagePagerAdapter adapter = new ImagePagerAdapter(getChildFragmentManager());
         binding.viewPager.setAdapter(adapter);
         binding.viewPager.setCurrentItem(sharedPager.index);
         binding.viewPager.addOnPageChangeListener(this);
     }
 
-    private void getWelfare() {
-        getDataLayer().getGankService().getWelfare(this, 10, sharedPager.no + 1)
+    private void getImage() {
+        getDataLayer().getGankService().getImage(this, 10, sharedPager.no + 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);

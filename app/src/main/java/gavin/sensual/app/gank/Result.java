@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+import gavin.sensual.app.douban.Image;
+
 /**
  * 这里是萌萌哒注释君
  *
@@ -15,13 +17,13 @@ public class Result implements Serializable {
     @SerializedName("error")
     private boolean error;
     @SerializedName("results")
-    private List<Welfare> results;
+    private List<Image> results;
 
     public boolean isError() {
         return error;
     }
 
-    public List<Welfare> getResults() {
+    public List<Image> getResults() {
         return results;
     }
 

@@ -65,7 +65,7 @@ public class TestFragment extends BindingFragment<TestFragBinding>  {
     }
 
     private void getData(boolean isMore) {
-        getDataLayer().getGankService().getWelfare(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
+        getDataLayer().getGankService().getImage(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -83,9 +83,9 @@ public class TestFragment extends BindingFragment<TestFragBinding>  {
                     binding.recycler.loading = false;
                     binding.recycler.offset--;
                 })
-                .subscribe(welfareList -> {
-                    binding.recycler.haveMore = binding.recycler.limit == welfareList.size();
-                    mViewModel.onNext(isMore, welfareList);
+                .subscribe(imageList -> {
+                    binding.recycler.haveMore = binding.recycler.limit == imageList.size();
+                    mViewModel.onNext(isMore, imageList);
                 }, e -> mViewModel.onError(e, isMore));
     }
 
