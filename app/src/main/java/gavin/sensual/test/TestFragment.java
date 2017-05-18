@@ -1,24 +1,28 @@
 package gavin.sensual.test;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gavin.sensual.R;
-import gavin.sensual.app.setting.BigImageMultiFragment;
-import gavin.sensual.app.setting.BigImageSingleFragment;
+import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
+import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.TestFragBinding;
-import gavin.sensual.widget.banner.BannerModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 测试
  *
  * @author gavin.xiong 2017/4/25
  */
-public class TestFragment extends BindingFragment<TestFragBinding> {
+public class TestFragment extends BindingFragment<TestFragBinding>  {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    private GankViewModel mViewModel;
 
     public static TestFragment newInstance() {
         return new TestFragment();
@@ -31,27 +35,58 @@ public class TestFragment extends BindingFragment<TestFragBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        ArrayList<String> urlList = new ArrayList<>();
-        urlList.add("http://i2.hdslb.com/bfs/archive/d4f02bfb6bd5ea22c8ca9f082dac9429ff6fe399.jpg");
-        urlList.add("http://i0.hdslb.com/bfs/space/42401a068c2d6d4b254b7c53348fc8929ad4d8e9.jpg");
-        urlList.add("http://i0.hdslb.com/bfs/space/e138569049093b9114f988d198b5e299975a5389.jpg");
-        List<BannerModel> modelList = new ArrayList<>();
-        for (String s : urlList) {
-            modelList.add(new BannerModel(0L, s, s));
-        }
-        binding.banner.setModelList(modelList);
-        binding.banner.setOnItemClickListener(position -> {
-            switch (position) {
-                case 0:
-                    start(BigImageSingleFragment.newInstance(urlList.get(position), false));
-                    break;
-                case 1:
-                    start(BigImageMultiFragment.newInstance(urlList, position));
-                    break;
-                default:
-                    break;
+        mViewModel = new GankViewModel(_mActivity, this, binding);
+//        binding.setViewModel(mViewModel);
+        binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
+        binding.refreshLayout.setOnRefreshListener(() -> getData(false));
+        binding.recycler.setOnLoadListener(() -> getData(true));
 
-            }
-        });
+        getData(false);
     }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        return mViewModel.onBackPressedSupport() || super.onBackPressedSupport();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.onDestroy();
+        compositeDisposable.dispose();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 99 && resultCode == RESULT_OK && data.getData() != null) {
+            RxBus.get().post(new SaveImageEvent(data.getData()));
+        }
+    }
+
+    private void getData(boolean isMore) {
+        getDataLayer().getGankService().getWelfare(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> {
+                    compositeDisposable.add(disposable);
+                    mViewModel.doOnSubscribe(isMore);
+                    binding.recycler.loadData(isMore);
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterSuccess(arg0 -> {
+                    mViewModel.doOnComplete();
+                    binding.recycler.loading = false;
+                })
+                .doOnError(throwable -> {
+                    mViewModel.doOnError(isMore);
+                    binding.recycler.loading = false;
+                    binding.recycler.offset--;
+                })
+                .subscribe(welfareList -> {
+                    binding.recycler.haveMore = binding.recycler.limit == welfareList.size();
+                    mViewModel.onNext(isMore, welfareList);
+                }, e -> mViewModel.onError(e, isMore));
+    }
+
 }

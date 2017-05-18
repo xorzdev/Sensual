@@ -18,18 +18,18 @@ import gavin.sensual.util.ImageLoader;
  *
  * @author gavin.xiong 2016/12/28
  */
-class GankAdapter extends RecyclerHeaderFooterAdapter<Welfare, ItemWelfareBinding, ViewDataBinding, FooterLoadingBinding> {
+public class GankAdapter extends RecyclerHeaderFooterAdapter<Welfare, ItemWelfareBinding, ViewDataBinding, FooterLoadingBinding> {
 
     private OnItemClickListener mListener;
 
     private int mWidth;
 
-    GankAdapter(Context context, List<Welfare> mData) {
+    public GankAdapter(Context context, List<Welfare> mData) {
         super(context, mData, R.layout.item_welfare);
         mWidth = DisplayUtil.getScreenWidth() / 2 - DisplayUtil.dp2px(12);
     }
 
-    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mListener = onItemClickListener;
     }
 
@@ -44,7 +44,7 @@ class GankAdapter extends RecyclerHeaderFooterAdapter<Welfare, ItemWelfareBindin
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 }

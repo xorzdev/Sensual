@@ -4,18 +4,16 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
-import gavin.sensual.app.daily.Daily;
-
 /**
  * 日报列表数据比对器
  *
  * @author gavin.xiong 2017/5/5
  */
-class DiffCallback extends DiffUtil.Callback {
+public class DiffCallback extends DiffUtil.Callback {
 
     private List<Welfare> oldList, newList;
 
-    DiffCallback(List<Welfare> oldList, List<Welfare> newList) {
+    public DiffCallback(List<Welfare> oldList, List<Welfare> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }

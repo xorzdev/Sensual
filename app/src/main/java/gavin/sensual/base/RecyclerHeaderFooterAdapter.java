@@ -97,7 +97,7 @@ public abstract class RecyclerHeaderFooterAdapter<T, B extends ViewDataBinding,
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         if (lp == null) return;
         if (lp.getClass() == RecyclerView.LayoutParams.class) {
-            lp.width = RecyclerView.LayoutParams.MATCH_PARENT; // 线性布局头尾全屏
+            lp.width = RecyclerView.LayoutParams.MATCH_PARENT; // 线性布局头尾全屏 (仅纵向有限，且所有 item 并非头尾有限)
         }
         if (headerBinding != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
