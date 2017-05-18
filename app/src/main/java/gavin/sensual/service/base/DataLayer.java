@@ -2,13 +2,10 @@ package gavin.sensual.service.base;
 
 import android.support.v4.app.Fragment;
 
-import java.util.List;
-
+import gavin.sensual.app.base.Image;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
-import gavin.sensual.app.douban.Image;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 /**
  * DataLayer
@@ -85,7 +82,7 @@ public class DataLayer {
          * @param no    页码
          * @return Result
          */
-        Single<List<Image>> getImage(Fragment fragment, int limit, int no);
+        Observable<Image> getImage(Fragment fragment, int limit, int no);
     }
 
     public interface DoubanService {

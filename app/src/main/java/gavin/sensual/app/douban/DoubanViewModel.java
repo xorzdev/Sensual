@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.base.Image;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.FragDoubanBinding;

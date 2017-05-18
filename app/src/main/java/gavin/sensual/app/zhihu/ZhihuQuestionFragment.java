@@ -3,17 +3,11 @@ package gavin.sensual.app.zhihu;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gavin.sensual.R;
-import gavin.sensual.app.douban.Image;
-import gavin.sensual.app.main.StartFragmentEvent;
-import gavin.sensual.app.setting.BigImageMultiFragment;
+import gavin.sensual.app.gank.GankViewModel;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
-import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragZhihuQuestionBinding;
+import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -23,14 +17,13 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/11
  */
-public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBinding>
-        implements ZhihuQuestionViewModel.Callback {
+public class ZhihuQuestionFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private long question;
 
-    private ZhihuQuestionViewModel mViewModel;
+    private GankViewModel mViewModel;
 
     public static ZhihuQuestionFragment newInstance(long question) {
         Bundle bundle = new Bundle();
@@ -42,7 +35,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_zhihu_question;
+        return R.layout.layout_tooble_recycler;
     }
 
     @Override
@@ -51,15 +44,20 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
         getPic(false);
     }
 
-    @Override
-    public void onItemClick(List<Image> imageList, int position) {
-        ArrayList<String> stringList = new ArrayList<>();
-        for (Image image : imageList) {
-            stringList.add(image.getUrl());
-        }
-        RxBus.get().post(new StartFragmentEvent(
-                BigImageMultiFragment.newInstance(stringList, position)));
+//    @Override
+//    public void onItemClick(List<Image> imageList, int position) {
+//        ArrayList<String> stringList = new ArrayList<>();
+//        for (Image image : imageList) {
+//            stringList.add(image.getUrl());
+//        }
+//        RxBus.get().post(new StartFragmentEvent(
+//                BigImageMultiFragment.newInstance(stringList, position)));
+//
+//    }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        return mViewModel.onBackPressedSupport() || super.onBackPressedSupport();
     }
 
     @Override
@@ -74,10 +72,10 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
     private void init() {
         question = getArguments().getLong(BundleKey.PAGE_TYPE);
 
-        mViewModel = new ZhihuQuestionViewModel(_mActivity, binding, this);
-        binding.setViewModel(mViewModel);
+        mViewModel = new GankViewModel(_mActivity, this, binding);
+//        binding.setViewModel(mViewModel);
 
-        binding.toolbar.setNavigationOnClickListener(v -> pop());
+        binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         binding.refreshLayout.setOnRefreshListener(() -> getPic(false));
         binding.recycler.setOnLoadListener(() -> getPic(true));
     }
@@ -103,7 +101,7 @@ public class ZhihuQuestionFragment extends BindingFragment<FragZhihuQuestionBind
                 })
                 .subscribe(image -> {
                     binding.recycler.haveMore = true;
-                    mViewModel.onNext(image);
+                    mViewModel.onNext(isMore, image);
                 }, e -> mViewModel.onError(e, isMore));
     }
 }

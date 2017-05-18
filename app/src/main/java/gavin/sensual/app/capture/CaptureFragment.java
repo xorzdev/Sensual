@@ -14,14 +14,14 @@ import gavin.sensual.app.zhihu.ZhihuQuestion;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragCaptureBinding;
+import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
 
 /**
  * 抓图
  *
  * @author gavin.xiong 2017/5/10
  */
-public class CaptureFragment extends BindingFragment<FragCaptureBinding> implements BindingAdapter.OnItemClickListener {
+public class CaptureFragment extends BindingFragment<LayoutToobleRecyclerBinding> implements BindingAdapter.OnItemClickListener {
 
     private List<ZhihuQuestion> targetList;
 
@@ -31,14 +31,16 @@ public class CaptureFragment extends BindingFragment<FragCaptureBinding> impleme
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_capture;
+        return R.layout.layout_tooble_recycler;
     }
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        binding.toolbar.setTitle("抓图");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-        binding.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
+        binding.includeToolbar.toolbar.setTitle("抓图");
+        binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
+        binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
+
+        binding.refreshLayout.setEnabled(false);
 
         init();
     }

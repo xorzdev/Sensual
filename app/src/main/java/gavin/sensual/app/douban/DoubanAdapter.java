@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.base.Image;
 import gavin.sensual.base.RecyclerHeaderFooterAdapter;
 import gavin.sensual.base.RecyclerHolder;
 import gavin.sensual.databinding.FooterLoadingBinding;

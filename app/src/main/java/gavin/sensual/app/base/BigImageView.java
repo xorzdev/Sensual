@@ -1,4 +1,4 @@
-package gavin.sensual.test;
+package gavin.sensual.app.base;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -66,8 +66,8 @@ public class BigImageView extends FrameLayout {
             L.e(e);
         }
 
-        attacher.setOnPhotoTapListener((view, x, y) -> RxBus.get().post(new PopImageEvent(position)));
-        attacher.setOnOutsidePhotoTapListener(imageView -> RxBus.get().post(new PopImageEvent(position)));
+        attacher.setOnPhotoTapListener((view, x, y) -> RxBus.get().post(new BigImageClickEvent(position)));
+        attacher.setOnOutsidePhotoTapListener(imageView -> RxBus.get().post(new BigImageClickEvent(position)));
         attacher.setOnLongClickListener(v -> {
             String[] items = new String[]{"保存到手机", "分享"};
             new AlertDialog.Builder(context)

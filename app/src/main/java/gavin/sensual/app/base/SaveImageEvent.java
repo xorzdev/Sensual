@@ -1,4 +1,4 @@
-package gavin.sensual.test;
+package gavin.sensual.app.base;
 
 import android.net.Uri;
 

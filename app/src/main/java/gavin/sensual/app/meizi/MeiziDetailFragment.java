@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.base.Image;
 import gavin.sensual.app.douban.DoubanAdapter;
-import gavin.sensual.app.douban.Image;
 import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;

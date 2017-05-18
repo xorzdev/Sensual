@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-import gavin.sensual.app.douban.Image;
+import gavin.sensual.app.base.Image;
 
 /**
  * 这里是萌萌哒注释君

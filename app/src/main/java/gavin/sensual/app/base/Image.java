@@ -1,4 +1,4 @@
-package gavin.sensual.app.douban;
+package gavin.sensual.app.base;
 
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;

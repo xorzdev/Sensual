@@ -1,10 +1,8 @@
-package gavin.sensual.app.gank;
+package gavin.sensual.app.base;
 
 import android.support.v7.util.DiffUtil;
 
 import java.util.List;
-
-import gavin.sensual.app.douban.Image;
 
 /**
  * 日报列表数据比对器

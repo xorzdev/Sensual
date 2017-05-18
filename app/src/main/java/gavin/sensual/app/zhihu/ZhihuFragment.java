@@ -13,14 +13,14 @@ import java.util.List;
 import gavin.sensual.R;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.databinding.FragCaptureBinding;
+import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
 
 /**
  * 知乎看图
  *
  * @author gavin.xiong 2017/5/10
  */
-public class ZhihuFragment extends BindingFragment<FragCaptureBinding> {
+public class ZhihuFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     private List<ZhihuQuestion> targetList;
 
@@ -30,17 +30,17 @@ public class ZhihuFragment extends BindingFragment<FragCaptureBinding> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_capture;
+        return R.layout.layout_tooble_recycler;
     }
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        binding.toolbar.setTitle("知乎看图");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
-        binding.toolbar.setNavigationOnClickListener(v -> pop());
-        binding.toolbar.inflateMenu(R.menu.action_search);
+        binding.includeToolbar.toolbar.setTitle("知乎看图");
+        binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
+        binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
+        binding.includeToolbar.toolbar.inflateMenu(R.menu.action_search);
         binding.refreshLayout.setEnabled(false);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(binding.toolbar.getMenu().findItem(R.id.action_search));
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(binding.includeToolbar.toolbar.getMenu().findItem(R.id.action_search));
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setQueryHint("请输入问题 id");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
