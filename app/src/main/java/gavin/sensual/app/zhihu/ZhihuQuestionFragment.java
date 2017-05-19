@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
-import gavin.sensual.app.gank.GankViewModel;
+import gavin.sensual.app.base.BigImageViewModel;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
@@ -23,7 +23,7 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToobleRecyclerB
 
     private long question;
 
-    private GankViewModel mViewModel;
+    private BigImageViewModel mViewModel;
 
     public static ZhihuQuestionFragment newInstance(long question) {
         Bundle bundle = new Bundle();
@@ -72,7 +72,7 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToobleRecyclerB
     private void init() {
         question = getArguments().getLong(BundleKey.PAGE_TYPE);
 
-        mViewModel = new GankViewModel(_mActivity, this, binding);
+        mViewModel = new BigImageViewModel(_mActivity, this, binding);
 //        binding.setViewModel(mViewModel);
 
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());

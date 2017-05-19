@@ -13,7 +13,7 @@ import gavin.sensual.R;
 import gavin.sensual.app.base.Image;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.FragDoubanBinding;
+import gavin.sensual.databinding.LayoutRecyclerBinding;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -21,7 +21,7 @@ import io.reactivex.disposables.CompositeDisposable;
  *
  * @author gavin.xiong 2017/5/8
  */
-public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
+public class DoubanViewModel extends BindingViewModel<LayoutRecyclerBinding> {
 
     private WeakReference<Context> mContext;
     private Callback callback;
@@ -32,7 +32,7 @@ public class DoubanViewModel extends BindingViewModel<FragDoubanBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    DoubanViewModel(Context context, FragDoubanBinding binding, Callback callback) {
+    DoubanViewModel(Context context, LayoutRecyclerBinding binding, Callback callback) {
         super(binding);
         this.mContext = new WeakReference<>(context);
         this.callback = callback;

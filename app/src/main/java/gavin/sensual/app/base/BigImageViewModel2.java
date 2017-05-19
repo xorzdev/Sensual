@@ -1,4 +1,4 @@
-package gavin.sensual.app.gank;
+package gavin.sensual.app.base;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
@@ -16,14 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.base.BigImageAdapter;
-import gavin.sensual.app.base.DiffCallback;
-import gavin.sensual.app.base.BigImageClickEvent;
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.gank.GankAdapter;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
+import gavin.sensual.databinding.LayoutRecyclerBinding;
 import gavin.sensual.databinding.RighterLoadingBinding;
 import gavin.sensual.util.DisplayUtil;
 import io.reactivex.Observable;
@@ -36,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/8
  */
-public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding> {
+public class BigImageViewModel2 extends BindingViewModel<LayoutRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -52,7 +49,7 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
 
     private boolean clearFlag;
 
-    public GankViewModel(Context context, Fragment fragment, LayoutToobleRecyclerBinding binding) {
+    public BigImageViewModel2(Context context, Fragment fragment, LayoutRecyclerBinding binding) {
         super(binding);
         this.mContext = new WeakReference<>(context);
         this.mFragment = new WeakReference<>(fragment);
@@ -60,9 +57,6 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
     }
 
     private void init() {
-        binding.includeToolbar.toolbar.setTitle("干货集中营");
-        binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
         adapter = new GankAdapter(mContext.get(), imageList);
@@ -90,8 +84,10 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
         RecyclerView.LayoutManager layoutManager = binding.recycler.getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {
             binding.recycler.setAdapter(null);
-            binding.root.setFitsSystemWindows(true);
-            binding.includeToolbar.appBarLayout.setVisibility(View.VISIBLE);
+//            binding.root.setFitsSystemWindows(true);
+//            binding.includeToolbar.appBarLayout.setVisibility(View.VISIBLE);
+            binding.refreshLayout.setFitsSystemWindows(true);
+            RxBus.get().post(new ImageFullEvent(false));
             binding.refreshLayout.setEnabled(true);
             binding.recycler.setPadding(DisplayUtil.dp2px(4), DisplayUtil.dp2px(4), DisplayUtil.dp2px(4), DisplayUtil.dp2px(4));
             binding.recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -101,8 +97,10 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
             binding.recycler.preCount = 0;
         } else if (layoutManager instanceof StaggeredGridLayoutManager){
             binding.recycler.setAdapter(null);
-            binding.root.setFitsSystemWindows(false);
-            binding.includeToolbar.appBarLayout.setVisibility(View.GONE);
+//            binding.root.setFitsSystemWindows(false);
+//            binding.includeToolbar.appBarLayout.setVisibility(View.GONE);
+            binding.refreshLayout.setFitsSystemWindows(false);
+            RxBus.get().post(new ImageFullEvent(true));
             binding.refreshLayout.setRefreshing(false);
             binding.refreshLayout.setEnabled(false);
             binding.recycler.setPadding(0, 0, 0, 0);
@@ -140,9 +138,11 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
 
     public void doOnError(boolean isMore) {
         if (isMore) {
+            loadingBinding.root.setVisibility(View.VISIBLE);
             loadingBinding.progressBar.setVisibility(View.GONE);
             loadingBinding.textView.setText("玩坏了...");
 
+            loadingBinding2.root.setVisibility(View.VISIBLE);
             loadingBinding2.progressBar.setVisibility(View.GONE);
             loadingBinding2.textView.setText("玩坏了...");
         } else {
@@ -152,9 +152,11 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
 
     public void doOnComplete() {
         binding.refreshLayout.setRefreshing(false);
+        loadingBinding.root.setVisibility(View.VISIBLE);
         loadingBinding.progressBar.setVisibility(View.GONE);
         loadingBinding.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
 
+        loadingBinding2.root.setVisibility(View.VISIBLE);
         loadingBinding2.progressBar.setVisibility(View.GONE);
         loadingBinding2.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
     }
@@ -182,7 +184,7 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
         if (isMore) newList.addAll(imageList);
         newList.addAll(list);
         Observable.just(newList)
-                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(imageList
+                .map(stories -> DiffUtil.calculateDiff(new ImageDiffCallback(imageList
                         , stories)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -222,4 +224,5 @@ public class GankViewModel extends BindingViewModel<LayoutToobleRecyclerBinding>
     public void onDestroy() {
         compositeDisposable.dispose();
     }
+
 }

@@ -2,6 +2,7 @@ package gavin.sensual.app.capture;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class CaptureFragment extends BindingFragment<LayoutToobleRecyclerBinding
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
 
         binding.refreshLayout.setEnabled(false);
+
+        binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
 
         init();
     }

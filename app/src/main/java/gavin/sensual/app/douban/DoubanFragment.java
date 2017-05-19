@@ -14,7 +14,7 @@ import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragDoubanBinding;
+import gavin.sensual.databinding.LayoutRecyclerBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/9
  */
-public class DoubanFragment extends BindingFragment<FragDoubanBinding>
+public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding>
         implements AutoLoadRecyclerView.OnLoadListener, DoubanViewModel.Callback {
 
     private String cid;
@@ -45,7 +45,7 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_douban;
+        return R.layout.layout_recycler;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class DoubanFragment extends BindingFragment<FragDoubanBinding>
         cid = getArguments().getString(BundleKey.PAGE_TYPE);
 
         mViewModel = new DoubanViewModel(_mActivity, binding, this);
-        binding.setViewModel(mViewModel);
+//        binding.setViewModel(mViewModel);
 
         binding.refreshLayout.setOnRefreshListener(() -> getData(false));
         binding.recycler.setOnLoadListener(this);

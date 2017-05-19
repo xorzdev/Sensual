@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.douban.DoubanAdapter;
 import gavin.sensual.app.base.Image;
+import gavin.sensual.app.douban.DoubanAdapter;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.FragMeiziBinding;
+import gavin.sensual.databinding.LayoutRecyclerBinding;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -22,7 +22,7 @@ import io.reactivex.disposables.CompositeDisposable;
  *
  * @author gavin.xiong 2017/5/8
  */
-public class MeiziViewModel extends BindingViewModel<FragMeiziBinding> {
+public class MeiziViewModel extends BindingViewModel<LayoutRecyclerBinding> {
 
     private WeakReference<Context> mContext;
     private Callback callback;
@@ -33,7 +33,7 @@ public class MeiziViewModel extends BindingViewModel<FragMeiziBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    MeiziViewModel(Context context, FragMeiziBinding binding, Callback callback) {
+    MeiziViewModel(Context context, LayoutRecyclerBinding binding, Callback callback) {
         super(binding);
         this.mContext = new WeakReference<>(context);
         this.callback = callback;

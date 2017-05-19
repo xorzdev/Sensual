@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 
@@ -40,6 +41,7 @@ public class ZhihuFragment extends BindingFragment<LayoutToobleRecyclerBinding> 
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         binding.includeToolbar.toolbar.inflateMenu(R.menu.action_search);
         binding.refreshLayout.setEnabled(false);
+        binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(binding.includeToolbar.toolbar.getMenu().findItem(R.id.action_search));
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setQueryHint("请输入问题 id");

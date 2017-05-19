@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
+import gavin.sensual.app.base.BigImageViewModel;
 import gavin.sensual.app.base.SaveImageEvent;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
@@ -23,7 +24,7 @@ public class GankFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private GankViewModel mViewModel;
+    private BigImageViewModel mViewModel;
 
     public static GankFragment newInstance() {
         return new GankFragment();
@@ -36,13 +37,13 @@ public class GankFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        mViewModel = new GankViewModel(_mActivity, this, binding);
+        mViewModel = new BigImageViewModel(_mActivity, this, binding);
 //        binding.setViewModel(mViewModel);
         binding.includeToolbar.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
-        binding.refreshLayout.setOnRefreshListener(() -> getData(false));
-        binding.recycler.setOnLoadListener(() -> getData(true));
+        binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
+        binding.recycler.setOnLoadListener(() -> getImage(true));
 
-        getData(false);
+        getImage(false);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class GankFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
         }
     }
 
-    private void getData(boolean isMore) {
+    private void getImage(boolean isMore) {
         getDataLayer().getGankService().getImage(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
