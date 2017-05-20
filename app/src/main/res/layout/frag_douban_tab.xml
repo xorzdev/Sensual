@@ -2,13 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="gavin.sensual.app.daily.DailyViewModel" />
-    </data>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,29 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:theme="@style/ToolbarLightOverflow" />
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorColor="@color/colorVector"
-                    app:tabSelectedTextColor="@color/textColorSecondary"
-                    app:tabTextColor="@color/textColorTertiary" />
-
-            </android.support.design.widget.AppBarLayout>
+            <include
+                android:id="@+id/includeToolbar"
+                layout="@layout/layout_toolbar_tab" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"

@@ -21,7 +21,7 @@ import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import java.lang.reflect.Field;
 
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.TestItemBinding;
+import gavin.sensual.databinding.ItemBigImageBinding;
 import gavin.sensual.util.ImageLoader;
 import gavin.sensual.util.L;
 import gavin.sensual.util.ShareUtil;
@@ -39,7 +39,7 @@ public class BigImageView extends FrameLayout {
 
     private CompositeDisposable compositeDisposable;
 
-    private TestItemBinding binding;
+    private ItemBigImageBinding binding;
     private Fragment mFragment;
     private String imageUrl;
     private int position;
@@ -50,7 +50,7 @@ public class BigImageView extends FrameLayout {
     }
 
     private void init(Context context) {
-        binding = TestItemBinding.inflate(LayoutInflater.from(context));
+        binding = ItemBigImageBinding.inflate(LayoutInflater.from(context));
 
         PhotoViewAttacher attacher = binding.photoView.getAttacher();
 

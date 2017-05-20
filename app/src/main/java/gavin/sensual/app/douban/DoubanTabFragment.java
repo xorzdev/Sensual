@@ -2,7 +2,6 @@ package gavin.sensual.app.douban;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 
 import gavin.sensual.R;
 import gavin.sensual.app.main.DrawerToggleEvent;
@@ -31,28 +30,10 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
         init();
     }
 
-//    @Override
-//    public void onSupportVisible() {
-//        L.e("onSupportVisible");
-//        super.onSupportVisible();
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, R.color.colorPrimaryDark));
-//        }
-//    }
-//
-//    @Override
-//    public void onSupportInvisible() {
-//        L.e("onSupportInvisible");
-//        super.onSupportInvisible();
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            _mActivity.getWindow().setStatusBarColor(ContextCompat.getColor(_mActivity, android.R.color.transparent));
-//        }
-//    }
-
     private void init() {
-        binding.toolbar.setTitle("豆瓣妹子");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-        binding.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
+        binding.includeToolbar.toolbar.setTitle("豆瓣妹子");
+        binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
+        binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
         initViewPager();
     }
 
@@ -60,7 +41,6 @@ public class DoubanTabFragment extends BindingFragment<FragDoubanTabBinding> {
         DoubanPagerAdapter pagerAdapter = new DoubanPagerAdapter(getChildFragmentManager());
         binding.viewPager.setAdapter(pagerAdapter);
         binding.viewPager.setOffscreenPageLimit(5);
-        binding.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        binding.includeToolbar.tabLayout.setupWithViewPager(binding.viewPager);
     }
 }

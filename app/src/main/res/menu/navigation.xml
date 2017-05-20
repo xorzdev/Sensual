@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_gank"
             android:icon="@drawable/vt_code_24dp"
-            android:title="干货集中营" />
+            android:title="Gank妹子" />
         <item
             android:id="@+id/nav_douban"
             android:icon="@drawable/vt_douban"
