@@ -55,6 +55,11 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToobleRecyclerBin
     }
 
     @Override
+    public boolean onBackPressedSupport() {
+        return mViewModel.onBackPressedSupport() || super.onBackPressedSupport();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.dispose();
