@@ -14,19 +14,35 @@ class PagerAdapter extends FragmentPagerAdapter {
     private String[] type = new String[]{
             "",
             "xinggan_2",
-            "japan",
-            "taiwan",
-            "mm",
-            "zipai",
+            "sifang_5",
+            "qingchun_3",
+            "meizi_4",
+            "xiaoqingxin_6",
+            "nvshen_7",
+            "qizhi_8",
+            "mote_9",
+            "bijini_10",
+            "baobei_11",
+            "luoli_12",
+            "wangluo_13",
+            "rihan_14",
     };
 
     private String[] tabs = new String[]{
             "首页",
             "性感",
-            "首页",
-            "首页",
-            "首页",
-            "首页",
+            "私房",
+            "清纯",
+            "萌妹子",
+            "小清新",
+            "女神",
+            "气质",
+            "模特",
+            "比基尼",
+            "宝贝",
+            "萝莉",
+            "90后",
+            "日韩",
     };
 
     PagerAdapter(FragmentManager fragmentManager) {

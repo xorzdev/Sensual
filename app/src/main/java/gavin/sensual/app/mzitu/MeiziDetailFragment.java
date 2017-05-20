@@ -46,7 +46,7 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToobleRecyclerBin
             return;
         }
         String title = url.substring(url.lastIndexOf("/") + 1, url.length() - 6);
-        binding.includeToolbar.toolbar.setTitle(title);
+        binding.includeToolbar.toolbar.setTitle(TextUtils.isEmpty(title) ? "妹子图" : title);
         binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         binding.refreshLayout.setOnRefreshListener(() -> getImage(false, url));

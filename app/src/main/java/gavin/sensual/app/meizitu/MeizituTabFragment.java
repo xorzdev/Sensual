@@ -2,7 +2,6 @@ package gavin.sensual.app.meizitu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 
 import gavin.sensual.R;
 import gavin.sensual.app.main.DrawerToggleEvent;
@@ -43,6 +42,5 @@ public class MeizituTabFragment extends BindingFragment<FragDoubanTabBinding> {
         binding.viewPager.setAdapter(pagerAdapter);
         binding.viewPager.setOffscreenPageLimit(5);
         binding.includeToolbar.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.includeToolbar.tabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 }
