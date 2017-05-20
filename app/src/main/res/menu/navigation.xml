@@ -20,8 +20,12 @@
             android:icon="@drawable/vt_douban"
             android:title="豆瓣妹子" />
         <item
-            android:id="@+id/nav_meizi"
+            android:id="@+id/nav_mzitu"
             android:icon="@drawable/vt_meizi"
+            android:title="妹子图" />
+        <item
+            android:id="@+id/nav_meizitu"
+            android:icon="@drawable/vt_favorite_24dp"
             android:title="妹子图" />
         <item
             android:id="@+id/nav_capture"

@@ -1,4 +1,4 @@
-package gavin.sensual.app.meizi;
+package gavin.sensual.app.mzitu;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;

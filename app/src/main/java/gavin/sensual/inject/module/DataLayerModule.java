@@ -8,6 +8,7 @@ import gavin.sensual.service.DailyManager;
 import gavin.sensual.service.DoubanManager;
 import gavin.sensual.service.GankManager;
 import gavin.sensual.service.MeiziManager;
+import gavin.sensual.service.MeizituManager;
 import gavin.sensual.service.ZhihuPicManager;
 import gavin.sensual.service.base.DataLayer;
 
@@ -51,7 +52,18 @@ public class DataLayerModule {
 
     @Singleton
     @Provides
-    public DataLayer provideDataLayer(DailyManager dailyManager, GankManager gankManager, DoubanManager doubanManager, ZhihuPicManager zhihuPicManager, MeiziManager meiziManager) {
-        return new DataLayer(dailyManager, gankManager, doubanManager, zhihuPicManager, meiziManager);
+    public MeizituManager provideMeizituManager() {
+        return new MeizituManager();
+    }
+
+    @Singleton
+    @Provides
+    public DataLayer provideDataLayer(DailyManager dailyManager,
+                                      GankManager gankManager,
+                                      DoubanManager doubanManager,
+                                      ZhihuPicManager zhihuPicManager,
+                                      MeiziManager meiziManager,
+                                      MeizituManager meizituManager) {
+        return new DataLayer(dailyManager, gankManager, doubanManager, zhihuPicManager, meiziManager, meizituManager);
     }
 }

@@ -1,4 +1,4 @@
-package gavin.sensual.app.meizi;
+package gavin.sensual.app.mzitu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,7 +32,7 @@ public class MeiziTabFragment extends BindingFragment<FragDoubanTabBinding> {
     }
 
     private void init() {
-        binding.includeToolbar.toolbar.setTitle("妹子图");
+        binding.includeToolbar.toolbar.setTitle("妹子图 - mzitu");
         binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
         initViewPager();

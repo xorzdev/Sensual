@@ -9,6 +9,7 @@ import gavin.sensual.net.ClientAPI;
 import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
 import gavin.sensual.net.MeiziAPI;
+import gavin.sensual.net.MeizituAPI;
 import gavin.sensual.net.ZhihuPicAPI;
 
 /**
@@ -27,6 +28,8 @@ public abstract class BaseManager {
     ZhihuPicAPI mZhihuPicApi;
     @Inject
     MeiziAPI mMeiziAPI;
+    @Inject
+    MeizituAPI mMeizituAPI;
     @Inject
     Gson mGson;
 
@@ -52,6 +55,10 @@ public abstract class BaseManager {
 
     public MeiziAPI getMeiziAPI() {
         return mMeiziAPI;
+    }
+
+    public MeizituAPI getMeizituAPI() {
+        return mMeizituAPI;
     }
 
     public Gson getGson() {

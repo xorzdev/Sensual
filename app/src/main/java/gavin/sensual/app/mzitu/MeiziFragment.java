@@ -1,4 +1,4 @@
-package gavin.sensual.app.meizi;
+package gavin.sensual.app.mzitu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

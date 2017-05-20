@@ -10,7 +10,8 @@ import gavin.sensual.app.capture.CaptureFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
-import gavin.sensual.app.meizi.MeiziTabFragment;
+import gavin.sensual.app.meizitu.MeizituTabFragment;
+import gavin.sensual.app.mzitu.MeiziTabFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
@@ -34,9 +35,10 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
     public static final int THIRD = 2;
     public static final int FOURTH = 3;
     public static final int FIFTH = 4;
+    public static final int SIXTH = 5;
     private int currPoint;
 
-    private SupportFragment[] mFragments = new SupportFragment[5];
+    private SupportFragment[] mFragments = new SupportFragment[6];
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -54,7 +56,8 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
             mFragments[SECOND] = GankFragment.newInstance();
             mFragments[THIRD] = DoubanTabFragment.newInstance();
             mFragments[FOURTH] = MeiziTabFragment.newInstance();
-            mFragments[FIFTH] = CaptureFragment.newInstance();
+            mFragments[FIFTH] = MeizituTabFragment.newInstance();
+            mFragments[SIXTH] = CaptureFragment.newInstance();
 
             currPoint = FIRST;
 
@@ -63,13 +66,15 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
                     mFragments[SECOND],
                     mFragments[THIRD],
                     mFragments[FOURTH],
-                    mFragments[FIFTH]);
+                    mFragments[FIFTH],
+                    mFragments[SIXTH]);
         } else {
             mFragments[FIRST] = findChildFragment(DailyFragment.class);
             mFragments[SECOND] = findChildFragment(GankFragment.class);
             mFragments[THIRD] = findChildFragment(DoubanTabFragment.class);
             mFragments[FOURTH] = findChildFragment(MeiziTabFragment.class);
-            mFragments[FOURTH] = findChildFragment(CaptureFragment.class);
+            mFragments[FIFTH] = findChildFragment(MeizituTabFragment.class);
+            mFragments[SIXTH] = findChildFragment(CaptureFragment.class);
 
             currPoint = savedInstanceState.getInt(BundleKey.MAIN_CURR_POSITION);
         }
