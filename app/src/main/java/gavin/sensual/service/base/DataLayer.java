@@ -19,13 +19,20 @@ public class DataLayer {
     private DoubanService mDoubanService;
     private ZhihuPicService mZhihuPicService;
     private MeiziPicService mMeiziPicService;
+    private MeizituService mMeizituService;
 
-    public DataLayer(DailyService dailyService, GankService gankService, DoubanService doubanService, ZhihuPicService zhihuPicService, MeiziPicService meiziPicService) {
+    public DataLayer(DailyService dailyService,
+                     GankService gankService,
+                     DoubanService doubanService,
+                     ZhihuPicService zhihuPicService,
+                     MeiziPicService meiziPicService,
+                     MeizituService meizituService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
         mZhihuPicService = zhihuPicService;
         mMeiziPicService = meiziPicService;
+        mMeizituService = meizituService;
     }
 
     public DailyService getDailyService() {
@@ -46,6 +53,10 @@ public class DataLayer {
 
     public MeiziPicService getMeiziPicService() {
         return mMeiziPicService;
+    }
+
+    public MeizituService getMeizituService() {
+        return mMeizituService;
     }
 
     public interface DailyService {
@@ -99,5 +110,9 @@ public class DataLayer {
         Observable<Image> getPic(Fragment fragment, String type, int offset);
 
         Observable<Image> getPic2(Fragment fragment, String url);
+    }
+
+    public interface MeizituService {
+        Observable<Image> getPic(Fragment fragment, String type, int offset);
     }
 }

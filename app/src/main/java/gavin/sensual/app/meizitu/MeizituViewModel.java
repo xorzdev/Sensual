@@ -1,4 +1,4 @@
-package gavin.sensual.app.douban;
+package gavin.sensual.app.meizitu;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
@@ -11,17 +11,18 @@ import java.util.List;
 
 import gavin.sensual.R;
 import gavin.sensual.app.base.Image;
+import gavin.sensual.app.douban.DoubanAdapter;
 import gavin.sensual.base.BindingViewModel;
 import gavin.sensual.databinding.FooterLoadingBinding;
 import gavin.sensual.databinding.LayoutRecyclerBinding;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
- * 豆瓣妹子 ViewModel
+ * 干货集中营 - 福利
  *
  * @author gavin.xiong 2017/5/8
  */
-public class DoubanViewModel extends BindingViewModel<LayoutRecyclerBinding> {
+public class MeizituViewModel extends BindingViewModel<LayoutRecyclerBinding> {
 
     private WeakReference<Context> mContext;
     private Callback callback;
@@ -32,7 +33,7 @@ public class DoubanViewModel extends BindingViewModel<LayoutRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    DoubanViewModel(Context context, LayoutRecyclerBinding binding, Callback callback) {
+    MeizituViewModel(Context context, LayoutRecyclerBinding binding, Callback callback) {
         super(binding);
         this.mContext = new WeakReference<>(context);
         this.callback = callback;

@@ -8,7 +8,7 @@ import java.util.List;
 import gavin.sensual.R;
 import gavin.sensual.base.RecyclerHeaderFooterAdapter;
 import gavin.sensual.base.RecyclerHolder;
-import gavin.sensual.databinding.ItemBigImageBinding;
+import gavin.sensual.databinding.LayoutBigImageBinding;
 import gavin.sensual.databinding.RighterLoadingBinding;
 
 /**
@@ -16,17 +16,17 @@ import gavin.sensual.databinding.RighterLoadingBinding;
  *
  * @author gavin.xiong 2017/5/17
  */
-public class BigImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemBigImageBinding, RighterLoadingBinding, RighterLoadingBinding> {
+public class BigImageAdapter extends RecyclerHeaderFooterAdapter<Image, LayoutBigImageBinding, RighterLoadingBinding, RighterLoadingBinding> {
 
     private Fragment fragment;
 
     public BigImageAdapter(Context context, Fragment fragment, List<Image> mList) {
-        super(context, mList, R.layout.item_big_image);
+        super(context, mList, R.layout.layout_big_image);
         this.fragment = fragment;
     }
 
     @Override
-    public void onBind(RecyclerHolder<ItemBigImageBinding> holder, int position, Image t) {
+    public void onBind(RecyclerHolder<LayoutBigImageBinding> holder, int position, Image t) {
         holder.binding.bigImageView.setData(fragment, t.getUrl(), position);
     }
 }

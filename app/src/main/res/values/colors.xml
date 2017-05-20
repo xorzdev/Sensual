@@ -3,7 +3,6 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#0098E2</color>
-    <!--<color name="colorCover">#10000000</color>-->
     <color name="colorCover">#10000000</color>
     <color name="colorBackground">#F0F0F0</color>
     <color name="colorBackgroundSecondary">#E2E2E2</color>
@@ -15,11 +14,12 @@
     <color name="textColorTertiary">#AAAAAA</color>
 
     <!-- 图片占位色 -->
-    <color name="holderColor00">#ebd8cd</color>
-    <color name="holderColor01">#e3b29d</color>
-    <color name="holderColor02">#9e7367</color>
-    <color name="holderColor03">#9fc9c2</color>
-    <color name="holderColor04">#d5f2e5</color>
-    <color name="holderColor05">#e7c5e0</color>
-    <color name="holderColor06">#566199</color>
+    <color name="colorHolder00">#FFEBEE</color>
+    <color name="colorHolder01">#FFF3E0</color>
+    <color name="colorHolder02">#FFFDE7</color>
+    <color name="colorHolder03">#E8F5E9</color>
+    <color name="colorHolder04">#E0F7FA</color>
+    <color name="colorHolder05">#E3F2FD</color>
+    <color name="colorHolder06">#F3E5F5</color>
+    <!--<color name="colorHolder07">#FAFAFA</color>-->
 </resources>

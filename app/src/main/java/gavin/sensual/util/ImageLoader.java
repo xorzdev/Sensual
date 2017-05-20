@@ -26,13 +26,13 @@ public class ImageLoader {
      * 图片占位色
      */
     private static final int[] COLORS = new int[]{
-            R.color.holderColor00,
-            R.color.holderColor01,
-            R.color.holderColor02,
-            R.color.holderColor03,
-            R.color.holderColor04,
-            R.color.holderColor05,
-            R.color.holderColor06,
+            R.color.colorHolder00,
+            R.color.colorHolder01,
+            R.color.colorHolder02,
+            R.color.colorHolder03,
+            R.color.colorHolder04,
+            R.color.colorHolder05,
+            R.color.colorHolder06,
     };
 
     /**
@@ -197,7 +197,7 @@ public class ImageLoader {
      * 获取随机占位色
      */
     private static int getPlaceholderColor() {
-        return COLORS[(int) (Math.random() * 7)];
+        return COLORS[(int) (Math.random() * COLORS.length)];
     }
 
 }

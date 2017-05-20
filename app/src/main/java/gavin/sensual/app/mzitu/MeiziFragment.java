@@ -1,4 +1,4 @@
-package gavin.sensual.app.meizi;
+package gavin.sensual.app.mzitu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +13,7 @@ import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragMeiziBinding;
+import gavin.sensual.databinding.LayoutRecyclerBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/5/9
  */
-public class MeiziFragment extends BindingFragment<FragMeiziBinding>
+public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
         implements AutoLoadRecyclerView.OnLoadListener, MeiziViewModel.Callback {
 
     private String type;
@@ -43,7 +43,7 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
 
     @Override
     protected int getLayoutId() {
-        return R.layout.frag_meizi;
+        return R.layout.layout_recycler;
     }
 
     @Override
@@ -65,6 +65,7 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
     @Override
     public void onItemClick(List<Image> imageList, int position) {
         if ("zipai".equals(type)) {
+            // TODO: 2017/5/19
             ArrayList<String> stringList = new ArrayList<>();
             for (Image image : imageList) {
                 stringList.add(image.getUrl());
@@ -90,7 +91,7 @@ public class MeiziFragment extends BindingFragment<FragMeiziBinding>
         type = getArguments().getString(BundleKey.PAGE_TYPE);
 
         mViewModel = new MeiziViewModel(_mActivity, binding, this);
-        binding.setViewModel(mViewModel);
+//        binding.setViewModel(mViewModel);
 
         binding.refreshLayout.setOnRefreshListener(() -> getData(false));
         binding.recycler.setOnLoadListener(this);

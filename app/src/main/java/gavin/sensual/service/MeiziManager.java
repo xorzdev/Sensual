@@ -48,12 +48,24 @@ public class MeiziManager extends BaseManager implements DataLayer.MeiziPicServi
                 .map(s -> Image.newImage(fragment, s));
     }
 
+    private boolean flag = false;
+
     @Override
     public Observable<Image> getPic2(Fragment fragment, String url) {
         return Observable.just(url)
                 .map(s -> s.substring(0, s.length() - 6).concat("%02d").concat(s.substring(s.length() - 4)))
                 .flatMap(s -> Observable.range(1, 99).map(i -> String.format(s, i)))
                 .map(s -> Image.newImage(fragment, s))
+                .takeUntil(image -> {
+                    // 允许图片连续不存在的最大间隔为1
+                    if (image.isError()) {
+                        flag = !flag;
+                        return !flag;
+                    } else {
+                        flag = false;
+                    }
+                    return false;
+                })
                 .filter(image -> !image.isError());
     }
 }
