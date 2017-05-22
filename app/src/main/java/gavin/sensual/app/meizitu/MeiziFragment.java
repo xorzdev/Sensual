@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
 import gavin.sensual.app.base.Image;
 import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.app.mzitu.MeiziDetailFragment;
-import gavin.sensual.app.setting.BigImageMultiFragment;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
@@ -120,7 +118,7 @@ public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
                     binding.recycler.offset--;
                 })
                 .subscribe(image -> {
-                    binding.recycler.haveMore = true;
+                    binding.recycler.haveMore = !TextUtils.isEmpty(type);
                     mViewModel.onNext(image);
                 }, e -> mViewModel.onError(e, isMore));
     }

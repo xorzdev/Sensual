@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_search"
+    <item android:id="@+id/actionSearch"
         android:title="搜索"
         android:icon="@drawable/vt_search_24dp"
         app:showAsAction="ifRoom|collapseActionView"

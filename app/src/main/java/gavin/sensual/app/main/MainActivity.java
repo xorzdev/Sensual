@@ -12,6 +12,7 @@ import android.view.View;
 import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
+import gavin.sensual.app.common.TestCommentFragment;
 import gavin.sensual.app.setting.AboutFragment;
 import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.base.BindingActivity;
@@ -80,7 +81,8 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                 return false;
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());
-                startDelay(TestFragment.newInstance());
+//                startDelay(TestFragment.newInstance());
+                startDelay(TestCommentFragment.newInstance());
                 return false;
         }
         return false;

@@ -9,8 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
+import gavin.sensual.inject.component.ApplicationComponent;
 
 /**
  * 分享助手
@@ -42,7 +42,7 @@ public class ShareUtil {
      * 通过imageView已有的图片分享Image
      */
     public static void shareImage(Fragment fragment, String url) throws Exception {
-        String path = CacheHelper.getCacheDir(App.getApplication()) + File.separator +"share.jpg";
+        String path = CacheHelper.getCacheDir(ApplicationComponent.Instance.get().getApplication()) + File.separator +"share.jpg";
         compressImage(ImageLoader.getBitmap(fragment, url), path);
         tryShare(fragment, path);
     }

@@ -14,14 +14,14 @@ import java.util.List;
 import gavin.sensual.R;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
+import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
 
 /**
  * 知乎看图
  *
  * @author gavin.xiong 2017/5/10
  */
-public class ZhihuFragment extends BindingFragment<LayoutToobleRecyclerBinding> {
+public class ZhihuFragment extends BindingFragment<LayoutToolbarRecyclerBinding> {
 
     private List<ZhihuQuestion> targetList;
 
@@ -31,7 +31,7 @@ public class ZhihuFragment extends BindingFragment<LayoutToobleRecyclerBinding> 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_tooble_recycler;
+        return R.layout.layout_toolbar_recycler;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ZhihuFragment extends BindingFragment<LayoutToobleRecyclerBinding> 
         binding.includeToolbar.toolbar.inflateMenu(R.menu.action_search);
         binding.refreshLayout.setEnabled(false);
         binding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(binding.includeToolbar.toolbar.getMenu().findItem(R.id.action_search));
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(binding.includeToolbar.toolbar.getMenu().findItem(R.id.actionSearch));
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setQueryHint("请输入问题 id");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

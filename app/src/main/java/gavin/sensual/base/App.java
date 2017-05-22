@@ -13,12 +13,9 @@ import gavin.sensual.inject.module.ApplicationModule;
  */
 public class App extends Application {
 
-    private static App sApplication;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        sApplication = this;
         initDagger();
     }
 
@@ -27,9 +24,5 @@ public class App extends Application {
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build());
-    }
-
-    public static App getApplication() {
-        return sApplication;
     }
 }

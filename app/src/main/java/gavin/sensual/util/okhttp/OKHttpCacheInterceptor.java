@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import java.io.IOException;
 
 import gavin.sensual.base.App;
+import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.inject.module.ClientAPIModule;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -26,7 +27,7 @@ public class OKHttpCacheInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (!isNetworkAvailable(App.getApplication())) {
+        if (!isNetworkAvailable(ApplicationComponent.Instance.get().getApplication())) {
             // 网络不可用时强制使用缓存
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)

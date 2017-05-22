@@ -1,36 +1,29 @@
-package gavin.sensual.app.mzitu;
+package gavin.sensual.app.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import gavin.sensual.R;
-import gavin.sensual.app.common.BigImagePopEvent;
-import gavin.sensual.app.common.ToolbarRecyclerViewModel;
+import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
- * 这里是萌萌哒注释君
+ * 测试
  *
- * @author gavin.xiong 2017/5/15
+ * @author gavin.xiong 2017/4/25
  */
-public class MeiziDetailFragment extends BindingFragment<LayoutToolbarRecyclerBinding> {
+public class TestCommentFragment extends BindingFragment<LayoutToolbarRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private ToolbarRecyclerViewModel mViewModel;
 
-    public static MeiziDetailFragment newInstance(String url) {
-        Bundle args = new Bundle();
-        args.putString(BundleKey.PAGE_TYPE, url);
-        MeiziDetailFragment fragment = new MeiziDetailFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public static TestCommentFragment newInstance() {
+        return new TestCommentFragment();
     }
 
     @Override
@@ -41,20 +34,14 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToolbarRecyclerBi
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         mViewModel = new ToolbarRecyclerViewModel(_mActivity, this, binding);
-
-        String url = getArguments().getString(BundleKey.PAGE_TYPE);
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
-        String title = url.substring(url.lastIndexOf("/") + 1, url.length() - 6);
-        binding.includeToolbar.toolbar.setTitle(TextUtils.isEmpty(title) ? "妹子图" : title);
-        binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
-        binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
-        binding.refreshLayout.setOnRefreshListener(() -> getImage(false, url));
+//        binding.setViewModel(mViewModel);
+        binding.includeToolbar.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
+        binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
+        binding.recycler.setOnLoadListener(() -> getImage(true));
 
         subscribeEvent();
 
-        getImage(false, url);
+        getImage(false);
     }
 
     @Override
@@ -67,6 +54,13 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToolbarRecyclerBi
     }
 
     private void subscribeEvent() {
+        RxBus.get().toObservable(LoadMoreEvent.class)
+                .doOnSubscribe(compositeDisposable::add)
+                .subscribe(event -> {
+                    if (event.requestCode != hashCode()) return;
+                    getImage(true);
+                });
+
         RxBus.get().toObservable(BigImagePopEvent.class)
                 .doOnSubscribe(compositeDisposable::add)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -76,7 +70,8 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToolbarRecyclerBi
                 });
     }
 
-    private void getImage(boolean isMore, String url) {
-        mViewModel.getImage(getDataLayer().getMeiziPicService().getPic2(this, url), isMore);
+    private void getImage(boolean isMore) {
+        mViewModel.getImage(getDataLayer().getGankService().getImage(this, binding.recycler.limit, isMore ? binding.recycler.offset + 1 : 1), isMore);
     }
+
 }

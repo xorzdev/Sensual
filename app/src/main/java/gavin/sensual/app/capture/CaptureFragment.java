@@ -15,14 +15,14 @@ import gavin.sensual.app.zhihu.ZhihuQuestion;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.LayoutToobleRecyclerBinding;
+import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
 
 /**
  * 抓图
  *
  * @author gavin.xiong 2017/5/10
  */
-public class CaptureFragment extends BindingFragment<LayoutToobleRecyclerBinding> implements BindingAdapter.OnItemClickListener {
+public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBinding> implements BindingAdapter.OnItemClickListener {
 
     private List<ZhihuQuestion> targetList;
 
@@ -32,7 +32,7 @@ public class CaptureFragment extends BindingFragment<LayoutToobleRecyclerBinding
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_tooble_recycler;
+        return R.layout.layout_toolbar_recycler;
     }
 
     @Override

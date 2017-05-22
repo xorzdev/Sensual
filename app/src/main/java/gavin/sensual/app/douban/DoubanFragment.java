@@ -4,34 +4,29 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gavin.sensual.R;
 import gavin.sensual.app.base.Image;
-import gavin.sensual.app.main.StartFragmentEvent;
-import gavin.sensual.app.setting.BigImageMultiFragment;
+import gavin.sensual.app.common.BigImagePopEvent;
+import gavin.sensual.app.common.LoadMoreEvent;
+import gavin.sensual.app.common.RecyclerViewModel;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutRecyclerBinding;
-import gavin.sensual.widget.AutoLoadRecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 豆瓣图片列表页
  *
  * @author gavin.xiong 2017/5/9
  */
-public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding>
-        implements AutoLoadRecyclerView.OnLoadListener, DoubanViewModel.Callback {
+public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding> {
 
     private String cid;
 
-    private DoubanViewModel mViewModel;
+    private RecyclerViewModel mViewModel;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -56,22 +51,8 @@ public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding>
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         init();
-        getData(false);
-    }
-
-    @Override
-    public void onLoad() {
-        getData(true);
-    }
-
-    @Override
-    public void onItemClick(List<Image> imageList, int position) {
-        ArrayList<String> stringList = new ArrayList<>();
-        for (Image image : imageList) {
-            stringList.add(image.getUrl());
-        }
-        RxBus.get().post(new StartFragmentEvent(
-                BigImageMultiFragment.newInstance(stringList, position)));
+        subscribeEvent();
+        getImage(false);
     }
 
     @Override
@@ -83,14 +64,30 @@ public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding>
         compositeDisposable.dispose();
     }
 
+    private void subscribeEvent() {
+        RxBus.get().toObservable(LoadMoreEvent.class)
+                .doOnSubscribe(compositeDisposable::add)
+                .subscribe(event -> {
+                    if (event.requestCode != hashCode()) return;
+                    getImage(true);
+                });
+
+        RxBus.get().toObservable(BigImagePopEvent.class)
+                .doOnSubscribe(compositeDisposable::add)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (event.requestCode != hashCode()) return;
+                    binding.recycler.smoothScrollToPosition(event.position);
+                });
+    }
+
     private void init() {
         cid = getArguments().getString(BundleKey.PAGE_TYPE);
 
-        mViewModel = new DoubanViewModel(_mActivity, binding, this);
-//        binding.setViewModel(mViewModel);
+        mViewModel = new RecyclerViewModel(_mActivity, this, binding);
 
-        binding.refreshLayout.setOnRefreshListener(() -> getData(false));
-        binding.recycler.setOnLoadListener(this);
+        binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
+        binding.recycler.setOnLoadListener(() -> getImage(true));
     }
 
     private Observable<Image> getResult(boolean isMore) {
@@ -101,29 +98,7 @@ public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding>
         }
     }
 
-    private void getData(boolean isMore) {
-        getResult(isMore)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> {
-                    compositeDisposable.add(disposable);
-                    mViewModel.doOnSubscribe(isMore);
-                    binding.recycler.loadData(isMore);
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> {
-                    mViewModel.doOnComplete();
-                    binding.recycler.loading = false;
-                })
-                .doOnError(throwable -> {
-                    mViewModel.doOnError(isMore);
-                    binding.recycler.loading = false;
-                    binding.recycler.offset--;
-                })
-                .subscribe(image -> {
-                    binding.recycler.haveMore = true;
-                    mViewModel.onNext(image);
-                }, e -> mViewModel.onError(e, isMore));
+    private void getImage(boolean isMore) {
+        mViewModel.getImage(getResult(isMore), isMore);
     }
-
 }

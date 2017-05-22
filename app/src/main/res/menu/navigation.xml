@@ -25,7 +25,7 @@
             android:title="妹子图" />
         <item
             android:id="@+id/nav_meizitu"
-            android:icon="@drawable/vt_favorite_24dp"
+            android:icon="@drawable/vt_meizitu"
             android:title="妹子图" />
         <item
             android:id="@+id/nav_capture"

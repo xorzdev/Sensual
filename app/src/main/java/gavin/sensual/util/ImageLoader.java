@@ -63,6 +63,19 @@ public class ImageLoader {
     /**
      * 正常加载图片
      */
+    public static void loadImage(Fragment fragment, ImageView imageView, String url, int width, int height) {
+        int colorRes = getPlaceholderColor();
+        Glide.with(fragment)
+                .load(url)
+                .placeholder(colorRes)
+                .error(colorRes)
+                .override(width, height)
+                .into(imageView);
+    }
+
+    /**
+     * 正常加载图片
+     */
     public static void loadImage(Fragment fragment, ImageView imageView, String url) {
         int colorRes = getPlaceholderColor();
         Glide.with(fragment)

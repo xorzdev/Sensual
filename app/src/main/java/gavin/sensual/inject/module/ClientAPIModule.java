@@ -10,8 +10,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import gavin.sensual.base.App;
 import gavin.sensual.base.CacheHelper;
+import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
 import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;
 import gavin.sensual.util.okhttp.OKHttpCacheNetworkInterceptor;
@@ -162,6 +162,6 @@ public class ClientAPIModule {
     @Singleton
     @Provides
     public Cache provideCache() {
-        return new Cache(new File(CacheHelper.getCacheDir(App.getApplication()), "responses"), 50 * 1024 * 1024);
+        return new Cache(new File(CacheHelper.getCacheDir(ApplicationComponent.Instance.get().getApplication()), "responses"), 50 * 1024 * 1024);
     }
 }

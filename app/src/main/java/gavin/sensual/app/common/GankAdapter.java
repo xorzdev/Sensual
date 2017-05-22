@@ -1,4 +1,4 @@
-package gavin.sensual.app.gank;
+package gavin.sensual.app.common;
 
 import android.content.Context;
 import android.databinding.ViewDataBinding;
