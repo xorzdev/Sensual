@@ -30,6 +30,10 @@ public class Image implements Serializable {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -69,9 +73,17 @@ public class Image implements Serializable {
             image.setWidth(bm.getWidth());
             image.setHeight(bm.getHeight());
         } catch (InterruptedException | ExecutionException e) {
-            image.setWidth(500);
-            image.setHeight(500);
-            image.error = true;
+            try {
+                String fixUrl = url.replace("jpg", "jpeg").replace("JPG", "jpeg");
+                Bitmap bm = ImageLoader.getBitmap(fragment, fixUrl);
+                image.setUrl(fixUrl);
+                image.setWidth(bm.getWidth());
+                image.setHeight(bm.getHeight());
+            } catch  (InterruptedException | ExecutionException e2) {
+                image.setWidth(500);
+                image.setHeight(500);
+                image.error = true;
+            }
         }
         return image;
     }

@@ -34,7 +34,7 @@ public class MeiziManager extends BaseManager implements DataLayer.MeiziPicServi
                 .map(s -> s
                         .substring(0, s.lastIndexOf("/") + 1).replaceAll("thumbs/", "")
                         .concat(s.substring(s.indexOf("_") + 1, s.lastIndexOf("_")))
-                        .concat(s.substring(s.length() - 4)))
+                        .concat(s.substring(s.lastIndexOf("."))))
                 .map(s -> Image.newImage(fragment, s));
     }
 
@@ -53,7 +53,7 @@ public class MeiziManager extends BaseManager implements DataLayer.MeiziPicServi
     @Override
     public Observable<Image> getPic2(Fragment fragment, String url) {
         return Observable.just(url)
-                .map(s -> s.substring(0, s.length() - 6).concat("%02d").concat(s.substring(s.length() - 4)))
+                .map(s -> s.substring(0, s.lastIndexOf(".") - 2).concat("%02d").concat(s.substring(s.lastIndexOf("."))))
                 .flatMap(s -> Observable.range(1, 99).map(i -> String.format(s, i)))
                 .map(s -> Image.newImage(fragment, s))
                 .takeUntil(image -> {
