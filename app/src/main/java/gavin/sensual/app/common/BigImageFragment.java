@@ -122,6 +122,7 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
 
         binding.recycler.setOnLoadListener(() -> RxBus.get().post(new LoadMoreEvent(requestCode)));
 
+        binding.recycler.preCount = 3;
         binding.recycler.haveMore = true;
         linearLayoutManager = (LinearLayoutManager) binding.recycler.getLayoutManager();
     }

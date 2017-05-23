@@ -52,7 +52,10 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
     public void onItemClick(int position) {
         switch (position) {
             case 0:
-                RxBus.get().post(new StartFragmentEvent(ZhihuFragment.newInstance()));
+                RxBus.get().post(new StartFragmentEvent(ZhihuFragment.newInstance(ZhihuFragment.TYPE_QUESTION)));
+                break;
+            case 1:
+                RxBus.get().post(new StartFragmentEvent(ZhihuFragment.newInstance(ZhihuFragment.TYPE_COLLECTION)));
                 break;
             default:
                 break;
@@ -61,8 +64,8 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
 
     private void init() {
         targetList = new ArrayList<>();
-        targetList.add(new ZhihuQuestion(0L, 0, "知乎问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
-        targetList.add(new ZhihuQuestion(1L, 1, "知乎收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(0L, 0, "知乎看图 - 问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(1L, 1, "知乎看图 - 收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
