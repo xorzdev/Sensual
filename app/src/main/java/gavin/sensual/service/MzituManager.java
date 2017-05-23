@@ -15,7 +15,7 @@ import okhttp3.ResponseBody;
  *
  * @author gavin.xiong 2017/4/28
  */
-public class MeiziManager extends BaseManager implements DataLayer.MeiziPicService {
+public class MzituManager extends BaseManager implements DataLayer.MzituService {
 
     @Override
     public Observable<Image> getPic(Fragment fragment, String type, int offset) {
@@ -25,7 +25,7 @@ public class MeiziManager extends BaseManager implements DataLayer.MeiziPicServi
     }
 
     private Observable<Image> get1(Fragment fragment, String type, String offset1, String offset2) {
-        return getMeiziAPI().getPic(type, offset1, offset2)
+        return getMzituAPI().getPic(type, offset1, offset2)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=main-content] div[class=postlist] img"))
@@ -39,7 +39,7 @@ public class MeiziManager extends BaseManager implements DataLayer.MeiziPicServi
     }
 
     private Observable<Image> get2(Fragment fragment, String type, String offset1, String offset2) {
-        return getMeiziAPI().getPic(type, offset1, offset2)
+        return getMzituAPI().getPic(type, offset1, offset2)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=comment-body] img"))

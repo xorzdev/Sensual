@@ -50,7 +50,6 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
 
     private void init() {
         mViewModel = new DailyViewModel(_mActivity, binding);
-        binding.setViewModel(mViewModel);
 
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
 

@@ -1,4 +1,4 @@
-package gavin.sensual.app.zhihu;
+package gavin.sensual.app.capture.zhihu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
  *
  * @author gavin.xiong 2017/5/11
  */
-public class ZhihuQuestionFragment extends BindingFragment<LayoutToolbarRecyclerBinding> {
+public class ZhihuCollectionFragment extends BindingFragment<LayoutToolbarRecyclerBinding> {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -27,10 +27,10 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToolbarRecycler
 
     private ToolbarRecyclerViewModel mViewModel;
 
-    public static ZhihuQuestionFragment newInstance(long question) {
+    public static ZhihuCollectionFragment newInstance(long question) {
         Bundle bundle = new Bundle();
         bundle.putLong(BundleKey.PAGE_TYPE, question);
-        ZhihuQuestionFragment fragment = new ZhihuQuestionFragment();
+        ZhihuCollectionFragment fragment = new ZhihuCollectionFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -84,6 +84,6 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToolbarRecycler
     }
 
     private void getImage(boolean isMore) {
-        mViewModel.getImage(getDataLayer().getZhihuPicService().getPic(this, question, 20, isMore ? binding.recycler.offset : 0), isMore);
+        mViewModel.getImage(getDataLayer().getZhihuPicService().getCollectionPic(this, question, isMore ? binding.recycler.offset + 1 : 1), isMore);
     }
 }

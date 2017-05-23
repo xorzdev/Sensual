@@ -30,7 +30,7 @@
         <item
             android:id="@+id/nav_capture"
             android:icon="@drawable/vt_crop_24dp"
-            android:title="抓图" />
+            android:title="发现" />
     </group>
 
     <group>

@@ -18,6 +18,10 @@ public interface ZhihuPicAPI {
             "authorization: oauth c3cef7c66a1843f8b3a9e6a1e3160e20",
             "Cache-Control: max-stale=3600"
     })
-    @GET("{question}/answers")
-    Observable<ResponseBody> getAnswer(@Path("question") long question, @Query("include") String include, @Query("limit") int limit, @Query("offset") int offset);
+    @GET("api/v4/questions/{id}/answers")
+    Observable<ResponseBody> getAnswer(@Path("id") long id, @Query("include") String include, @Query("limit") int limit, @Query("offset") int offset);
+
+    @Headers("Cache-Control: max-stale=3600")
+    @GET("collection/{id}")
+    Observable<ResponseBody> getCollection(@Path("id") long id, @Query("page") int offset);
 }

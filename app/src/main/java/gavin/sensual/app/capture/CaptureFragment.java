@@ -10,8 +10,8 @@ import java.util.List;
 import gavin.sensual.R;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.app.main.StartFragmentEvent;
-import gavin.sensual.app.zhihu.ZhihuFragment;
-import gavin.sensual.app.zhihu.ZhihuQuestion;
+import gavin.sensual.app.capture.zhihu.ZhihuFragment;
+import gavin.sensual.app.capture.zhihu.ZhihuQuestion;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
@@ -37,7 +37,7 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        binding.includeToolbar.toolbar.setTitle("抓图");
+        binding.includeToolbar.toolbar.setTitle("发现");
         binding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
 
@@ -61,7 +61,8 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
 
     private void init() {
         targetList = new ArrayList<>();
-        targetList.add(new ZhihuQuestion(0L, "知乎看图", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
+        targetList.add(new ZhihuQuestion(0L, 0, "知乎问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(1L, 1, "知乎收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);

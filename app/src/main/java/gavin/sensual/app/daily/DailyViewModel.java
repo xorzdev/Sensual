@@ -43,6 +43,7 @@ public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
     }
 
     private void init() {
+        binding.setViewModel(this);
         binding.toolbar.setTitle("知乎日报");
         binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
 

@@ -1,4 +1,4 @@
-package gavin.sensual.app.zhihu;
+package gavin.sensual.app.capture.zhihu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,7 +49,8 @@ public class ZhihuFragment extends BindingFragment<LayoutToolbarRecyclerBinding>
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {
-                    start(ZhihuQuestionFragment.newInstance(Long.parseLong(query)));
+//                    start(ZhihuQuestionFragment.newInstance(Long.parseLong(query)));
+                    start(ZhihuCollectionFragment.newInstance(Long.parseLong(query)));
                 } catch (NumberFormatException e) {
                     Snackbar.make(binding.recycler, "请输入正确问题id", Snackbar.LENGTH_LONG).show();
                 }
@@ -67,13 +68,23 @@ public class ZhihuFragment extends BindingFragment<LayoutToolbarRecyclerBinding>
 
     private void init() {
         targetList = new ArrayList<>();
-        targetList.add(new ZhihuQuestion(37787176L, "37787176 - 当一个颜值很高的程序员是怎样一番体验？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
-        targetList.add(new ZhihuQuestion(20843119L, "20843119 - 拍照的时候怎么让表情自然？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
-        targetList.add(new ZhihuQuestion(22212644L, "22212644 - 胸大怎么搭配衣服？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
-        targetList.add(new ZhihuQuestion(38285230L, "38285230 - 有一群漂亮的朋友是什么体验？", "http://static.cfanz.cn/uploads/jpg/2012/11/01/23/df24d55432.jpg"));
+        targetList.add(new ZhihuQuestion(47291204L, 0, "47291204 - 灵魂画师是一种怎样的体验？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(26830927L, 0, "26830927 - 国内风景最美的地方？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(37787176L, 0, "37787176 - 当一个颜值很高的程序员是怎样一番体验？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(20843119L, 0, "20843119 - 拍照的时候怎么让表情自然？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(22212644L, 0, "22212644 - 胸大怎么搭配衣服？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(38285230L, 0, "38285230 - 有一群漂亮的朋友是什么体验？", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(123354652L, 1, "123354652 - 看知乎姑娘这里就够了", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        targetList.add(new ZhihuQuestion(72114548L, 1, "72114548 - 欲罢不能的大美妞", "https://img3.doubanio.com/lpic/s28586695.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
-        adapter.setOnItemClickListener(position -> start(ZhihuQuestionFragment.newInstance(targetList.get(position).getId())));
+        adapter.setOnItemClickListener(position -> {
+            if (targetList.get(position).getType() == 0) {
+                start(ZhihuQuestionFragment.newInstance(targetList.get(position).getId()));
+            } else if (targetList.get(position).getType() == 1) {
+                start(ZhihuCollectionFragment.newInstance(targetList.get(position).getId()));
+            }
+        });
     }
 }

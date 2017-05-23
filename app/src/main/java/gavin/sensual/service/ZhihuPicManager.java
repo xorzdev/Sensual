@@ -18,11 +18,11 @@ import okhttp3.ResponseBody;
 public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicService {
 
     @Override
-    public Observable<Image> getPic(Fragment fragment, long question, int limit, int offset) {
-        return getZhihuPicApi().getAnswer(question, "data[*].is_normal,content", limit, offset)
+    public Observable<Image> getQuestionPic(Fragment fragment, long id, int limit, int offset) {
+        return getZhihuPicApi().getAnswer(id, "data[*].is_normal,content", limit, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
-                .map(document ->  document.select("img[data-actualsrc]"))
+                .map(document -> document.select("img[data-actualsrc]"))
                 .flatMap(Observable::fromIterable)
                 .map(element -> element.attr("data-actualsrc"))
                 .filter(s -> s.length() > 6)
@@ -30,4 +30,18 @@ public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicSe
                 .map(s -> Image.newImage(fragment, s));
     }
 
+    @Override
+    public Observable<Image> getCollectionPic(Fragment fragment, long id, int offset) {
+        return getZhihuPicApi().getCollection(id, offset)
+                .map(ResponseBody::string)
+                .map(Jsoup::parse)
+                .map(document -> document.select("div[data-action=/answer/content] textarea[class=content]"))
+                .map(elements -> elements.html().replaceAll("&lt;", "<").replaceAll("&gt;", ">"))
+                .map(Jsoup::parse)
+                .map(document -> document.select("img"))
+                .flatMap(Observable::fromIterable)
+                .map(element -> element.attr("src"))
+                .filter(s -> s.length() > 6)
+                .map(s -> Image.newImage(fragment, s));
+    }
 }

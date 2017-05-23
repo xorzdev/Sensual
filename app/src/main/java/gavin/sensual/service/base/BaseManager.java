@@ -8,8 +8,8 @@ import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
 import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
-import gavin.sensual.net.MeiziAPI;
 import gavin.sensual.net.MeizituAPI;
+import gavin.sensual.net.MzituAPI;
 import gavin.sensual.net.ZhihuPicAPI;
 
 /**
@@ -27,7 +27,7 @@ public abstract class BaseManager {
     @Inject
     ZhihuPicAPI mZhihuPicApi;
     @Inject
-    MeiziAPI mMeiziAPI;
+    MzituAPI mMeiziAPI;
     @Inject
     MeizituAPI mMeizituAPI;
     @Inject
@@ -53,7 +53,7 @@ public abstract class BaseManager {
         return mZhihuPicApi;
     }
 
-    public MeiziAPI getMeiziAPI() {
+    public MzituAPI getMzituAPI() {
         return mMeiziAPI;
     }
 

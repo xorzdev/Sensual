@@ -32,7 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class ClientAPIModule {
 
-    private static final String API_VERSION = "4";
     private static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
 
     /**

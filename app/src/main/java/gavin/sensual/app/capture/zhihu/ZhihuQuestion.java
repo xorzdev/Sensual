@@ -1,4 +1,4 @@
-package gavin.sensual.app.zhihu;
+package gavin.sensual.app.capture.zhihu;
 
 import gavin.sensual.app.capture.Target;
 
@@ -12,9 +12,11 @@ public class ZhihuQuestion implements Target {
     private Long id;
     private String title;
     private String image;
+    private int type; // 0:question 1:collection
 
-    public ZhihuQuestion(Long id, String title, String image) {
+    public ZhihuQuestion(Long id, int type, String title, String image) {
         this.id = id;
+        this.type = type;
         this.title = title;
         this.image = image;
     }
@@ -22,6 +24,10 @@ public class ZhihuQuestion implements Target {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public int getType() {
+        return type;
     }
 
     @Override

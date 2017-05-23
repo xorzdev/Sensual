@@ -11,7 +11,7 @@ import retrofit2.http.Path;
  *
  * @author gavin.xiong 2016/12/9
  */
-public interface MeiziAPI {
+public interface MzituAPI {
 
     @Headers("Cache-Control: max-stale=1800")
     @GET("{type}/{offset1}/{offset2}/")

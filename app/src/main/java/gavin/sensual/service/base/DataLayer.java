@@ -18,20 +18,20 @@ public class DataLayer {
     private GankService mGankService;
     private DoubanService mDoubanService;
     private ZhihuPicService mZhihuPicService;
-    private MeiziPicService mMeiziPicService;
+    private MzituService mMzituService;
     private MeizituService mMeizituService;
 
     public DataLayer(DailyService dailyService,
                      GankService gankService,
                      DoubanService doubanService,
                      ZhihuPicService zhihuPicService,
-                     MeiziPicService meiziPicService,
+                     MzituService mzituService,
                      MeizituService meizituService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
         mZhihuPicService = zhihuPicService;
-        mMeiziPicService = meiziPicService;
+        mMzituService = mzituService;
         mMeizituService = meizituService;
     }
 
@@ -51,8 +51,8 @@ public class DataLayer {
         return mZhihuPicService;
     }
 
-    public MeiziPicService getMeiziPicService() {
-        return mMeiziPicService;
+    public MzituService getMeiziPicService() {
+        return mMzituService;
     }
 
     public MeizituService getMeizituService() {
@@ -75,24 +75,9 @@ public class DataLayer {
          * @return News
          */
         Observable<News> getNews(long newsId);
-
-        /**
-         * 缓存今日热文列表
-         *
-         * @param daily Daily
-         */
-        void cacheDaily(final Daily daily);
     }
 
     public interface GankService {
-
-        /**
-         * 获取福利
-         *
-         * @param limit 分页大小
-         * @param no    页码
-         * @return Result
-         */
         Observable<Image> getImage(Fragment fragment, int limit, int no);
     }
 
@@ -103,10 +88,12 @@ public class DataLayer {
     }
 
     public interface ZhihuPicService {
-        Observable<Image> getPic(Fragment fragment, long question, int limit, int offset);
+        Observable<Image> getQuestionPic(Fragment fragment, long question, int limit, int offset);
+
+        Observable<Image> getCollectionPic(Fragment fragment, long question, int offset);
     }
 
-    public interface MeiziPicService {
+    public interface MzituService {
         Observable<Image> getPic(Fragment fragment, String type, int offset);
 
         Observable<Image> getPic2(Fragment fragment, String url);
