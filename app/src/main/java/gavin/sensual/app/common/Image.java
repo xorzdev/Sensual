@@ -1,4 +1,4 @@
-package gavin.sensual.app.base;
+package gavin.sensual.app.common;
 
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
@@ -28,10 +28,6 @@ public class Image implements Serializable {
 
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public int getWidth() {
@@ -67,24 +63,32 @@ public class Image implements Serializable {
 
     public static Image newImage(Fragment fragment, String url) {
         Image image = new Image();
-        image.url = url;
-        try {
-            Bitmap bm = ImageLoader.getBitmap(fragment, url);
+        Bitmap bm = getBitmap(fragment, url);
+        if (bm == null) {
+            url = url.replace(url.substring(url.lastIndexOf(".") + 1), "jpeg");
+            bm = getBitmap(fragment, url);
+        }
+        if (bm == null) {
+            url = url.replace(url.substring(url.lastIndexOf(".") + 1), "png");
+            bm = getBitmap(fragment, url);
+        }
+        if (bm != null) {
             image.setWidth(bm.getWidth());
             image.setHeight(bm.getHeight());
-        } catch (InterruptedException | ExecutionException e) {
-            try {
-                String fixUrl = url.replace("jpg", "jpeg").replace("JPG", "jpeg");
-                Bitmap bm = ImageLoader.getBitmap(fragment, fixUrl);
-                image.setUrl(fixUrl);
-                image.setWidth(bm.getWidth());
-                image.setHeight(bm.getHeight());
-            } catch  (InterruptedException | ExecutionException e2) {
-                image.setWidth(500);
-                image.setHeight(500);
-                image.error = true;
-            }
+        } else {
+            image.error = true;
+            image.setWidth(500);
+            image.setHeight(500);
         }
+        image.url = url;
         return image;
+    }
+
+    private static Bitmap getBitmap(Fragment fragment, String url) {
+        try {
+            return ImageLoader.getBitmap(fragment, url);
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
     }
 }

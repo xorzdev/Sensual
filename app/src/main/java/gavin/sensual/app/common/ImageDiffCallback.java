@@ -1,8 +1,10 @@
-package gavin.sensual.app.base;
+package gavin.sensual.app.common;
 
 import android.support.v7.util.DiffUtil;
 
 import java.util.List;
+
+import gavin.sensual.app.common.Image;
 
 /**
  * 日报列表数据比对器

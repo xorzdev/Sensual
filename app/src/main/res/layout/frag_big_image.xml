@@ -16,7 +16,7 @@
             android:fitsSystemWindows="false"
             android:orientation="horizontal"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/item_image" />
+            tools:listitem="@layout/item_big_image" />
 
         <FrameLayout
             android:layout_width="match_parent"

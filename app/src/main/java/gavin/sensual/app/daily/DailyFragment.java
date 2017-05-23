@@ -54,7 +54,8 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
 
         binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
 
-        binding.banner.setOnItemClickListener(i -> start(NewsFragment.newInstance(mViewModel.topStoryList.get(i).getId())));
+        binding.banner.setOnItemClickListener(i ->
+                RxBus.get().post(new StartFragmentEvent(NewsFragment.newInstance(mViewModel.topStoryList.get(i).getId()))));
 
         binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
         binding.recycler.setOnLoadListener(this);

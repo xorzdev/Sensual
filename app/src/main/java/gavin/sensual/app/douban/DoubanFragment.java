@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import gavin.sensual.R;
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.app.common.BigImagePopEvent;
 import gavin.sensual.app.common.LoadMoreEvent;
 import gavin.sensual.app.common.RecyclerViewModel;

@@ -2,7 +2,7 @@ package gavin.sensual.service.base;
 
 import android.support.v4.app.Fragment;
 
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import io.reactivex.Observable;

@@ -2,7 +2,7 @@ package gavin.sensual.service;
 
 import android.support.v4.app.Fragment;
 
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.app.gank.Result;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;

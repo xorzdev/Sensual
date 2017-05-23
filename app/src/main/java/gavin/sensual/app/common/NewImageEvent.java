@@ -1,7 +1,5 @@
 package gavin.sensual.app.common;
 
-import gavin.sensual.app.base.Image;
-
 /**
  * 这里是萌萌哒注释君
  *

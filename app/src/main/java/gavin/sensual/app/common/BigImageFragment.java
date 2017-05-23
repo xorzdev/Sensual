@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.base.BigImageAdapter;
-import gavin.sensual.app.base.BigImageClickEvent;
-import gavin.sensual.app.base.Image;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;

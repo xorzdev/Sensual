@@ -1,4 +1,4 @@
-package gavin.sensual.app.base;
+package gavin.sensual.app.common;
 
 public class BigImageClickEvent {
 

@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.app.mzitu.MeiziDetailFragment;
 import gavin.sensual.base.BindingFragment;

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import org.jsoup.Jsoup;
 
-import gavin.sensual.app.base.Image;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
 import io.reactivex.Observable;
