@@ -2,6 +2,7 @@ package gavin.sensual.app.capture.jiandan;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 
 import gavin.sensual.R;
 import gavin.sensual.app.common.BigImagePopEvent;
@@ -26,9 +27,9 @@ public class JiandanFragment extends BindingFragment<LayoutToolbarRecyclerBindin
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private long question;
-
     private ToolbarRecyclerViewModel mViewModel;
+
+    private String[] images;
 
     public static JiandanFragment newInstance(long question) {
         Bundle bundle = new Bundle();
@@ -62,11 +63,18 @@ public class JiandanFragment extends BindingFragment<LayoutToolbarRecyclerBindin
     private void init() {
         mViewModel = new ToolbarRecyclerViewModel(_mActivity, this, binding);
 
-        question = getArguments().getLong(BundleKey.PAGE_TYPE);
-
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
         binding.recycler.setOnLoadListener(() -> getImage(true));
+        binding.recycler.limit = 10;
+
+        Observable.just(getArguments().getLong(BundleKey.PAGE_TYPE))
+                .doOnSubscribe(compositeDisposable::add)
+                .map(type -> String.format("jiandantop%s.img", type))
+                .map(s -> AssetsUtils.readText(_mActivity, s))
+                .map(s -> s.split(","))
+                .subscribe(strings -> this.images = strings,
+                        e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_LONG).show());
     }
 
     private void subscribeEvent() {
@@ -87,17 +95,23 @@ public class JiandanFragment extends BindingFragment<LayoutToolbarRecyclerBindin
     }
 
     private void getImage(boolean isMore) {
-//        mViewModel.getImage(getDataLayer().getZhihuPicService().getCollectionPic(this, question, isMore ? binding.recycler.offset + 1 : 1), isMore);
-        mViewModel.getImage(getImage(), isMore);
+        mViewModel.getImage(getImage(isMore ? binding.recycler.offset : 0), isMore);
     }
 
-    private Observable<Image> getImage() {
-        return Observable.just(question)
-                .map(type -> String.format("jiandantop%s.img", question))
-                .map(s -> AssetsUtils.readText(_mActivity, s))
-                .map(s -> s.split(","))
+    private Observable<Image> getImage(int offset) {
+        return Observable.just(offset)
+                .doOnSubscribe(compositeDisposable::add)
+                .map(offset1 -> offset1 * binding.recycler.limit)
+                .filter(srcPos -> images != null && srcPos < images.length)
+                .map(srcPos -> {
+                    int ableLength = images.length - srcPos;
+                    binding.recycler.haveMore = ableLength > binding.recycler.limit;
+                     int length = binding.recycler.haveMore ? binding.recycler.limit : ableLength - srcPos;
+                    String[] temp = new String[length];
+                    System.arraycopy(images, srcPos, temp, 0, length);
+                    return temp;
+                })
                 .flatMap(Observable::fromArray)
-                .take(10)
                 .map(s -> Image.newImage(this, s));
     }
 }
