@@ -76,7 +76,8 @@ public class BannerView extends FrameLayout {
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (RecyclerView.SCROLL_STATE_IDLE == newState
-                    && linearLayoutManager.findFirstVisibleItemPosition() == linearLayoutManager.findLastVisibleItemPosition()) {
+                    && linearLayoutManager.findFirstVisibleItemPosition() == linearLayoutManager.findLastVisibleItemPosition()
+                    && hasWindowFocus()) {
                 int position = linearLayoutManager.findLastVisibleItemPosition() % modelList.size();
                 refreshTip(position);
                 initTimer();
@@ -134,6 +135,17 @@ public class BannerView extends FrameLayout {
         if (modelList != null && modelList.size() > 1) {
             cancelTimer();
             if (VISIBLE == visibility) {
+                initTimer();
+            }
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (modelList != null && modelList.size() > 1) {
+            cancelTimer();
+            if (hasWindowFocus) {
                 initTimer();
             }
         }
