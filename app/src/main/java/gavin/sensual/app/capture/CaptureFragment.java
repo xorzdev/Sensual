@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
+import gavin.sensual.app.capture.zhihu.ZhihuFragment;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.app.main.StartFragmentEvent;
-import gavin.sensual.app.capture.zhihu.ZhihuFragment;
-import gavin.sensual.app.capture.zhihu.ZhihuQuestion;
 import gavin.sensual.base.BindingAdapter;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
@@ -23,8 +22,6 @@ import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
  * @author gavin.xiong 2017/5/10
  */
 public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBinding> implements BindingAdapter.OnItemClickListener {
-
-    private List<ZhihuQuestion> targetList;
 
     public static CaptureFragment newInstance() {
         return new CaptureFragment();
@@ -63,11 +60,11 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
     }
 
     private void init() {
-        targetList = new ArrayList<>();
-        targetList.add(new ZhihuQuestion(0L, 0, "知乎看图 - 问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
-        targetList.add(new ZhihuQuestion(1L, 1, "知乎看图 - 收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        List<Capture> captureList = new ArrayList<>();
+        captureList.add(new Capture("知乎看图 - 问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
+        captureList.add(new Capture("知乎看图 - 收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
 
-        BindingAdapter adapter = new BindingAdapter<>(_mActivity, targetList, R.layout.item_capture);
+        BindingAdapter adapter = new BindingAdapter<>(_mActivity, captureList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
     }

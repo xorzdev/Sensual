@@ -8,7 +8,7 @@ import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
 import gavin.sensual.net.MeizituAPI;
 import gavin.sensual.net.MzituAPI;
-import gavin.sensual.net.ZhihuPicAPI;
+import gavin.sensual.net.ZhihuAPI;
 import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -87,14 +87,14 @@ public class OthersAPIModule {
      */
     @Singleton
     @Provides
-    public ZhihuPicAPI provideZhihuPicApi(OkHttpClient client, Converter.Factory converterFactory) {
+    public ZhihuAPI provideZhihuPicApi(OkHttpClient client, Converter.Factory converterFactory) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.zhihu.com/")
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
-        return retrofit.create(ZhihuPicAPI.class);
+        return retrofit.create(ZhihuAPI.class);
     }
 
 }

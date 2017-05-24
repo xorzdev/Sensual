@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingAdapter;
@@ -65,13 +65,12 @@ public class LicenseFragment extends BindingFragment<LayoutToolbarRecyclerBindin
 
     private void getData() {
         Observable.just("license.json")
+                .map(s -> AssetsUtils.readText(_mActivity, s))
+                .map(s -> JsonUtil.toList(s, new TypeToken<List<License>>() { }))
                 .doOnSubscribe(disposable -> this.disposable = disposable)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(s -> AssetsUtils.readText(_mActivity, s))
-                .map(s -> JsonUtil.toList(s, new TypeToken<ArrayList<License>>() {
-                }))
-                .map(list -> {
+                .subscribe(list -> {
                     BindingAdapter adapter = new BindingAdapter<>(_mActivity, list, R.layout.item_license);
                     adapter.setOnItemClickListener(position -> {
                         Intent intent = new Intent();
@@ -80,9 +79,7 @@ public class LicenseFragment extends BindingFragment<LayoutToolbarRecyclerBindin
                         intent.setData(content_url);
                         startActivity(intent);
                     });
-                    return adapter;
-                })
-                .subscribe(adapter -> binding.recycler.setAdapter(adapter),
-                        e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
+                    binding.recycler.setAdapter(adapter);
+                }, e -> Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show());
     }
 }

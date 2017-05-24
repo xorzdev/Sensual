@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="gavin.sensual.app.capture.Target" />
+            type="gavin.sensual.app.capture.Capture" />
 
     </data>
 

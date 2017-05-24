@@ -3,6 +3,7 @@ package gavin.sensual.service;
 import android.support.v4.app.Fragment;
 
 import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
@@ -19,7 +20,7 @@ public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicSe
 
     @Override
     public Observable<Image> getQuestionPic(Fragment fragment, long id, int limit, int offset) {
-        return getZhihuPicApi().getAnswer(id, "data[*].is_normal,content", limit, offset)
+        return getZhihuApi().getAnswer(id, "data[*].is_normal,content", limit, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("img[data-actualsrc]"))
@@ -32,11 +33,12 @@ public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicSe
 
     @Override
     public Observable<Image> getCollectionPic(Fragment fragment, long id, int offset) {
-        return getZhihuPicApi().getCollection(id, offset)
+        return getZhihuApi().getCollection(id, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[data-action=/answer/content] textarea[class=content]"))
-                .map(elements -> elements.html().replaceAll("&lt;", "<").replaceAll("&gt;", ">"))
+                .map(Elements::html)
+                .map(s -> s.replaceAll("&lt;", "<").replaceAll("&gt;", ">"))
                 .map(Jsoup::parse)
                 .map(document -> document.select("img"))
                 .flatMap(Observable::fromIterable)

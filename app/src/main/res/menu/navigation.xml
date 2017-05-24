@@ -8,12 +8,11 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/vt_zhihu_daily"
-            android:checkable="true"
+            android:icon="@drawable/vt_daily"
             android:title="知乎日报" />
         <item
             android:id="@+id/nav_gank"
-            android:icon="@drawable/vt_code_24dp"
+            android:icon="@drawable/vt_gank"
             android:title="Gank妹子" />
         <item
             android:id="@+id/nav_douban"
@@ -21,7 +20,7 @@
             android:title="豆瓣妹子" />
         <item
             android:id="@+id/nav_mzitu"
-            android:icon="@drawable/vt_meizi"
+            android:icon="@drawable/vt_mzitu"
             android:title="妹子图" />
         <item
             android:id="@+id/nav_meizitu"
@@ -29,7 +28,7 @@
             android:title="妹子图" />
         <item
             android:id="@+id/nav_capture"
-            android:icon="@drawable/vt_crop_24dp"
+            android:icon="@drawable/vt_explore"
             android:title="发现" />
     </group>
 
