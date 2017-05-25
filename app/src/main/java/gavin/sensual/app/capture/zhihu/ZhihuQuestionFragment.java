@@ -61,6 +61,7 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToolbarRecycler
 
         id = getArguments().getLong(BundleKey.PAGE_TYPE);
 
+        binding.includeToolbar.toolbar.setTitle("知乎看图 - 问题");
         binding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
         binding.recycler.setOnLoadListener(() -> getImage(true));

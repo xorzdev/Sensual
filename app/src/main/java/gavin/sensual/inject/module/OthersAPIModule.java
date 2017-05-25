@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import gavin.sensual.net.DoubanAPI;
 import gavin.sensual.net.GankAPI;
+import gavin.sensual.net.JiandanAPI;
 import gavin.sensual.net.MeizituAPI;
 import gavin.sensual.net.MzituAPI;
 import gavin.sensual.net.ZhihuAPI;
@@ -95,6 +96,21 @@ public class OthersAPIModule {
                 .client(client)
                 .build();
         return retrofit.create(ZhihuAPI.class);
+    }
+
+    /**
+     * 煎蛋妹子
+     */
+    @Singleton
+    @Provides
+    public JiandanAPI provideJiandanApi(OkHttpClient client, Converter.Factory converterFactory) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://jandan.net/")
+                .addConverterFactory(converterFactory)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(client)
+                .build();
+        return retrofit.create(JiandanAPI.class);
     }
 
 }

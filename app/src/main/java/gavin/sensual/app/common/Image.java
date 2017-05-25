@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 import gavin.sensual.util.ImageLoader;
+import gavin.sensual.util.L;
 
 public class Image implements Serializable {
 
@@ -62,6 +63,7 @@ public class Image implements Serializable {
     }
 
     public static Image newImage(Fragment fragment, String url) {
+        L.v("url - " + url);
         Image image = new Image();
         Bitmap bm = getBitmap(fragment, url);
         if (bm == null) {
@@ -88,6 +90,7 @@ public class Image implements Serializable {
         try {
             return ImageLoader.getBitmap(fragment, url);
         } catch (InterruptedException | ExecutionException e) {
+            L.e(url + " - " + e);
             return null;
         }
     }

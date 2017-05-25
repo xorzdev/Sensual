@@ -9,6 +9,7 @@ import java.util.List;
 
 import gavin.sensual.R;
 import gavin.sensual.app.capture.jiandan.JiandanFragment;
+import gavin.sensual.app.capture.jiandan.JiandanTopFragment;
 import gavin.sensual.app.capture.zhihu.ZhihuFragment;
 import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.app.main.StartFragmentEvent;
@@ -56,10 +57,13 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
                 RxBus.get().post(new StartFragmentEvent(ZhihuFragment.newInstance(ZhihuFragment.TYPE_COLLECTION)));
                 break;
             case 2:
-                RxBus.get().post(new StartFragmentEvent(JiandanFragment.newInstance(2017)));
+                RxBus.get().post(new StartFragmentEvent(JiandanFragment.newInstance()));
                 break;
             case 3:
-                RxBus.get().post(new StartFragmentEvent(JiandanFragment.newInstance(2016)));
+                RxBus.get().post(new StartFragmentEvent(JiandanTopFragment.newInstance(2016)));
+                break;
+            case 4:
+                RxBus.get().post(new StartFragmentEvent(JiandanTopFragment.newInstance(2017)));
                 break;
             default:
                 break;
@@ -70,8 +74,9 @@ public class CaptureFragment extends BindingFragment<LayoutToolbarRecyclerBindin
         List<Capture> captureList = new ArrayList<>();
         captureList.add(new Capture("知乎看图 - 问题", "https://img3.doubanio.com/lpic/s28586695.jpg"));
         captureList.add(new Capture("知乎看图 - 收藏", "https://img3.doubanio.com/lpic/s28586695.jpg"));
-        captureList.add(new Capture("煎蛋妹子图 2017", "http://wx4.sinaimg.cn/mw600/a0cd8cacgy1ffsqeyplujj20xc0xcjrr.jpg"));
-        captureList.add(new Capture("煎蛋妹子图 2016", "http://wx4.sinaimg.cn/mw600/a0cd8cacgy1ffsqeyplujj20xc0xcjrr.jpg"));
+        captureList.add(new Capture("煎蛋妹子图", "http://wx4.sinaimg.cn/mw600/a0cd8cacgy1ffsqeyplujj20xc0xcjrr.jpg"));
+        captureList.add(new Capture("煎蛋妹子图精选 1", "http://wx4.sinaimg.cn/mw600/a0cd8cacgy1ffsqeyplujj20xc0xcjrr.jpg"));
+        captureList.add(new Capture("煎蛋妹子图精选 2", "http://wx4.sinaimg.cn/mw600/a0cd8cacgy1ffsqeyplujj20xc0xcjrr.jpg"));
 
         BindingAdapter adapter = new BindingAdapter<>(_mActivity, captureList, R.layout.item_capture);
         binding.recycler.setAdapter(adapter);
