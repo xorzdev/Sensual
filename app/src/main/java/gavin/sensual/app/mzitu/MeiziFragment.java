@@ -15,6 +15,7 @@ import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutRecyclerBinding;
 import gavin.sensual.widget.AutoLoadRecyclerView;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -27,11 +28,13 @@ import io.reactivex.schedulers.Schedulers;
 public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
         implements AutoLoadRecyclerView.OnLoadListener, MeiziViewModel.Callback {
 
-    private String type;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private MeiziViewModel mViewModel;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private String type;
+
+    private Integer pageCount;
 
     public static MeiziFragment newInstance(String type) {
         Bundle bundle = new Bundle();
@@ -54,12 +57,12 @@ public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         init();
-        getData(false);
+        getImage(false);
     }
 
     @Override
     public void onLoad() {
-        getData(true);
+        getImage(true);
     }
 
     @Override
@@ -91,14 +94,13 @@ public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
         type = getArguments().getString(BundleKey.PAGE_TYPE);
 
         mViewModel = new MeiziViewModel(_mActivity, binding, this);
-//        binding.setViewModel(mViewModel);
 
-        binding.refreshLayout.setOnRefreshListener(() -> getData(false));
+        binding.refreshLayout.setOnRefreshListener(() -> getImage(false));
         binding.recycler.setOnLoadListener(this);
     }
 
-    private void getData(boolean isMore) {
-        getDataLayer().getMeiziPicService().getPic(this, type, isMore ? binding.recycler.offset + 1 : 1)
+    private void getImage(boolean isMore) {
+        getDataSource(isMore)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     compositeDisposable.add(disposable);
@@ -120,6 +122,20 @@ public class MeiziFragment extends BindingFragment<LayoutRecyclerBinding>
                     binding.recycler.haveMore = true;
                     mViewModel.onNext(image);
                 }, e -> mViewModel.onError(e, isMore));
+    }
+
+    private Observable<Image> getDataSource(boolean isMore) {
+        if (!"zipai".equals(type))
+            return getDataLayer().getMeiziPicService().getTypeOther(this, type, isMore ? binding.recycler.offset + 1 : 1);
+
+        if (pageCount != null)
+            return getDataLayer().getMeiziPicService().getZipai(this, isMore ? pageCount - binding.recycler.offset : pageCount);
+
+        return getDataLayer().getMeiziPicService().getPageCount()
+                .flatMap(integer -> {
+                    pageCount = integer;
+                    return getDataSource(isMore);
+                });
     }
 
 }

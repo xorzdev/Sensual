@@ -13,7 +13,8 @@ import retrofit2.http.Path;
  */
 public interface JiandanAPI {
 
+    // "ooxx/page-75#comments"
     @Headers("Cache-Control: max-stale=1800")
-    @GET("ooxx/page-{offset}#comments")
-    Observable<ResponseBody> get(@Path("offset") int page);
+    @GET("ooxx/{offset}")
+    Observable<ResponseBody> get(@Path("offset") String page);
 }

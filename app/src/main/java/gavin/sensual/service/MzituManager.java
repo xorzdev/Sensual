@@ -3,6 +3,7 @@ package gavin.sensual.service;
 import android.support.v4.app.Fragment;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
@@ -18,14 +19,30 @@ import okhttp3.ResponseBody;
 public class MzituManager extends BaseManager implements DataLayer.MzituService {
 
     @Override
-    public Observable<Image> getPic(Fragment fragment, String type, int offset) {
-        return "zipai".equals(type)
-                ? get2(fragment, type, String.format("comment-page-%s", offset), "")
-                : get1(fragment, type, "page", String.valueOf(offset));
+    public Observable<Integer> getPageCount() {
+        return getMzituAPI().getZipai("")
+                .map(ResponseBody::string)
+                .map(Jsoup::parse)
+                .map(document -> document.select("div[id=comments] div[class=pagenavi-cm] span[class=page-numbers current]"))
+                .map(elements -> elements.get(0))
+                .map(Element::html)
+                .map(Integer::parseInt);
     }
 
-    private Observable<Image> get1(Fragment fragment, String type, String offset1, String offset2) {
-        return getMzituAPI().getPic(type, offset1, offset2)
+    @Override
+    public Observable<Image> getZipai(Fragment fragment, int offset) {
+        return getMzituAPI().getZipai(String.format("comment-page-%s", offset))
+                .map(ResponseBody::string)
+                .map(Jsoup::parse)
+                .map(document -> document.select("div[class=comment-body] img"))
+                .flatMap(Observable::fromIterable)
+                .map(element -> element.attr("src"))
+                .map(s -> Image.newImage(fragment, s));
+    }
+
+    @Override
+    public Observable<Image> getTypeOther(Fragment fragment, String type, int offset) {
+        return getMzituAPI().getOther(type, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=main-content] div[class=postlist] img"))
@@ -38,20 +55,10 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                 .map(s -> Image.newImage(fragment, s));
     }
 
-    private Observable<Image> get2(Fragment fragment, String type, String offset1, String offset2) {
-        return getMzituAPI().getPic(type, offset1, offset2)
-                .map(ResponseBody::string)
-                .map(Jsoup::parse)
-                .map(document -> document.select("div[class=comment-body] img"))
-                .flatMap(Observable::fromIterable)
-                .map(element -> element.attr("src"))
-                .map(s -> Image.newImage(fragment, s));
-    }
-
     private boolean flag = false;
 
     @Override
-    public Observable<Image> getPic2(Fragment fragment, String url) {
+    public Observable<Image> getImageRange(Fragment fragment, String url) {
         return Observable.just(url)
                 .map(s -> s.substring(0, s.lastIndexOf(".") - 2).concat("%02d").concat(s.substring(s.lastIndexOf("."))))
                 .flatMap(s -> Observable.range(1, 99).map(i -> String.format(s, i)))

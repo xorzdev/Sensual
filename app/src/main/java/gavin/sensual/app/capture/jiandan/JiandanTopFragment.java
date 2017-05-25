@@ -73,7 +73,7 @@ public class JiandanTopFragment extends BindingFragment<LayoutToolbarRecyclerBin
 
         Observable.just(getArguments().getLong(BundleKey.PAGE_TYPE))
                 .doOnSubscribe(compositeDisposable::add)
-                .map(type -> String.format("jiandantop%s.img", type))
+                .map(type -> type == 2017 ? "jiandantop2017.img" : "jiandantop2016.img")
                 .map(s -> AssetsUtils.readText(_mActivity, s))
                 .map(s -> s.split(","))
                 .subscribe(strings -> this.images = strings,

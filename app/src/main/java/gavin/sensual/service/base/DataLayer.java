@@ -101,9 +101,13 @@ public class DataLayer {
     }
 
     public interface MzituService {
-        Observable<Image> getPic(Fragment fragment, String type, int offset);
+        Observable<Integer> getPageCount();
 
-        Observable<Image> getPic2(Fragment fragment, String url);
+        Observable<Image> getZipai(Fragment fragment, int offset);
+
+        Observable<Image> getTypeOther(Fragment fragment, String type, int offset);
+
+        Observable<Image> getImageRange(Fragment fragment, String url);
     }
 
     public interface MeizituService {
@@ -111,6 +115,8 @@ public class DataLayer {
     }
 
     public interface JiandanService {
+        Observable<Integer> getPageCount();
+
         Observable<Image> getPic(Fragment fragment, int offset);
     }
 }

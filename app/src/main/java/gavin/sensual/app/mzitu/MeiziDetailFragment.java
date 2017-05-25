@@ -77,6 +77,6 @@ public class MeiziDetailFragment extends BindingFragment<LayoutToolbarRecyclerBi
     }
 
     private void getImage(boolean isMore, String url) {
-        mViewModel.getImage(getDataLayer().getMeiziPicService().getPic2(this, url), isMore);
+        mViewModel.getImage(getDataLayer().getMeiziPicService().getImageRange(this, url), isMore);
     }
 }

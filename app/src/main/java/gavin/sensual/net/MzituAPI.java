@@ -14,6 +14,10 @@ import retrofit2.http.Path;
 public interface MzituAPI {
 
     @Headers("Cache-Control: max-stale=1800")
-    @GET("{type}/{offset1}/{offset2}/")
-    Observable<ResponseBody> getPic(@Path("type") String type, @Path("offset1") String offset1, @Path("offset2") String offset2);
+    @GET("zipai/{offset}/")
+    Observable<ResponseBody> getZipai(@Path("offset") String offset);
+
+    @Headers("Cache-Control: max-stale=1800")
+    @GET("{type}/page/{offset}/")
+    Observable<ResponseBody> getOther(@Path("type") String type, @Path("offset") int offset);
 }
