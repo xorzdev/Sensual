@@ -14,6 +14,7 @@ def glideVersion = "3.7.0"
 def glideOkhttp3IntegrationVersion = "1.4.0@aar"
 def photoViewVersion = "2.0.0"
 def jsoupVersion = "1.10.2"
+def guavaVersion = "22.0-android"
 
 
 ext {
@@ -64,5 +65,7 @@ ext {
     libPhotoView = "com.github.chrisbanes:PhotoView:${photoViewVersion}"
 
     libJsoup = "org.jsoup:jsoup:${jsoupVersion}"
+
+    libGuava = "com.google.guava:guava:${guavaVersion}"
 
 }

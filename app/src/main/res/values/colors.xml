@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#0098E2</color>
     <color name="colorCover">#10000000</color>
+    <color name="colorCoverSecondary">#20000000</color>
     <color name="colorBackground">#F0F0F0</color>
     <color name="colorBackgroundSecondary">#E2E2E2</color>
     <color name="colorDivider">#F0F0F0</color>

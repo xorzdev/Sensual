@@ -28,9 +28,9 @@ public class BindingAdapter<T> extends RecyclerAdapter<T, ViewDataBinding> {
     }
 
     @Override
-    public void onBind(RecyclerHolder<ViewDataBinding> holder, T t, final int position) {
+    public void onBind(RecyclerHolder<ViewDataBinding> holder, T t, int position) {
         holder.binding.setVariable(BR.item, t);
-//        holder.binding.executePendingBindings();
+        holder.binding.executePendingBindings();
         if (mListener != null) {
             holder.itemView.findViewById(R.id.item).setOnClickListener((v) -> mListener.onItemClick(position));
         }

@@ -37,7 +37,7 @@ public class AssetsUtils {
      * @param is the is
      * @return the string
      */
-    public static String toString(InputStream is) {
+    private static String toString(InputStream is) {
         StringBuilder sb = new StringBuilder();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));

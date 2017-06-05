@@ -25,6 +25,6 @@ public class TestFragment extends BindingFragment<TestFragBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        binding.includeToolbar.toolbar.inflateMenu(R.menu.navigation);
+
     }
 }
