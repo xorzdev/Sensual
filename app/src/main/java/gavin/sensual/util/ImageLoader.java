@@ -8,8 +8,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
-import java.util.concurrent.ExecutionException;
-
 import gavin.sensual.R;
 import gavin.sensual.util.glide.BlurTransformation;
 import gavin.sensual.util.glide.GlideCircleTransformation;
@@ -197,7 +195,7 @@ public class ImageLoader {
     /**
      * 获取 bitmap 对象 可用来获取尺寸等
      */
-    public static Bitmap getBitmap(Fragment fragment, String url) throws InterruptedException, ExecutionException {
+    public static Bitmap getBitmap(Fragment fragment, String url) throws Exception {
         return Glide.with(fragment)
                 .load(url)
                 .asBitmap()
