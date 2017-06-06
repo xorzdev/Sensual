@@ -28,6 +28,26 @@
 
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="@color/colorCoverTertiary"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/tvDir"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="全部图片"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+
     </android.support.design.widget.CoordinatorLayout>
 
 </layout>

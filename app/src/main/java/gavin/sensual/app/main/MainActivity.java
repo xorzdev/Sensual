@@ -17,8 +17,7 @@ import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.base.BindingActivity;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.ActMainBinding;
-import gavin.sensual.test.multi.ImageFolderFragment;
-import gavin.sensual.test.multi.TestFragment;
+import gavin.sensual.test.multi.ImagesFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -43,8 +42,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         if (savedInstanceState == null) {
-//            loadRootFragment(R.id.holder, MainFragment.newInstance());
-            loadRootFragment(R.id.holder, TestFragment.newInstance());
+            loadRootFragment(R.id.holder, MainFragment.newInstance());
         }
 
         subscribeEvent();
@@ -82,7 +80,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                 return false;
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());
-                startDelay(ImageFolderFragment.newInstance());
+                startDelay(ImagesFragment.newInstance());
 //                startDelay(TestCommentFragment.newInstance());
                 return false;
         }

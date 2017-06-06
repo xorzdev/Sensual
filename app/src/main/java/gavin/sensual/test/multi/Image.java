@@ -8,7 +8,7 @@ package gavin.sensual.test.multi;
 public class Image {
 
     private String path;
-    private long parentId;
+    private Long parentId;
     private String parent;
     private int count;
     private boolean checked;
@@ -21,11 +21,11 @@ public class Image {
         this.path = path;
     }
 
-    public long getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

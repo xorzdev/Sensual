@@ -24,12 +24,12 @@ public class ImageAdapter extends RecyclerAdapter<Image, TestItemImageBinding> {
     private int mMaxCount;
     private List<String> mSelectedImagePath;
 
-    public ImageAdapter(Context context, List<Image> mData) {
+    ImageAdapter(Context context, List<Image> mData) {
         super(context, mData, R.layout.test_item_image);
         height = (DisplayUtil.getScreenWidth() - DisplayUtil.dp2px(32)) / 3;
     }
 
-    public void setCountAndData(int maxCount, List<String> mSelectedImagePath) {
+    void setCountAndData(int maxCount, List<String> mSelectedImagePath) {
         this.mMaxCount = maxCount;
         this.mSelectedImagePath = mSelectedImagePath;
     }
@@ -39,15 +39,17 @@ public class ImageAdapter extends RecyclerAdapter<Image, TestItemImageBinding> {
         holder.binding.imageView.getLayoutParams().height = height;
         holder.binding.setItem(t);
         holder.binding.setAdapter(this);
+        holder.binding.executePendingBindings();
     }
 
     public void onCheckedChanged(CompoundButton v, Image t, boolean isChecked) {
+        if (isChecked == t.isChecked()) return;
         if (!isChecked || mSelectedImagePath.size() < mMaxCount) {
             t.setChecked(isChecked);
         } else {
             t.setChecked(false);
             v.setChecked(false);
         }
-        RxBus.get().post(new TestCheckedChangedEvent(t.getPath(), isChecked));
+        RxBus.get().post(new ImageCheckedChangedEvent(t.getPath(), isChecked));
     }
 }

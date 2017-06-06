@@ -5,12 +5,12 @@ package gavin.sensual.test.multi;
  *
  * @author gavin.xiong 2017/6/5
  */
-public class TestCheckedChangedEvent {
+public class ImageCheckedChangedEvent {
 
     public String path;
     public boolean isChecked;
 
-    public TestCheckedChangedEvent(String path, boolean isChecked) {
+    public ImageCheckedChangedEvent(String path, boolean isChecked) {
         this.path = path;
         this.isChecked = isChecked;
     }
