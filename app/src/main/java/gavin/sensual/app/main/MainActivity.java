@@ -72,6 +72,9 @@ public class MainActivity extends BindingActivity<ActMainBinding>
             case R.id.nav_capture:
                 showHideFragmentDelay(5);
                 return true;
+            case R.id.nav_collection:
+                showHideFragmentDelay(6);
+                return true;
             case R.id.nav_license:
                 startDelay(LicenseFragment.newInstance());
                 return false;

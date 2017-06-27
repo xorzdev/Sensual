@@ -2,6 +2,7 @@ package gavin.sensual.base;
 
 import android.app.Application;
 
+import gavin.sensual.db.util.DbCore;
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.inject.component.DaggerApplicationComponent;
 import gavin.sensual.inject.module.ApplicationModule;
@@ -17,6 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initDagger();
+        DbCore.init(this);
     }
 
     private void initDagger() {

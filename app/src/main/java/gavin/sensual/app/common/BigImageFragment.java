@@ -1,5 +1,7 @@
 package gavin.sensual.app.common;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,15 +11,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
 import gavin.sensual.base.BindingFragment;
@@ -25,6 +31,7 @@ import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragBigImageBinding;
 import gavin.sensual.databinding.RighterLoadingBinding;
+import gavin.sensual.db.util.DbUtil;
 import gavin.sensual.util.ImageLoader;
 import gavin.sensual.util.ShareUtil;
 import io.reactivex.Observable;
@@ -51,6 +58,10 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
 
     private String imageUrl;
 
+    private ImageView ivActionLove;
+
+    private AnimatorSet scaleAnim;
+
     public static BigImageFragment newInstance(@NonNull ArrayList<Image> imageList, int position, int requestCode) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleKey.IMAGE_URL, imageList);
@@ -76,7 +87,6 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        imageUrl = imageList.get(linearLayoutManager.findFirstVisibleItemPosition()).getUrl();
         switch (item.getItemId()) {
             case R.id.actionDownload:
                 createFile();
@@ -92,6 +102,9 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.dispose();
+        if (scaleAnim != null) {
+            scaleAnim.cancel();
+        }
     }
 
     @Override
@@ -111,6 +124,9 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
         binding.toolbar.inflateMenu(R.menu.action_image_option);
         binding.toolbar.setOnMenuItemClickListener(this);
 
+        ivActionLove = binding.toolbar.getMenu().findItem(R.id.actionCollect).getActionView().findViewById(R.id.ivActionLove);
+        ivActionLove.setOnClickListener(v -> doLoveAnim(imageUrl));
+
         adapter = new BigImageAdapter(_mActivity, this, imageList);
         loadingBinding = RighterLoadingBinding.inflate(LayoutInflater.from(_mActivity));
         loadingBinding.root.setVisibility(View.VISIBLE);
@@ -125,6 +141,27 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
         binding.recycler.preCount = 3;
         binding.recycler.haveMore = true;
         linearLayoutManager = (LinearLayoutManager) binding.recycler.getLayoutManager();
+
+        binding.recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    imageUrl = imageList.get(linearLayoutManager.findFirstVisibleItemPosition()).getUrl();
+                    Observable.just(imageUrl)
+                            .map(s -> DbUtil.getCollectionService().hasCollected(s))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(ivActionLove::setSelected);
+                }
+            }
+        });
+
+        imageUrl = imageList.get(getArguments().getInt(BundleKey.POSITION)).getUrl();
+        Observable.just(imageUrl)
+                .map(s -> DbUtil.getCollectionService().hasCollected(s))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ivActionLove::setSelected);
     }
 
     private void subscribeEvent() {
@@ -163,6 +200,39 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(compositeDisposable::add)
                 .subscribe(event -> toPop());
+    }
+
+    /**
+     * 喜欢/取消喜欢动画
+     */
+    private void doLoveAnim(String image) {
+        Observable.timer(350, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    compositeDisposable.add(disposable);
+                    ivActionLove.setEnabled(false);
+                    if (scaleAnim == null) {
+                        initAnim();
+                    }
+                    scaleAnim.start();
+                })
+                .map(arg0 -> {
+                    DbUtil.getCollectionService().toggle(image);
+                    ivActionLove.setSelected(!ivActionLove.isSelected());
+                    return arg0;
+                })
+                .delay(350, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(arg0 -> ivActionLove.setEnabled(true));
+    }
+
+    /**
+     * 初始化属性动画
+     */
+    private void initAnim() {
+        scaleAnim = new AnimatorSet().setDuration(700);
+        scaleAnim.setInterpolator(new AnticipateOvershootInterpolator());
+        scaleAnim.playTogether(
+                ObjectAnimator.ofFloat(ivActionLove, View.SCALE_X, 1f, 0f, 1f),
+                ObjectAnimator.ofFloat(ivActionLove, View.SCALE_Y, 1f, 0f, 1f));
     }
 
     private void shareImage() {

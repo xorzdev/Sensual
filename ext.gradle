@@ -15,6 +15,7 @@ def glideOkhttp3IntegrationVersion = "1.4.0@aar"
 def photoViewVersion = "2.0.0"
 def jsoupVersion = "1.10.2"
 def guavaVersion = "22.0-android"
+def greenDaoVersion = "3.2.2"
 
 
 ext {
@@ -23,8 +24,8 @@ ext {
     buildToolsVersion = "26.0.0"
     minSdkVersion = 19
     targetSdkVersion = 26
-    versionCode = 6
-    versionName = "0.0.6"
+    versionCode = 100
+    versionName = "1.0.0"
     resConfigs = "zh" // 只保留中文
 
 
@@ -67,5 +68,7 @@ ext {
     libJsoup = "org.jsoup:jsoup:${jsoupVersion}"
 
     libGuava = "com.google.guava:guava:${guavaVersion}"
+
+    libGreenDao = "org.greenrobot:greendao:${greenDaoVersion}"
 
 }

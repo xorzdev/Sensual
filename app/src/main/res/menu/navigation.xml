@@ -30,6 +30,10 @@
             android:id="@+id/nav_capture"
             android:icon="@drawable/vt_explore"
             android:title="发现" />
+        <item
+            android:id="@+id/nav_collection"
+            android:icon="@drawable/vt_favorite_border_24dp"
+            android:title="我的收藏" />
     </group>
 
     <group>
@@ -42,7 +46,7 @@
         <item
             android:id="@+id/nav_test"
             android:title="测试"
-            android:visible="true" />
+            android:visible="false" />
         <!--<item-->
         <!--android:id="@+id/nav_theme"-->
         <!--android:title="主题风格" />-->

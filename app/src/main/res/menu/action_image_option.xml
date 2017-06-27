@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/actionCollect"
+        android:title="收藏"
+        app:actionLayout="@layout/menu_action_favorite"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/actionDownload"
         android:icon="@drawable/vt_file_download_24dp"
-        android:title="保存到手机"
-        app:showAsAction="ifRoom" />
+        android:title="保存"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/actionShare"

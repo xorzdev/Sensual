@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
 import gavin.sensual.app.capture.CaptureFragment;
+import gavin.sensual.app.collection.CollectionFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
@@ -36,9 +37,10 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
     public static final int FOURTH = 3;
     public static final int FIFTH = 4;
     public static final int SIXTH = 5;
+    public static final int SEVENTH = 6;
     private int currPoint;
 
-    private SupportFragment[] mFragments = new SupportFragment[6];
+    private SupportFragment[] mFragments = new SupportFragment[7];
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -58,6 +60,7 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
             mFragments[FOURTH] = MeiziTabFragment.newInstance();
             mFragments[FIFTH] = MeizituTabFragment.newInstance();
             mFragments[SIXTH] = CaptureFragment.newInstance();
+            mFragments[SEVENTH] = CollectionFragment.newInstance();
 
             currPoint = FIRST;
 
@@ -67,7 +70,8 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
                     mFragments[THIRD],
                     mFragments[FOURTH],
                     mFragments[FIFTH],
-                    mFragments[SIXTH]);
+                    mFragments[SIXTH],
+                    mFragments[SEVENTH]);
         } else {
             mFragments[FIRST] = findChildFragment(DailyFragment.class);
             mFragments[SECOND] = findChildFragment(GankFragment.class);
@@ -75,6 +79,7 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
             mFragments[FOURTH] = findChildFragment(MeiziTabFragment.class);
             mFragments[FIFTH] = findChildFragment(MeizituTabFragment.class);
             mFragments[SIXTH] = findChildFragment(CaptureFragment.class);
+            mFragments[SEVENTH] = findChildFragment(CollectionFragment.class);
 
             currPoint = savedInstanceState.getInt(BundleKey.MAIN_CURR_POSITION);
         }
