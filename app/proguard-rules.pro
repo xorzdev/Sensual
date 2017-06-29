@@ -85,3 +85,14 @@
 #-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
 -keep class android.support.v7.widget.SearchView {*;}
 
+################################## greendao #############################
+-keep class org.greenrobot.dao.** {*;}
+-keep class org.greenrobot.greendao.** {*;}
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+    public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+-keep public class * extends org.greenrobot.greendao.AbstractDao
+# -keep class * implements java.io.Serializable {*;}
+################################## greendao #############################
+
