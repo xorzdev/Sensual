@@ -49,6 +49,8 @@ public class CacheHelper {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 && context.getExternalFilesDir(type) != null) {
             cachePath = context.getExternalFilesDir(type).getPath();
+        } else {
+            cachePath = context.getFilesDir().getPath();
         }
         return cachePath;
     }
@@ -76,7 +78,7 @@ public class CacheHelper {
      * 保存bitmap到SD卡
      *
      * @param bitmap Bitmap
-     * @param name String
+     * @param name   String
      */
     public static String saveBitmap(Bitmap bitmap, String name) throws Exception {
         String path = getAppDir() + name + ".jpg";

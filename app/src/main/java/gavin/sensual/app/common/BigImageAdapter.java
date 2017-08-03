@@ -36,14 +36,15 @@ public class BigImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemBigI
     @Override
     public void onBind(RecyclerHolder<ItemBigImageBinding> holder, int position, Image t) {
 
-        PhotoViewAttacher attacher = holder.binding.photoView.getAttacher();
+        PhotoViewAttacher pvt = holder.binding.photoView.getAttacher();
         if (!holder.binding.photoView.isSelected()) {
-            fixPhotoView(attacher);
+            fixPhotoView(pvt);
             holder.binding.photoView.setSelected(true);
         }
+        initScaleLevels(pvt, t.getWidth(), t.getHeight());
 
-        attacher.setOnPhotoTapListener((view, x, y) -> RxBus.get().post(new BigImageClickEvent(position)));
-        attacher.setOnOutsidePhotoTapListener(imageView -> RxBus.get().post(new BigImageClickEvent(position)));
+        pvt.setOnPhotoTapListener((v, x, y) -> RxBus.get().post(new BigImageClickEvent(position)));
+        pvt.setOnOutsidePhotoTapListener(v -> RxBus.get().post(new BigImageClickEvent(position)));
 
         Glide.with(fragment)
                 .load(t.getUrl())
@@ -63,5 +64,27 @@ public class BigImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemBigI
         } catch (Exception e) {
             L.e(e);
         }
+    }
+
+    /**
+     * 重置放大级别 - 最大边长 & 长宽比
+     */
+    private void initScaleLevels(PhotoViewAttacher pvt, int width, int height) {
+        float MAX_SCALE = 3.0f;
+        float MID_SCALE = 1.75f;
+        float MIN_SCALE = 1.0f;
+
+        float larger = width > height ? width : height;
+        float lesser = width > height ? height : width;
+
+        float x = larger / 1000;
+        float y = larger / lesser;
+
+        if (x * y > 3) {
+            MAX_SCALE = x * y;
+            MID_SCALE = (float) Math.sqrt(MAX_SCALE / MIN_SCALE);
+        }
+
+        pvt.setScaleLevels(MIN_SCALE, MID_SCALE, MAX_SCALE);
     }
 }
