@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
+import gavin.sensual.util.L;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -52,6 +53,10 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                         .substring(0, s.lastIndexOf("/") + 1).replaceAll("thumbs/", "")
                         .concat(s.substring(s.indexOf("_") + 1, s.lastIndexOf("_")))
                         .concat(s.substring(s.lastIndexOf("."))))
+                .map(s -> {
+                    L.e(s);
+                    return s;
+                })
                 .map(s -> Image.newImage(fragment, s));
     }
 

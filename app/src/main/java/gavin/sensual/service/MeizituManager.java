@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
 
+import java.util.concurrent.TimeUnit;
+
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
@@ -27,6 +29,7 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
 
     private Observable<Image> getHome(Fragment fragment) {
         return getMeizituAPI().getHome()
+                .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[id=maincontent] div[class=postContent] img"))
@@ -37,6 +40,7 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
 
     private Observable<Image> getType(Fragment fragment, String type, int offset) {
         return getMeizituAPI().get(type, offset)
+                .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[id=maincontent] li[class=wp-item] img"))

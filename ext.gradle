@@ -24,8 +24,8 @@ ext {
     buildToolsVersion = "26.0.0"
     minSdkVersion = 19
     targetSdkVersion = 26
-    versionCode = 101
-    versionName = "1.0.1"
+    versionCode = 102
+    versionName = "1.0.2"
     resConfigs = "zh" // 只保留中文
 
 
