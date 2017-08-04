@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -15,17 +16,47 @@
                 android:id="@+id/includeToolbar"
                 layout="@layout/layout_toolbar" />
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/ic_launcher"
+                tools:ignore="contentDescription" />
+
             <TextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                tools:text="声色 v1.0.2" />
+
+            <TextView
+                android:id="@+id/tvLicense"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autoLink="web|email"
-                android:lineSpacingMultiplier="1.2"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="项目是业余时间所为，更新不稳定，内容均来自网络，源代码已上传至 github。
-                \n欢迎交流 star
-                \n源码： https://github.com/gavinxxxxxx/Sensual
-                \n邮件： gavinxxxxxx@gmail.com
-                \n" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/white"
+                android:foreground="?selectableItemBackground"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="14dp"
+                android:text="开源许可" />
+
+            <TextView
+                android:id="@+id/tvContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:background="@android:color/white"
+                android:foreground="?selectableItemBackground"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="14dp"
+                android:text="联系反馈" />
 
         </LinearLayout>
 

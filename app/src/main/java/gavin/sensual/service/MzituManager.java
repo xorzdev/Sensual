@@ -89,6 +89,10 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                 .map(document -> document.select("div[id=content] article[class=placeholder] img"))
                 .flatMap(Observable::fromIterable)
                 .map(element -> element.attr("data-original"))
+//                .map(s -> s
+//                        .substring(0, s.lastIndexOf("/") + 1).replaceAll("thumbs/", "")
+//                        .concat(s.substring(s.indexOf("_") + 1, s.lastIndexOf("_")))
+//                        .concat(s.substring(s.lastIndexOf("."))))
                 .map(s -> {
                     L.e(s);
                     return s;

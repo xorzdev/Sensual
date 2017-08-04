@@ -2,14 +2,14 @@ package gavin.sensual.app.meizitu;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * RxJavaPagerAdapter
  *
  * @author gavin.xiong 2016/12/5
  */
-class PagerAdapter extends FragmentPagerAdapter {
+class PagerAdapter extends FragmentStatePagerAdapter {
 
     private String[] type = new String[]{
             "",

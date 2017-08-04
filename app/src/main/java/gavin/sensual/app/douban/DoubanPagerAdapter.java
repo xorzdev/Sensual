@@ -2,15 +2,14 @@ package gavin.sensual.app.douban;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * RxJavaPagerAdapter
  *
  * @author gavin.xiong 2016/12/5
  */
-// TODO: 2017/5/10 FragmentPagerAdapter or FragmentStatePagerAdapter
-class DoubanPagerAdapter extends FragmentPagerAdapter {
+class DoubanPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final String TYPE_RANK = "";
     private static final String TYPE_BREAST = "2";

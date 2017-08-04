@@ -109,11 +109,11 @@ public interface ClientAPI {
 
 
     @Headers("Cache-Control: max-stale=1800")
-    @GET("http://www.meizitu.com/index.html")
+    @GET("http://m.meizitu.com/index.html")
     Observable<ResponseBody> getMeizituHome();
 
     @Headers("Cache-Control: max-stale=1800")
-    @GET("http://www.meizitu.com/a/{type}_{offset}.html")
+    @GET("http://m.meizitu.com/a/{type}_{offset}.html")
     Observable<ResponseBody> getMeizitu(@Path("type") String type, @Path("offset") int offset);
 
 

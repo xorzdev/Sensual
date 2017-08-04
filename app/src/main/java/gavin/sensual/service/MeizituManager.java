@@ -32,9 +32,9 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
                 .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
-                .map(document -> document.select("div[id=maincontent] div[class=postContent] img"))
+                .map(document -> document.select("div[class=listmain] div[class=am-gallery-item] img"))
                 .flatMap(Observable::fromIterable)
-                .map(element -> element.attr("src"))
+                .map(element -> element.attr("data-original"))
                 .map(s -> Image.newImage(fragment, s));
     }
 
@@ -43,9 +43,9 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
                 .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
-                .map(document -> document.select("div[id=maincontent] li[class=wp-item] img"))
+                .map(document -> document.select("div[class=listmain] div[class=am-gallery-item] img"))
                 .flatMap(Observable::fromIterable)
-                .map(element -> element.attr("src"))
+                .map(element -> element.attr("data-original"))
                 .map(s -> Image.newImage(fragment, s));
     }
 

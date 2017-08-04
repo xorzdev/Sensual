@@ -27,7 +27,7 @@
             android:id="@+id/nav_meizitu"
             android:icon="@drawable/vt_meizitu"
             android:title="妹子图"
-            android:visible="false" />
+            android:visible="true" />
         <item
             android:id="@+id/nav_capture"
             android:icon="@drawable/vt_explore"
@@ -41,7 +41,8 @@
     <group>
         <item
             android:id="@+id/nav_license"
-            android:title="开源许可" />
+            android:title="开源许可"
+            android:visible="false" />
         <item
             android:id="@+id/nav_about"
             android:title="关于" />
