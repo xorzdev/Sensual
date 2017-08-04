@@ -17,7 +17,7 @@ public class GankManager extends BaseManager implements DataLayer.GankService {
 
     @Override
     public Observable<Image> getImage(Fragment fragment, int limit, int no) {
-        return getGankApi().getImage(limit, no)
+        return getApi().getGankImage(limit, no)
                 .map(Result::getResults)
                 .flatMap(Observable::fromIterable)
                 .map(image -> Image.newImage(fragment, image.getUrl()));

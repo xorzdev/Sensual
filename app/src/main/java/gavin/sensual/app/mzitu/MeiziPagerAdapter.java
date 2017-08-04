@@ -2,14 +2,14 @@ package gavin.sensual.app.mzitu;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * RxJavaPagerAdapter
  *
  * @author gavin.xiong 2016/12/5
  */
-class MeiziPagerAdapter extends FragmentPagerAdapter {
+class MeiziPagerAdapter extends FragmentStatePagerAdapter {
 
     private String[] type = new String[]{
             "",
@@ -18,6 +18,9 @@ class MeiziPagerAdapter extends FragmentPagerAdapter {
             "taiwan",
             "mm",
             "zipai",
+            "hot",
+            "best",
+            "all",
     };
 
     private String[] tabs = new String[]{
@@ -27,6 +30,9 @@ class MeiziPagerAdapter extends FragmentPagerAdapter {
             "台湾",
             "清纯",
             "自拍",
+            "热门",
+            "推荐",
+            "最新",
     };
 
     MeiziPagerAdapter(FragmentManager fragmentManager) {

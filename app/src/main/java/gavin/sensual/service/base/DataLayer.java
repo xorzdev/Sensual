@@ -108,6 +108,11 @@ public class DataLayer {
         Observable<Image> getTypeOther(Fragment fragment, String type, int offset);
 
         Observable<Image> getImageRange(Fragment fragment, String url);
+
+        /**
+         * 手机页面
+         */
+        Observable<Image> getM(Fragment fragment, String type, int offset);
     }
 
     public interface MeizituService {

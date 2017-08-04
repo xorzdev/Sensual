@@ -28,6 +28,12 @@ public class MeiziTabFragment extends BindingFragment<FragDoubanTabBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
         init();
     }
 

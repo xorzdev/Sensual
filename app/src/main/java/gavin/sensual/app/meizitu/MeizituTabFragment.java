@@ -10,7 +10,7 @@ import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDoubanTabBinding;
 
 /**
- * 豆瓣妹子
+ * meizitu
  *
  * @author gavin.xiong 2017/5/10
  */
@@ -27,6 +27,12 @@ public class MeizituTabFragment extends BindingFragment<FragDoubanTabBinding> {
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
         init();
     }
 

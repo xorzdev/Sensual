@@ -21,7 +21,7 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
 
     @Override
     public Observable<Integer> getPageCount() {
-        return getMzituAPI().getZipai("")
+        return getApi().getMzituZipai("")
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[id=comments] div[class=pagenavi-cm] span[class=page-numbers current]"))
@@ -32,7 +32,7 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
 
     @Override
     public Observable<Image> getZipai(Fragment fragment, int offset) {
-        return getMzituAPI().getZipai(String.format("comment-page-%s", offset))
+        return getApi().getMzituZipai(String.format("comment-page-%s", offset))
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=comment-body] img"))
@@ -43,7 +43,7 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
 
     @Override
     public Observable<Image> getTypeOther(Fragment fragment, String type, int offset) {
-        return getMzituAPI().getOther(type, offset)
+        return getApi().getMzituOther(type, offset)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=main-content] div[class=postlist] img"))
@@ -79,5 +79,20 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                     return false;
                 })
                 .filter(image -> !image.isError());
+    }
+
+    @Override
+    public Observable<Image> getM(Fragment fragment, String type, int offset) {
+        return getApi().getM(type, offset)
+                .map(ResponseBody::string)
+                .map(Jsoup::parse)
+                .map(document -> document.select("div[id=content] article[class=placeholder] img"))
+                .flatMap(Observable::fromIterable)
+                .map(element -> element.attr("data-original"))
+                .map(s -> {
+                    L.e(s);
+                    return s;
+                })
+                .map(s -> Image.newImage(fragment, s));
     }
 }

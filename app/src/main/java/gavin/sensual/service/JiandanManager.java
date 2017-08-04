@@ -20,7 +20,7 @@ public class JiandanManager extends BaseManager implements DataLayer.JiandanServ
 
     @Override
     public Observable<Integer> getPageCount() {
-        return getJiandanAPI().get("")
+        return getApi().getJiandan("")
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("div[class=comments] div[class=cp-pagenavi] span[class=current-comment-page]"))
@@ -32,7 +32,7 @@ public class JiandanManager extends BaseManager implements DataLayer.JiandanServ
 
     @Override
     public Observable<Image> getPic(Fragment fragment, int offset) {
-        return getJiandanAPI().get("page-" + offset + "")
+        return getApi().getJiandan("page-" + offset + "")
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
                 .map(document -> document.select("ol[class=commentlist] div[class=row] a[class=view_img_link]"))

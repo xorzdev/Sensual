@@ -28,7 +28,7 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
     }
 
     private Observable<Image> getHome(Fragment fragment) {
-        return getMeizituAPI().getHome()
+        return getApi().getMeizituHome()
                 .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
@@ -39,7 +39,7 @@ public class MeizituManager extends BaseManager implements DataLayer.MeizituServ
     }
 
     private Observable<Image> getType(Fragment fragment, String type, int offset) {
-        return getMeizituAPI().get(type, offset)
+        return getApi().getMeizitu(type, offset)
                 .delay(500, TimeUnit.MILLISECONDS)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)

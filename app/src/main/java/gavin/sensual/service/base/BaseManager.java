@@ -6,12 +6,6 @@ import javax.inject.Inject;
 
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
-import gavin.sensual.net.DoubanAPI;
-import gavin.sensual.net.GankAPI;
-import gavin.sensual.net.JiandanAPI;
-import gavin.sensual.net.MeizituAPI;
-import gavin.sensual.net.MzituAPI;
-import gavin.sensual.net.ZhihuAPI;
 
 /**
  * BaseManager
@@ -19,20 +13,9 @@ import gavin.sensual.net.ZhihuAPI;
  * @author gavin.xiong 2017/4/28
  */
 public abstract class BaseManager {
+
     @Inject
     ClientAPI mApi;
-    @Inject
-    GankAPI mGankApi;
-    @Inject
-    DoubanAPI mDoubanApi;
-    @Inject
-    ZhihuAPI mZhihuApi;
-    @Inject
-    MzituAPI mMeiziAPI;
-    @Inject
-    MeizituAPI mMeizituAPI;
-    @Inject
-    JiandanAPI mJiandanAPI;
     @Inject
     Gson mGson;
 
@@ -42,30 +25,6 @@ public abstract class BaseManager {
 
     public ClientAPI getApi() {
         return mApi;
-    }
-
-    public GankAPI getGankApi() {
-        return mGankApi;
-    }
-
-    public DoubanAPI getDoubanApi() {
-        return mDoubanApi;
-    }
-
-    public ZhihuAPI getZhihuApi() {
-        return mZhihuApi;
-    }
-
-    public MzituAPI getMzituAPI() {
-        return mMeiziAPI;
-    }
-
-    public MeizituAPI getMeizituAPI() {
-        return mMeizituAPI;
-    }
-
-    public JiandanAPI getJiandanAPI() {
-        return mJiandanAPI;
     }
 
     public Gson getGson() {

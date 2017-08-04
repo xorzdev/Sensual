@@ -19,10 +19,10 @@ public class DoubanManager extends BaseManager implements DataLayer.DoubanServic
 
     @Override
     public Observable<Image> getRank(Fragment fragment, int page) {
-        return getDoubanApi().getRank(page)
+        return getApi().getDoubanRank(page)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
-                .map(document ->  document.select("div[class=thumbnail] div[class=img_single] img"))
+                .map(document -> document.select("div[class=thumbnail] div[class=img_single] img"))
                 .flatMap(Observable::fromIterable)
                 .map(element -> element.attr("src"))
                 .map(s -> Image.newImage(fragment, s));
@@ -30,10 +30,10 @@ public class DoubanManager extends BaseManager implements DataLayer.DoubanServic
 
     @Override
     public Observable<Image> getShow(Fragment fragment, String type, int page) {
-        return getDoubanApi().getShow(type, page)
+        return getApi().getDoubanShow(type, page)
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)
-                .map(document ->  document.select("div[class=thumbnail] div[class=img_single] img"))
+                .map(document -> document.select("div[class=thumbnail] div[class=img_single] img"))
                 .flatMap(Observable::fromIterable)
                 .map(element -> element.attr("src"))
                 .map(s -> Image.newImage(fragment, s));
