@@ -100,6 +100,7 @@ andResGuard {
         artifact = 'com.tencent.mm:SevenZip:1.2.0'
         //path = "/usr/local/bin/7za"
     }
+    // v2签名会使得7zip压缩失效，如果你对apk大小有极致的要求，可以在signingConfigs中关闭v2签名
     // gradlew resguardRelease
     // adb shell monkey -p gavin.sensual -v 500
 }
