@@ -37,7 +37,7 @@ public abstract class BaseActivity extends SupportActivity {
     }
 
     @Override
-    protected FragmentAnimator onCreateFragmentAnimator() {
+    public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultNoAnimator();
     }
 
