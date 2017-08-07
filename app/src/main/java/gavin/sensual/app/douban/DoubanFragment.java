@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import gavin.sensual.R;
-import gavin.sensual.app.common.Image;
 import gavin.sensual.app.common.BigImagePopEvent;
+import gavin.sensual.app.common.Image;
 import gavin.sensual.app.common.LoadMoreEvent;
 import gavin.sensual.app.common.RecyclerViewModel;
 import gavin.sensual.base.BindingFragment;
@@ -91,7 +91,9 @@ public class DoubanFragment extends BindingFragment<LayoutRecyclerBinding> {
     }
 
     private Observable<Image> getResult(boolean isMore) {
-        if (TextUtils.isEmpty(cid)) {
+        if ("0".equals(cid)) {
+            return getDataLayer().getDoubanService().getShow(this, cid, (int) (Math.random() * 5070));
+        } else if (TextUtils.isEmpty(cid)) {
             return getDataLayer().getDoubanService().getRank(this, isMore ? binding.recycler.offset + 1 : 1);
         } else {
             return getDataLayer().getDoubanService().getShow(this, cid, isMore ? binding.recycler.offset + 1 : 1);

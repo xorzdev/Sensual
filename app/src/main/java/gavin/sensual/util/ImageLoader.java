@@ -6,9 +6,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.target.Target;
 
 import gavin.sensual.R;
+import gavin.sensual.app.mzitu.MzituReferer;
 import gavin.sensual.util.glide.BlurTransformation;
 import gavin.sensual.util.glide.GlideCircleTransformation;
 import gavin.sensual.util.glide.GlideRoundTransformation;
@@ -52,6 +54,19 @@ public class ImageLoader {
         int colorRes = getPlaceholderColor();
         Glide.with(imageView.getContext())
                 .load(url)
+                .placeholder(colorRes)
+                .error(colorRes)
+                .override(width, height)
+                .into(imageView);
+    }
+
+    /**
+     * 加载 mzitu 图片 - 反反盗链
+     */
+    public static void loadMzitu(ImageView imageView, String url, int width, int height) {
+        int colorRes = getPlaceholderColor();
+        Glide.with(imageView.getContext())
+                .load(new GlideUrl(url, new MzituReferer()))
                 .placeholder(colorRes)
                 .error(colorRes)
                 .override(width, height)
