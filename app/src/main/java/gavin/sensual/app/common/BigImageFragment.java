@@ -146,12 +146,22 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding> imple
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    imageUrl = imageList.get(linearLayoutManager.findFirstVisibleItemPosition()).getUrl();
-                    Observable.just(imageUrl)
-                            .map(s -> DbUtil.getCollectionService().hasCollected(s))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(ivActionLove::setSelected);
+                    if (linearLayoutManager.findFirstVisibleItemPosition() < imageList.size()) {
+                        binding.toolbar.getMenu().findItem(R.id.actionCollect).setVisible(true);
+                        binding.toolbar.getMenu().findItem(R.id.actionDownload).setVisible(true);
+                        binding.toolbar.getMenu().findItem(R.id.actionShare).setVisible(true);
+
+                        imageUrl = imageList.get(linearLayoutManager.findFirstVisibleItemPosition()).getUrl();
+                        Observable.just(imageUrl)
+                                .map(s -> DbUtil.getCollectionService().hasCollected(s))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(ivActionLove::setSelected);
+                    } else {
+                        binding.toolbar.getMenu().findItem(R.id.actionCollect).setVisible(false);
+                        binding.toolbar.getMenu().findItem(R.id.actionDownload).setVisible(false);
+                        binding.toolbar.getMenu().findItem(R.id.actionShare).setVisible(false);
+                    }
                 }
             }
         });

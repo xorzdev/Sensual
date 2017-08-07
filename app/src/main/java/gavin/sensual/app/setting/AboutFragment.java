@@ -49,5 +49,12 @@ public class AboutFragment extends BindingFragment<FragAboutBinding> {
                 L.e(e);
             }
         });
+        binding.tvShare.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    String.format("声色 %s：不可描述@声色  http://www.coolapk.com/apk/gavin.sensual", VersionHelper.getVersionName(_mActivity)));
+            intent.setType("text/plain");
+            startActivity(Intent.createChooser(intent, "分享"));
+        });
     }
 }

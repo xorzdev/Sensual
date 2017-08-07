@@ -150,4 +150,14 @@ public interface ClientAPI {
     @GET("http://jandan.net/ooxx/{offset}")
     Observable<ResponseBody> getJiandan(@Path("offset") String page);
 
+
+    /* **************************************************************************** *
+     * *********************************** 买家秀 ***************  ***************** *
+     * **************************************************************************** */
+
+
+    @Headers("Cache-Control: max-stale=60")
+    @GET("http://www.mjxzs.cc/")
+    Observable<ResponseBody> getMaijiaxiu();
+
 }

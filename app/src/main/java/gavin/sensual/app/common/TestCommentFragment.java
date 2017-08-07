@@ -58,7 +58,7 @@ public class TestCommentFragment extends BindingFragment<LayoutToolbarRecyclerBi
                 .doOnSubscribe(compositeDisposable::add)
                 .subscribe(event -> {
                     if (event.requestCode != hashCode()) return;
-                    getImage(true);
+                    binding.recycler.performLoad();
                 });
 
         RxBus.get().toObservable(BigImagePopEvent.class)

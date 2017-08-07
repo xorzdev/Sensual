@@ -58,6 +58,19 @@
                 android:paddingTop="14dp"
                 android:text="联系反馈" />
 
+            <TextView
+                android:id="@+id/tvShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:background="@android:color/white"
+                android:foreground="?selectableItemBackground"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="14dp"
+                android:text="推荐好友" />
+
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

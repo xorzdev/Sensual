@@ -113,4 +113,10 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
         mViewModel.onDestroy();
         compositeDisposable.dispose();
     }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        // TODO: 2017/8/7 求好评
+    }
 }

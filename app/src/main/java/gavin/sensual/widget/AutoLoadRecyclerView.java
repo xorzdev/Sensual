@@ -37,6 +37,13 @@ public class AutoLoadRecyclerView extends RecyclerView {
         }
     }
 
+    public void performLoad() {
+        if (onLoadListener != null && haveMore && !loading) {
+            loading = true;
+            onLoadListener.onLoad();
+        }
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
