@@ -10,9 +10,9 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.target.Target;
 
 import gavin.sensual.R;
-import gavin.sensual.app.mzitu.MzituReferer;
 import gavin.sensual.util.glide.BlurTransformation;
 import gavin.sensual.util.glide.GlideCircleTransformation;
+import gavin.sensual.util.glide.GlideMzituReferer;
 import gavin.sensual.util.glide.GlideRoundTransformation;
 
 /**
@@ -63,10 +63,11 @@ public class ImageLoader {
     /**
      * 加载 mzitu 图片 - 反反盗链
      */
+    @Deprecated
     public static void loadMzitu(ImageView imageView, String url, int width, int height) {
         int colorRes = getPlaceholderColor();
         Glide.with(imageView.getContext())
-                .load(new GlideUrl(url, new MzituReferer()))
+                .load(new GlideUrl(url, new GlideMzituReferer()))
                 .placeholder(colorRes)
                 .error(colorRes)
                 .override(width, height)

@@ -4,7 +4,6 @@ import java.util.List;
 
 import gavin.sensual.app.collection.Collection;
 import gavin.sensual.db.dao.CollectionDao;
-import gavin.sensual.util.L;
 
 /**
  * 收藏 service
@@ -41,7 +40,6 @@ public class CollectionService extends BaseService<Collection, Long> {
     }
 
     public List<Collection> queryDesc(int offset) {
-        L.e(offset * 10);
         return queryBuilder().orderDesc(CollectionDao.Properties.Id).limit(10).offset(offset * 10).list();
     }
 }

@@ -108,7 +108,21 @@ public interface ClientAPI {
      * **************************************************************************** */
 
 
-    @Headers("Cache-Control: max-stale=1800")
+    @Headers({
+            "Cache-Control: max-stale=1800",
+
+//            "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+//            "Accept-Encoding:gzip, deflate",
+//            "Accept-Language:zh-CN,zh;q=0.8",
+//            "Cache-Control:max-age=0",
+//            "Cookie:UM_distinctid=15c2512c32ea7-00d2016ead08c-323f5c0f-1fa400-15c2512c32fd8e; safedog-flow-item=; CNZZDATA1253283067=1021046910-1502161137-%7C1502161137",
+//            "Host:m.meizitu.com",
+//            "If-Modified-Since:Thu, 03 Aug 2017 16:02:28 GMT",
+//            "If-None-Match:%220c294e771cd31:6308%22",
+//            "Proxy-Connection:keep-alive",
+//            "Upgrade-Insecure-Requests:1",
+//            "User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36",
+    })
     @GET("http://m.meizitu.com/index.html")
     Observable<ResponseBody> getMeizituHome();
 

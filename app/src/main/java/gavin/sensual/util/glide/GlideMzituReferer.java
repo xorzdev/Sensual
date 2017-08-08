@@ -1,4 +1,4 @@
-package gavin.sensual.app.mzitu;
+package gavin.sensual.util.glide;
 
 import com.bumptech.glide.load.model.Headers;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author gavin.xiong 2017/8/7
  */
-public class MzituReferer implements Headers {
+public class GlideMzituReferer implements Headers {
 
     @Override
     public Map<String, String> getHeaders() {

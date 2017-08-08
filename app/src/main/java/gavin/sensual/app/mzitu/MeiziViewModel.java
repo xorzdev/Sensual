@@ -28,7 +28,7 @@ public class MeiziViewModel extends BindingViewModel<LayoutRecyclerBinding> {
     private Callback callback;
 
     private List<Image> imageList = new ArrayList<>();
-    private MzituAdapter adapter;
+    private DoubanAdapter adapter;
     private FooterLoadingBinding loadingBinding;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -43,7 +43,7 @@ public class MeiziViewModel extends BindingViewModel<LayoutRecyclerBinding> {
     private void init() {
         binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
 
-        adapter = new MzituAdapter(mContext.get(), imageList);
+        adapter = new DoubanAdapter(mContext.get(), imageList);
         adapter.setOnItemClickListener(i -> callback.onItemClick(imageList, i));
         binding.recycler.setAdapter(adapter);
         loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));

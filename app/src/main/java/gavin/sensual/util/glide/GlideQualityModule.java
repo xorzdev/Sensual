@@ -13,6 +13,8 @@ import com.bumptech.glide.module.GlideModule;
 import java.io.InputStream;
 
 import gavin.sensual.base.CacheHelper;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
 
 /**
  * 自定义Glide模块 - 图片质量
@@ -24,6 +26,8 @@ import gavin.sensual.base.CacheHelper;
  * @author gavin.xiong 2016/9/14
  */
 public class GlideQualityModule implements GlideModule {
+
+    private volatile Call.Factory internalClient;
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
@@ -39,6 +43,23 @@ public class GlideQualityModule implements GlideModule {
      */
     @Override
     public void registerComponents(Context context, Glide glide) {
-        glide.register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory()); // 使用 okhttp 下载图片
+        glide.register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(getInternalClient())); // 使用 okhttp 下载图片
+    }
+
+    /**
+     * OkHttp 客户端单例对象
+     * todo 使用 Dagger2
+     */
+    private Call.Factory getInternalClient() {
+        if (internalClient == null) {
+            synchronized (GlideQualityModule.class) {
+                if (internalClient == null) {
+                    internalClient = new OkHttpClient.Builder()
+                            .addNetworkInterceptor(new GlideOKHttpRefererNetworkInterceptor())
+                            .build();
+                }
+            }
+        }
+        return internalClient;
     }
 }

@@ -53,10 +53,6 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                         .substring(0, s.lastIndexOf("/") + 1).replaceAll("thumbs/", "")
                         .concat(s.substring(s.indexOf("_") + 1, s.lastIndexOf("_")))
                         .concat(s.substring(s.lastIndexOf("."))))
-                .map(s -> {
-                    L.e(s);
-                    return s;
-                })
                 .map(s -> Image.newImage(fragment, s));
     }
 

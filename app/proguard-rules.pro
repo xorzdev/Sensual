@@ -96,3 +96,12 @@
 # -keep class * implements java.io.Serializable {*;}
 ################################## greendao #############################
 
+################################## photoView #############################
+-keepclassmembers class com.github.chrisbanes.photoview.PhotoViewAttacher {
+    private com.github.chrisbanes.photoview.CustomGestureDetector mScaleDragDetector;
+}
+-keepclassmembers class com.github.chrisbanes.photoview.CustomGestureDetector {
+    private final float mTouchSlop;
+}
+################################## photoView #############################
+

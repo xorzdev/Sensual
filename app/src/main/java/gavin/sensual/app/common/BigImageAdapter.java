@@ -74,8 +74,8 @@ public class BigImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemBigI
         float MID_SCALE = 1.75f;
         float MIN_SCALE = 1.0f;
 
-        float larger = width > height ? width : height;
-        float lesser = width > height ? height : width;
+        float larger = Math.max(width, height);
+        float lesser = Math.min(width, height);
 
         float x = larger / 1000;
         float y = larger / lesser;
