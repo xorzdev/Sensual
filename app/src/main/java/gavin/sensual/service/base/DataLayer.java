@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
+import gavin.sensual.app.setting.Version;
 import io.reactivex.Observable;
 
 /**
@@ -22,6 +23,7 @@ public class DataLayer {
     private MeizituService mMeizituService;
     private JiandanService mJiandanService;
     private MaijiaxiuService mMaijiaxiuService;
+    private SettingService mSettingService;
 
     public DataLayer(DailyService dailyService,
                      GankService gankService,
@@ -30,7 +32,8 @@ public class DataLayer {
                      MzituService mzituService,
                      MeizituService meizituService,
                      JiandanService jiandanService,
-                     MaijiaxiuService maijiaxiuService) {
+                     MaijiaxiuService maijiaxiuService,
+                     SettingService settingService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
@@ -39,6 +42,7 @@ public class DataLayer {
         mMeizituService = meizituService;
         mJiandanService = jiandanService;
         mMaijiaxiuService = maijiaxiuService;
+        mSettingService = settingService;
     }
 
     public DailyService getDailyService() {
@@ -71,6 +75,10 @@ public class DataLayer {
 
     public MaijiaxiuService getMaijiaxiuService() {
         return mMaijiaxiuService;
+    }
+
+    public SettingService getSettingService() {
+        return mSettingService;
     }
 
     public interface DailyService {
@@ -134,5 +142,9 @@ public class DataLayer {
 
     public interface MaijiaxiuService {
         Observable<Image> getPic(Fragment fragment, int offset);
+    }
+
+    public interface SettingService {
+        Observable<Version> getVersion();
     }
 }

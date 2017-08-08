@@ -3,6 +3,7 @@ package gavin.sensual.net;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.gank.Result;
+import gavin.sensual.app.setting.Version;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -166,12 +167,22 @@ public interface ClientAPI {
 
 
     /* **************************************************************************** *
-     * *********************************** 买家秀 ***************  ***************** *
+     * *********************************** 买家秀 ********************************** *
      * **************************************************************************** */
 
 
     @Headers("Cache-Control: max-stale=60")
     @GET("http://www.mjxzs.cc/")
     Observable<ResponseBody> getMaijiaxiu();
+
+
+    /* **************************************************************************** *
+     * *********************************** 版本检测 ******************************** *
+     * **************************************************************************** */
+
+
+    @Headers("Cache-Control: max-stale=86400")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/apk/version.json")
+    Observable<Version> getVersion();
 
 }

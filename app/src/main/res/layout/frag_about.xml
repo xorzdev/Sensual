@@ -33,10 +33,23 @@
                 tools:text="声色 v1.0.2" />
 
             <TextView
-                android:id="@+id/tvLicense"
+                android:id="@+id/tvCheckVersion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:background="@android:color/white"
+                android:foreground="?selectableItemBackground"
+                android:paddingBottom="14dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="14dp"
+                android:text="检测更新" />
+
+            <TextView
+                android:id="@+id/tvLicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
                 android:background="@android:color/white"
                 android:foreground="?selectableItemBackground"
                 android:paddingBottom="14dp"
