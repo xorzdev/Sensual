@@ -70,18 +70,14 @@ public class ZhihuQuestionFragment extends BindingFragment<LayoutToolbarRecycler
     private void subscribeEvent() {
         RxBus.get().toObservable(LoadMoreEvent.class)
                 .doOnSubscribe(compositeDisposable::add)
-                .subscribe(event -> {
-                    if (event.requestCode != hashCode()) return;
-                    binding.recycler.performLoad();
-                });
+                .filter(event -> event.requestCode == hashCode())
+                .subscribe(event -> binding.recycler.performLoad());
 
         RxBus.get().toObservable(BigImagePopEvent.class)
                 .doOnSubscribe(compositeDisposable::add)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(event -> {
-                    if (event.requestCode != hashCode()) return;
-                    binding.recycler.smoothScrollToPosition(event.position);
-                });
+                .filter(event -> event.requestCode == hashCode())
+                .subscribe(event -> binding.recycler.smoothScrollToPosition(event.position));
     }
 
     private void getImage(boolean isMore) {
