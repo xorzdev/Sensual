@@ -11,23 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 class PagerAdapter extends FragmentStatePagerAdapter {
 
-    private String[] type = new String[]{
-            "",
-            "xinggan_2",
-            "sifang_5",
-            "qingchun_3",
-            "meizi_4",
-            "xiaoqingxin_6",
-            "nvshen_7",
-            "qizhi_8",
-            "mote_9",
-            "bijini_10",
-            "baobei_11",
-            "luoli_12",
-            "wangluo_13",
-            "rihan_14",
-    };
-
     private String[] tabs = new String[]{
             "首页",
             "性感",
@@ -43,6 +26,23 @@ class PagerAdapter extends FragmentStatePagerAdapter {
             "萝莉",
             "90后",
             "日韩",
+    };
+
+    private String[] type = new String[]{
+            "",
+            "xinggan_2",
+            "sifang_5",
+            "qingchun_3",
+            "meizi_4",
+            "xiaoqingxin_6",
+            "nvshen_7",
+            "qizhi_8",
+            "mote_9",
+            "bijini_10",
+            "baobei_11",
+            "luoli_12",
+            "wangluo_13",
+            "rihan_14",
     };
 
     PagerAdapter(FragmentManager fragmentManager) {

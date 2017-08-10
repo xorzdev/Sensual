@@ -14,7 +14,6 @@ import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 这里是萌萌哒注释君
@@ -80,28 +79,7 @@ public class JiandanFragment extends BindingFragment<LayoutToolbarRecyclerBindin
      * 网络请求
      */
     private void getImage(boolean isMore) {
-        getDataSource(isMore)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> {
-                    compositeDisposable.add(disposable);
-                    mViewModel.doOnSubscribe(isMore);
-                    binding.recycler.loadData(isMore);
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> {
-                    mViewModel.doOnComplete();
-                    binding.recycler.loading = false;
-                })
-                .doOnError(throwable -> {
-                    mViewModel.doOnError(isMore);
-                    binding.recycler.loading = false;
-                    binding.recycler.offset--;
-                })
-                .subscribe(image -> {
-                    binding.recycler.haveMore = true;
-                    mViewModel.onNext(isMore, image);
-                }, e -> mViewModel.onError(e, isMore));
+        mViewModel.getImage(getDataSource(isMore), isMore);
     }
 
     private Observable<Image> getDataSource(boolean isMore) {

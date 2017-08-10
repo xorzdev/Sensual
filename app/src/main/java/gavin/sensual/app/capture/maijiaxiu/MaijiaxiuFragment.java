@@ -3,6 +3,8 @@ package gavin.sensual.app.capture.maijiaxiu;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.concurrent.TimeUnit;
+
 import gavin.sensual.R;
 import gavin.sensual.app.common.BigImagePopEvent;
 import gavin.sensual.app.common.LoadMoreEvent;
@@ -12,7 +14,6 @@ import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutToolbarRecyclerBinding;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 买家秀
@@ -24,8 +25,6 @@ public class MaijiaxiuFragment extends BindingFragment<LayoutToolbarRecyclerBind
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private ToolbarRecyclerViewModel mViewModel;
-
-    private Integer pageCount;
 
     public static MaijiaxiuFragment newInstance() {
         return new MaijiaxiuFragment();
@@ -78,27 +77,9 @@ public class MaijiaxiuFragment extends BindingFragment<LayoutToolbarRecyclerBind
      * 网络请求
      */
     private void getImage(boolean isMore) {
-        getDataLayer().getMaijiaxiuService().getPic(this, 0)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> {
-                    compositeDisposable.add(disposable);
-                    mViewModel.doOnSubscribe(isMore);
-                    binding.recycler.loadData(isMore);
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> {
-                    mViewModel.doOnComplete();
-                    binding.recycler.loading = false;
-                })
-                .doOnError(throwable -> {
-                    mViewModel.doOnError(isMore);
-                    binding.recycler.loading = false;
-                    binding.recycler.offset--;
-                })
-                .subscribe(image -> {
-                    binding.recycler.haveMore = false;
-                    mViewModel.onNext(isMore, image);
-                }, e -> mViewModel.onError(e, isMore));
+        mViewModel.getImage(getDataLayer()
+                .getMaijiaxiuService()
+                .getPic2(this)
+                .delay(isMore ? 1500 : 500, TimeUnit.MILLISECONDS), isMore);
     }
 }

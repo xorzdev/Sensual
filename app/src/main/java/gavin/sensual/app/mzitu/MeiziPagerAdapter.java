@@ -11,18 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 class MeiziPagerAdapter extends FragmentStatePagerAdapter {
 
-    private String[] type = new String[]{
-            "",
-            "xinggan",
-            "japan",
-            "taiwan",
-            "mm",
-            "zipai",
-            "hot",
-            "best",
-            "all",
-    };
-
     private String[] tabs = new String[]{
             "首页",
             "性感",
@@ -33,6 +21,18 @@ class MeiziPagerAdapter extends FragmentStatePagerAdapter {
             "热门",
             "推荐",
             "最新",
+    };
+
+    private String[] type = new String[]{
+            "",
+            "xinggan",
+            "japan",
+            "taiwan",
+            "mm",
+            "zipai",
+            "hot",
+            "best",
+            "all",
     };
 
     MeiziPagerAdapter(FragmentManager fragmentManager) {

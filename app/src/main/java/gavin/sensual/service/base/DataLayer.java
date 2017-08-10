@@ -141,7 +141,7 @@ public class DataLayer {
     }
 
     public interface MaijiaxiuService {
-        Observable<Image> getPic(Fragment fragment, int offset);
+        Observable<Image> getPic2(Fragment fragment);
     }
 
     public interface SettingService {

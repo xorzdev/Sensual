@@ -11,24 +11,26 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 class DoubanPagerAdapter extends FragmentStatePagerAdapter {
 
-    private static final String TYPE_RANDOM = "0";
-    private static final String TYPE_RANK = "";
-    private static final String TYPE_BREAST = "2";
-    private static final String TYPE_BUTT = "6";
-    private static final String TYPE_SILK = "7";
-    private static final String TYPE_LEG = "3";
-    private static final String TYPE_BEAUTY = "4";
-    private static final String TYPE_OTHER = "5";
-
     private String[] tabs = new String[]{
-            "随机",
-            "福利",
-            "大胸妹",
-            "小翘臀",
-            "黑丝袜",
-            "美腿控",
-            "有颜值",
-            "大杂烩",
+            "RANDOM",
+            "RANK",
+            "BREAST",
+            "BUTT",
+            "SILK",
+            "LEG",
+            "BEAUTY",
+            "HODGEPODGE",
+    };
+
+    private String[] type = new String[]{
+            "0",
+            "",
+            "2",
+            "6",
+            "7",
+            "3",
+            "4",
+            "5",
     };
 
     DoubanPagerAdapter(FragmentManager fragmentManager) {
@@ -37,26 +39,7 @@ class DoubanPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return DoubanFragment.newInstance(TYPE_RANDOM);
-            case 1:
-                return DoubanFragment.newInstance(TYPE_RANK);
-            case 2:
-                return DoubanFragment.newInstance(TYPE_BREAST);
-            case 3:
-                return DoubanFragment.newInstance(TYPE_BUTT);
-            case 4:
-                return DoubanFragment.newInstance(TYPE_SILK);
-            case 5:
-                return DoubanFragment.newInstance(TYPE_LEG);
-            case 6:
-                return DoubanFragment.newInstance(TYPE_BEAUTY);
-            case 7:
-                return DoubanFragment.newInstance(TYPE_OTHER);
-            default:
-                return DoubanFragment.newInstance(null);
-        }
+        return DoubanFragment.newInstance(type[position]);
     }
 
     @Override

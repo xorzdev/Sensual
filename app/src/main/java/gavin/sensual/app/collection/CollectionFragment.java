@@ -76,16 +76,17 @@ public class CollectionFragment extends BindingFragment<LayoutToolbarRecyclerBin
     }
 
     private void getImage(boolean isMore) {
-        mViewModel.getImage(
-                Observable.just(isMore)
-                        .delay(500, TimeUnit.MILLISECONDS)
-                        .map(arg0 -> arg0 ? binding.recycler.offset - 1 : 0)
-                        .flatMap(offset -> Observable.just(DbUtil.getCollectionService()
-                                .queryDesc(offset)))
-                        .flatMap(Observable::fromIterable)
-                        .map(Collection::getImage)
-                        .map(s -> Image.newImage(this, s)),
-                isMore);
+        mViewModel.getImage(aaa(isMore), isMore);
+    }
+
+    private Observable<Image> aaa(boolean isMore) {
+        return Observable.just(isMore)
+                .delay(500, TimeUnit.MILLISECONDS)
+                .map(arg0 -> arg0 ? binding.recycler.offset - 1 : 0)
+                .flatMap(offset -> Observable.just(DbUtil.getCollectionService().queryDesc(offset)))
+                .flatMap(Observable::fromIterable)
+                .map(Collection::getImage)
+                .map(s -> Image.newImage(this, s));
     }
 
 }
