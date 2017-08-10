@@ -72,7 +72,7 @@ public class AboutFragment extends BindingFragment<FragAboutBinding> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(version -> {
                     if (version.getCode() <= VersionHelper.getVersionCode(getContext())) {
-                        Snackbar.make(binding.tvVersion, "当前已是最新版本", Snackbar.LENGTH_LONG);
+                        Snackbar.make(binding.tvVersion, "当前已是最新版本", Snackbar.LENGTH_LONG).show();
                     } else {
                         AlertDialog dialog = new AlertDialog.Builder(_mActivity)
                                 .setTitle("发现新版本")
@@ -85,6 +85,6 @@ public class AboutFragment extends BindingFragment<FragAboutBinding> {
                                 .show();
                         dialog.getButton(Dialog.BUTTON_NEGATIVE).setTextColor(0xFF777777);
                     }
-                }, e -> Snackbar.make(binding.tvVersion, e.getMessage(), Snackbar.LENGTH_LONG));
+                }, e -> Snackbar.make(binding.tvVersion, e.getMessage(), Snackbar.LENGTH_LONG).show());
     }
 }
