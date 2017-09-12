@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import gavin.sensual.base.CacheHelper;
+import gavin.sensual.util.CacheHelper;
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
 import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;

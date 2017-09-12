@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import gavin.sensual.base.BaseActivity;
 import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.BaseViewModel;
 import gavin.sensual.inject.module.ApplicationModule;
 import gavin.sensual.service.base.BaseManager;
 
@@ -23,6 +24,8 @@ public interface ApplicationComponent {
     void inject(BaseActivity activity);
 
     void inject(BaseFragment fragment);
+
+    void inject(BaseViewModel viewModel);
 
 //    void inject(BaseDialogFragment dialogFragment);
 

@@ -3,19 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="gavin.sensual.base.recycler.PagingViewModel" />
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        app:msg="@{vm.msg}">
 
-        <gavin.sensual.widget.AutoLoadRecyclerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
             android:orientation="horizontal"
+            app:adapter="@{vm.adapter}"
             app:layoutManager="LinearLayoutManager"
+            app:onScrollListener="@{vm.onScrollListener}"
             tools:listitem="@layout/item_big_image" />
 
         <FrameLayout
@@ -27,6 +37,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/vt_arrow_back_24dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:theme="@style/ToolbarLightOverflow" />
 

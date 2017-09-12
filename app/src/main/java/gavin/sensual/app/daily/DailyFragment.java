@@ -3,30 +3,21 @@ package gavin.sensual.app.daily;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import java.util.concurrent.TimeUnit;
-
 import gavin.sensual.R;
+import gavin.sensual.app.common.banner.BannerFragment;
 import gavin.sensual.app.main.DrawerToggleEvent;
-import gavin.sensual.app.main.StartFragmentEvent;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
-import gavin.sensual.widget.AutoLoadRecyclerView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 知乎日报 - 列表
  *
- * @author gavin.xiong 2017/4/26
+ * @author gavin.xiong 2017/8/11
  */
-public class DailyFragment extends BindingFragment<FragDailyBinding>
-        implements AutoLoadRecyclerView.OnLoadListener {
+public class DailyFragment extends BindingFragment<FragDailyBinding, DailyViewModel> {
 
-    private DailyViewModel mViewModel;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private int mBannerType;
 
     public static DailyFragment newInstance() {
         return new DailyFragment();
@@ -38,85 +29,18 @@ public class DailyFragment extends BindingFragment<FragDailyBinding>
     }
 
     @Override
+    protected void bindViewModel(@Nullable Bundle savedInstanceState) {
+        mBannerType = hashCode();
+        mViewModel = new DailyViewModel(getContext(), this, mBinding, mBannerType);
+        mViewModel.afterCreate();
+        mBinding.setVm(mViewModel);
+    }
+
+    @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        init();
-        getDaily(0);
-    }
+        loadRootFragment(R.id.bannerHolder, BannerFragment.newInstance(mBannerType));
 
-    @Override
-    public void onLoad() {
-        getDaily(binding.recycler.offset);
-    }
-
-    private void init() {
-        mViewModel = new DailyViewModel(_mActivity, binding);
-
-        binding.toolbar.setNavigationOnClickListener((v) -> RxBus.get().post(new DrawerToggleEvent(true)));
-
-        binding.banner.setOnItemClickListener(i ->
-                RxBus.get().post(new StartFragmentEvent(NewsFragment.newInstance(mViewModel.topStoryList.get(i).getId()))));
-
-        binding.refreshLayout.setOnRefreshListener(() -> getDaily(0));
-        binding.recycler.setOnLoadListener(this);
-        mViewModel.adapter.setOnItemClickListener(i ->
-                RxBus.get().post(new StartFragmentEvent(NewsFragment.newInstance(mViewModel.storyList.get(i).getId()))));
-    }
-
-    private void getDaily(int dayDiff) {
-        getDataLayer().getDailyService().getDaily(dayDiff)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> {
-                    compositeDisposable.add(disposable);
-                    mViewModel.doOnSubscribe(dayDiff);
-                    binding.recycler.loadData(dayDiff != 0);
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(daily -> {
-                    mViewModel.doOnNext(dayDiff, daily);
-                    // 知乎日报的生日为 2013 年 5 月 19 日
-                    binding.recycler.haveMore = !autoLoadMore(dayDiff, daily) && Integer.parseInt(daily.getDate()) > 20130519;
-                })
-                .doOnComplete(() -> {
-                    mViewModel.doOnComplete();
-                    binding.recycler.loading = false;
-                })
-                .doOnError(throwable -> {
-                    mViewModel.doOnError();
-                    binding.recycler.loading = false;
-                    binding.recycler.offset--;
-                })
-                .doAfterNext(daily -> {
-                    if (autoLoadMore(dayDiff, daily))
-                        onLoad();
-                })
-                .subscribe(daily -> mViewModel.onNext(dayDiff, daily),
-                        e -> mViewModel.onError(e, dayDiff));
-    }
-
-    /**
-     * 满足什么条件时自动加载下一页
-     * 解决今日热文过少时下拉刷新后上拉加载更多失效问题
-     *
-     * @param dayDiff dayDiff
-     * @param daily   Daily
-     * @return boolean
-     */
-    private boolean autoLoadMore(int dayDiff, Daily daily) {
-        return dayDiff == 0 && daily.getStories().size() < 10;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mViewModel.onDestroy();
-        compositeDisposable.dispose();
-    }
-
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        // TODO: 2017/8/7 求好评
+        mBinding.toolbar.setNavigationOnClickListener(v ->
+                RxBus.get().post(new DrawerToggleEvent(true)));
     }
 }

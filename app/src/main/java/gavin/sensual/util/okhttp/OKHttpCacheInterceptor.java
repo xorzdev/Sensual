@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 
-import gavin.sensual.base.App;
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.inject.module.ClientAPIModule;
 import okhttp3.CacheControl;

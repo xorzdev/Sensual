@@ -12,14 +12,12 @@ import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
 import gavin.sensual.app.gank.GankFragment;
 import gavin.sensual.app.meizitu.MeizituTabFragment;
-import gavin.sensual.app.mzitu.MeiziTabFragment;
-import gavin.sensual.base.BindingFragment;
+import gavin.sensual.app.mzitu.MzituTabFragment;
+import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.BundleKey;
 import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FragMainBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -27,9 +25,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  *
  * @author gavin.xiong 2017/5/15
  */
-public class MainFragment extends BindingFragment<FragMainBinding> {
-
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+public class MainFragment extends BaseFragment {
 
     public static final int FIRST = 0;
     public static final int SECOND = 1;
@@ -57,7 +53,7 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
             mFragments[FIRST] = DailyFragment.newInstance();
             mFragments[SECOND] = GankFragment.newInstance();
             mFragments[THIRD] = DoubanTabFragment.newInstance();
-            mFragments[FOURTH] = MeiziTabFragment.newInstance();
+            mFragments[FOURTH] = MzituTabFragment.newInstance();
             mFragments[FIFTH] = MeizituTabFragment.newInstance();
             mFragments[SIXTH] = CaptureFragment.newInstance();
             mFragments[SEVENTH] = CollectionFragment.newInstance();
@@ -71,12 +67,13 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
                     mFragments[FOURTH],
                     mFragments[FIFTH],
                     mFragments[SIXTH],
-                    mFragments[SEVENTH]);
+                    mFragments[SEVENTH]
+            );
         } else {
             mFragments[FIRST] = findChildFragment(DailyFragment.class);
             mFragments[SECOND] = findChildFragment(GankFragment.class);
             mFragments[THIRD] = findChildFragment(DoubanTabFragment.class);
-            mFragments[FOURTH] = findChildFragment(MeiziTabFragment.class);
+            mFragments[FOURTH] = findChildFragment(MzituTabFragment.class);
             mFragments[FIFTH] = findChildFragment(MeizituTabFragment.class);
             mFragments[SIXTH] = findChildFragment(CaptureFragment.class);
             mFragments[SEVENTH] = findChildFragment(CollectionFragment.class);
@@ -93,17 +90,11 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
         outState.putInt(BundleKey.MAIN_CURR_POSITION, currPoint);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        compositeDisposable.dispose();
-    }
-
     private void subscribeEvent() {
         RxBus.get().toObservable(ShowHideFragmentEvent.class)
                 .delay(showHideFragmentEvent -> Observable.just(showHideFragmentEvent).delay(showHideFragmentEvent.delay, TimeUnit.MILLISECONDS))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
+                .doOnSubscribe(mCompositeDisposable::add)
                 .subscribe(event -> {
                     if (event.position != currPoint) {
                         showHideFragment(mFragments[event.position], mFragments[currPoint]);
@@ -113,7 +104,7 @@ public class MainFragment extends BindingFragment<FragMainBinding> {
 
         RxBus.get().toObservable(BackPressedEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
+                .doOnSubscribe(mCompositeDisposable::add)
                 .subscribe(event -> {
                     if (currPoint != FIRST) {
                         showHideFragment(mFragments[FIRST], mFragments[currPoint]);

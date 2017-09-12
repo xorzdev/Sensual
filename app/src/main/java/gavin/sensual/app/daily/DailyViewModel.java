@@ -1,131 +1,88 @@
 package gavin.sensual.app.daily;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.support.v7.util.DiffUtil;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.databinding.ViewDataBinding;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
-import gavin.sensual.base.BindingViewModel;
-import gavin.sensual.databinding.FooterLoadingBinding;
-import gavin.sensual.databinding.FragDailyBinding;
-import gavin.sensual.widget.banner.BannerModel;
+import gavin.sensual.app.common.banner.BannerChangeEvent;
+import gavin.sensual.app.common.banner.BannerModel;
+import gavin.sensual.app.main.StartFragmentEvent;
+import gavin.sensual.base.BaseFragment;
+import gavin.sensual.base.RxBus;
+import gavin.sensual.base.recycler.BindingHeaderFooterAdapter;
+import gavin.sensual.base.recycler.PagingViewModel;
+import gavin.sensual.util.L;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 日报 ViewModel
+ * 知乎日报列表
  *
- * @author gavin.xiong 2017/5/5
+ * @author gavin.xiong 2017/8/11
  */
-public class DailyViewModel extends BindingViewModel<FragDailyBinding> {
+public class DailyViewModel extends PagingViewModel<Daily.Story, BindingHeaderFooterAdapter<Daily.Story>> {
 
-    private WeakReference<Context> mContext;
+    private int mBannerType;
 
-    List<Daily.Story> topStoryList;
-    List<Daily.Story> storyList = new ArrayList<>();
-    DailyAdapter adapter;
-    private FooterLoadingBinding loadingBinding;
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    DailyViewModel(Context context, FragDailyBinding binding) {
-        super(binding);
-        this.mContext = new WeakReference<>(context);
-        init();
+    DailyViewModel(Context context, BaseFragment fragment, ViewDataBinding binding, int type) {
+        super(context, fragment, binding);
+        this.mBannerType = type;
     }
 
-    private void init() {
-        binding.setViewModel(this);
-        binding.toolbar.setTitle("知乎日报");
-        binding.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-
-        binding.refreshLayout.setColorSchemeResources(R.color.colorVector);
-
-        adapter = new DailyAdapter(mContext.get(), storyList);
-        binding.recycler.setAdapter(adapter);
-        loadingBinding = FooterLoadingBinding.inflate(LayoutInflater.from(mContext.get()));
-        adapter.setFooterBinding(loadingBinding);
+    @Override
+    protected void initAdapter() {
+        adapter = new BindingHeaderFooterAdapter<>(mContext.get(), mList, R.layout.item_daily);
+        adapter.setOnItemClickListener(i ->
+                RxBus.get().post(new StartFragmentEvent(NewsFragment.newInstance(mList.get(i).getId()))));
     }
 
-    void doOnSubscribe(int dayDiff) {
-        if (dayDiff == 0) {
-            binding.refreshLayout.setRefreshing(true);
-        } else {
-            loadingBinding.root.setVisibility(View.VISIBLE);
-            loadingBinding.progressBar.setVisibility(View.VISIBLE);
-            loadingBinding.textView.setText("加载中...");
-        }
-    }
-
-    void doOnNext(int dayDiff, Daily daily) {
-        daily.getStories().get(0).setDate(dayDiff == 0 ? "今日热文" : daily.getDate());
-        if (dayDiff == 0) {
-            topStoryList = daily.getTopStories();
-            initBanner();
-        }
-    }
-
-    void doOnComplete() {
-        binding.refreshLayout.setRefreshing(false);
-        loadingBinding.progressBar.setVisibility(View.GONE);
-        loadingBinding.textView.setText(binding.recycler.haveMore ? "发呆中..." : "再也没有了...");
-    }
-
-    void doOnError() {
-        binding.refreshLayout.setRefreshing(false);
-    }
-
-    void onNext(int dayDiff, Daily daily) {
-        if (dayDiff == 0 && storyList.isEmpty()) {
-            storyList.addAll(daily.getStories());
-            adapter.notifyDataSetChanged();
-            return;
-        }
-        List<Daily.Story> newList = new ArrayList<>();
-        if (dayDiff != 0) newList.addAll(storyList);
-        newList.addAll(daily.getStories());
-        Observable.just(newList)
-                .map(stories -> DiffUtil.calculateDiff(new DiffCallback(storyList, stories)))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
-                // 使用 DiffUtil 刷新数据时 adapter 数据列表在 dispatchUpdatesTo 后更新有可能会报 IndexOutOfBoundsException
-                // 将 adapter 更新数据放在 dispatchUpdatesTo 前面，待跟进
-                .doOnNext(diffResult -> {
-                    if (dayDiff == 0) storyList.clear();
-                    storyList.addAll(daily.getStories());
+    @Override
+    protected void getData(boolean isMore) {
+        getDataLayer().getDailyService().getDaily(isMore ? pagingOffset : 0)
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> {
+                    mCompositeDisposable.add(disposable);
+                    doOnSubscribe(isMore);
                 })
-                .subscribe(diffResult -> diffResult.dispatchUpdatesTo(adapter));
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> doOnComplete(isMore))
+                .doOnError(e -> doOnError(isMore, e))
+                .doOnNext(daily -> {
+                    daily.getStories().get(0).setDate(!isMore ? "今日热文" : daily.getDate());
+                    // 知乎日报的生日为 2013 年 5 月 19 日
+                    pagingHaveMore = !autoLoadMore(isMore, daily) && Integer.parseInt(daily.getDate()) > 20130519;
+                    // 轮播
+                    if (!isMore) initBanner(daily.getTopStories());
+                })
+                .doAfterNext(daily -> {
+                    if (autoLoadMore(isMore, daily)) getData(true);
+                })
+                .subscribe(daily -> accept(isMore, daily.getStories()), L::e);
     }
 
-    void onError(Throwable e, int dayDiff) {
-        if (dayDiff != 0) {
-            loadingBinding.progressBar.setVisibility(View.GONE);
-            loadingBinding.textView.setText("玩坏了...");
-            Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(binding.recycler, e.getMessage(), Snackbar.LENGTH_INDEFINITE).show();
-        }
+    /**
+     * 满足什么条件时自动加载下一页
+     * 解决今日热文过少时下拉刷新后上拉加载更多失效问题
+     *
+     * @param isMore isMore
+     * @param daily  Daily
+     * @return boolean
+     */
+    private boolean autoLoadMore(boolean isMore, Daily daily) {
+        return !isMore && daily.getStories().size() < 10;
     }
 
-    private void initBanner() {
-        List<BannerModel> modelList = new ArrayList<>();
-        for (Daily.Story t : topStoryList) {
-            modelList.add(new BannerModel(null, t.getImageUrl(), t.getTitle()));
-        }
-        binding.banner.setModelList(modelList);
+    private void initBanner(List<Daily.Story> storyList) {
+        Observable.fromIterable(storyList)
+                .doOnSubscribe(mCompositeDisposable::add)
+                .map(story -> new BannerModel<>(story.getImageUrl(), story.getTitle(), story))
+                .toList()
+                .subscribe(list -> RxBus.get().post(new BannerChangeEvent<>(mBannerType, list)));
     }
-
-    void onDestroy() {
-        compositeDisposable.dispose();
-    }
-
 }

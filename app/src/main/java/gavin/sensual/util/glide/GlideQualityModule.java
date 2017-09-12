@@ -12,7 +12,7 @@ import com.bumptech.glide.module.GlideModule;
 
 import java.io.InputStream;
 
-import gavin.sensual.base.CacheHelper;
+import gavin.sensual.util.CacheHelper;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 

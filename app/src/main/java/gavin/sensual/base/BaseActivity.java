@@ -7,20 +7,20 @@ import android.support.v7.app.AppCompatDelegate;
 import javax.inject.Inject;
 
 import gavin.sensual.inject.component.ApplicationComponent;
-import gavin.sensual.service.base.DataLayer;
+import io.reactivex.disposables.CompositeDisposable;
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
- * 这里是萌萌哒注释君
+ * BaseActivity
  *
  * @author gavin.xiong 2016/12/30  2016/12/30
  */
 public abstract class BaseActivity extends SupportActivity {
 
     @Inject
-    DataLayer mDataLayer;
+    protected CompositeDisposable mCompositeDisposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +32,10 @@ public abstract class BaseActivity extends SupportActivity {
         afterCreate(savedInstanceState);
     }
 
-    public DataLayer getDataLayer() {
-        return mDataLayer;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.dispose();
     }
 
     @Override
@@ -41,8 +43,8 @@ public abstract class BaseActivity extends SupportActivity {
         return new DefaultNoAnimator();
     }
 
+    public abstract void setContentView();
+
     protected abstract void afterCreate(@Nullable Bundle savedInstanceState);
 
-
-    public abstract void setContentView();
 }

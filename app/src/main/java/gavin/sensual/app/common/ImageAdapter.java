@@ -1,18 +1,14 @@
 package gavin.sensual.app.common;
 
 import android.content.Context;
-import android.databinding.ViewDataBinding;
 import android.support.v4.app.Fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import gavin.sensual.R;
-import gavin.sensual.app.main.StartFragmentEvent;
-import gavin.sensual.base.RecyclerHeaderFooterAdapter;
-import gavin.sensual.base.RecyclerHolder;
-import gavin.sensual.base.RxBus;
-import gavin.sensual.databinding.FooterLoadingBinding;
+import gavin.sensual.base.function.IntConsumer;
+import gavin.sensual.base.recycler.RecyclerHeaderFooterAdapter;
+import gavin.sensual.base.recycler.RecyclerHolder;
 import gavin.sensual.databinding.ItemImageBinding;
 import gavin.sensual.util.DisplayUtil;
 import gavin.sensual.util.ImageLoader;
@@ -22,25 +18,33 @@ import gavin.sensual.util.ImageLoader;
  *
  * @author gavin.xiong 2016/12/28
  */
-public class ImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemImageBinding, ViewDataBinding, FooterLoadingBinding> {
+public class ImageAdapter extends RecyclerHeaderFooterAdapter<Image, ItemImageBinding> {
 
     private Fragment mFragment;
     private int mWidth;
 
-    public ImageAdapter(Context context, Fragment fragment, List<Image> mData) {
+    private IntConsumer mListener;
+
+    ImageAdapter(Context context, Fragment fragment, List<Image> mData) {
         super(context, mData, R.layout.item_image);
         mFragment = fragment;
         mWidth = DisplayUtil.getScreenWidth() / 2 - DisplayUtil.dp2px(12);
     }
 
+    public void setListener(IntConsumer listener) {
+        this.mListener = listener;
+    }
+
     @Override
-    public void onBind(RecyclerHolder<ItemImageBinding> holder, int position, Image t) {
+    protected void onBind(RecyclerHolder<ItemImageBinding> holder, int position, Image t) {
         int tempHeight = (int) (t.getHeight() / (t.getWidth() + 0f) * mWidth);
         holder.binding.imageView.getLayoutParams().height = tempHeight;
         ImageLoader.loadImage(mFragment, holder.binding.imageView, t.getUrl(), mWidth, tempHeight);
 
         holder.binding.item.setOnClickListener((v) -> {
-            RxBus.get().post(new StartFragmentEvent(BigImageFragment.newInstance((ArrayList<Image>) mList, position, mFragment.hashCode())));
+            if (mListener != null) {
+                mListener.accept(position);
+            }
         });
     }
 }

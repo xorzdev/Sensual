@@ -17,7 +17,6 @@ import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.base.BindingActivity;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.ActMainBinding;
-import gavin.sensual.test.multi.ImagesFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -83,7 +82,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                 return false;
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());
-                startDelay(ImagesFragment.newInstance());
+//                startDelay(ImagesFragment.newInstance());
 //                startDelay(TestCommentFragment.newInstance());
                 return false;
         }

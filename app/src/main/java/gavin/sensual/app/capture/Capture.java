@@ -3,7 +3,7 @@ package gavin.sensual.app.capture;
 import java.io.Serializable;
 
 /**
- * 这里是萌萌哒注释君
+ * 发现
  *
  * @author gavin.xiong 2017/5/24
  */

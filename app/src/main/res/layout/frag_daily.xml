@@ -5,26 +5,27 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="viewModel"
-            type="gavin.sensual.app.daily.DailyViewModel" />
+            name="vm"
+            type="gavin.sensual.base.recycler.PagingViewModel" />
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:msg="@{vm.msg}">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
@@ -32,8 +33,8 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 app:titleEnabled="false">
 
-                <gavin.sensual.widget.banner.BannerView
-                    android:id="@+id/banner"
+                <FrameLayout
+                    android:id="@+id/bannerHolder"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
                     android:fitsSystemWindows="true"
@@ -45,18 +46,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/vt_menu_24dp"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:theme="@style/ToolbarLightOverflow" />
+                    app:theme="@style/ToolbarLightOverflow"
+                    app:title="@string/app_name" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:colorSchemeColors="@{@intArray/colorScheme}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:onRefreshListener="@{vm}"
+            app:refreshing="@{vm.loading}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,18 +69,22 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvEntity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    tools:text="空空如也" />
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/list_empty_top_margin"
+                    android:text="@{vm.error ? @string/label_loading_error : @string/label_loading_empty }"
+                    android:visibility="@{vm.empty || vm.error ? View.VISIBLE : View.GONE}"
+                    tools:text="空空如也"
+                    tools:visibility="visible" />
 
-                <gavin.sensual.widget.AutoLoadRecyclerView
-                    android:id="@+id/recycler"
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layoutManager="LinearLayoutManager" />
+                    app:adapter="@{vm.adapter}"
+                    app:layoutManager="LinearLayoutManager"
+                    app:onScrollListener="@{vm.onScrollListener}"
+                    tools:listitem="@layout/item_daily" />
 
             </LinearLayout>
 

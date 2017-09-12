@@ -2,23 +2,31 @@ package gavin.sensual.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
 import gavin.sensual.inject.component.ApplicationComponent;
-import gavin.sensual.service.base.DataLayer;
+import io.reactivex.disposables.CompositeDisposable;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * 这里是萌萌哒注释君
+ * BaseFragment
  *
  * @author gavin.xiong 2016/12/30  2016/12/30
  */
 public abstract class BaseFragment extends SupportFragment {
 
     @Inject
-    DataLayer mDataLayer;
+    protected CompositeDisposable mCompositeDisposable;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(getLayoutId(), container, false);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -26,10 +34,20 @@ public abstract class BaseFragment extends SupportFragment {
         afterCreate(savedInstanceState);
     }
 
-    public DataLayer getDataLayer() {
-        return mDataLayer;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mCompositeDisposable.dispose();
     }
 
+    /**
+     * 提供 Fragment 布局文件
+     */
+    protected abstract int getLayoutId();
+
+    /**
+     * Fragment 创建后
+     */
     protected abstract void afterCreate(@Nullable Bundle savedInstanceState);
 
 }

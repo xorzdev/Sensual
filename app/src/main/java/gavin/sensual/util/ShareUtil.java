@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import gavin.sensual.base.CacheHelper;
 import gavin.sensual.inject.component.ApplicationComponent;
 
 /**

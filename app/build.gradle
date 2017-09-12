@@ -20,10 +20,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('x:/xxxxxx/xxxxxx.jks')
-            storePassword 'xxxxxx'
-            keyAlias 'xxxxxx'
-            keyPassword 'xxxxxx'
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
             v2SigningEnabled false
         }
     }
