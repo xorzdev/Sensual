@@ -49,4 +49,5 @@ public class AboutViewModel extends FragViewModel<AboutFragment, FragAboutBindin
 //        intent.setType("text/plain");
 //        mFragment.get().startActivity(Intent.createChooser(intent, "分享"));
 //    }
+
 }

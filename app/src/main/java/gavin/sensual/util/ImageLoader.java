@@ -1,6 +1,7 @@
 package gavin.sensual.util;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
@@ -9,6 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.target.Target;
 
+import gavin.sensual.BuildConfig;
 import gavin.sensual.R;
 import gavin.sensual.util.glide.BlurTransformation;
 import gavin.sensual.util.glide.GlideCircleTransformation;
@@ -78,13 +80,15 @@ public class ImageLoader {
      * 正常加载图片
      */
     public static void loadImage(Fragment fragment, ImageView imageView, String url, int width, int height) {
-        int colorRes = getPlaceholderColor();
-        Glide.with(fragment)
-                .load(url)
-                .placeholder(colorRes)
-                .error(colorRes)
-                .override(width, height)
-                .into(imageView);
+//        if (!BuildConfig.DEBUG) {
+            int colorRes = getPlaceholderColor();
+            Glide.with(fragment)
+                    .load(url)
+                    .placeholder(colorRes)
+                    .error(colorRes)
+                    .override(width, height)
+                    .into(imageView);
+//        }
     }
 
     /**

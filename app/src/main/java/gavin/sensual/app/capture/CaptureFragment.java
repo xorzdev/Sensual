@@ -6,9 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import gavin.sensual.BR;
 import gavin.sensual.R;
-import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutPagingToolbarBinding;
 
 /**
@@ -37,8 +35,8 @@ public class CaptureFragment extends BindingFragment<LayoutPagingToolbarBinding,
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         mBinding.includeToolbar.toolbar.setTitle("发现");
-        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v -> RxBus.get().post(new DrawerToggleEvent(true)));
+        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
+        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
 
         mBinding.recycler.setLayoutManager(new LinearLayoutManager(_mActivity));
     }

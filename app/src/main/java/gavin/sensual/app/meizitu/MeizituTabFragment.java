@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
-import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BaseViewModel;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutTabPagerBinding;
 
 /**
@@ -38,16 +36,15 @@ public class MeizituTabFragment extends BindingFragment<LayoutTabPagerBinding, B
 
     private void init() {
         mBinding.includeToolbar.toolbar.setTitle("妹子图 - meizitu");
-        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v ->
-                RxBus.get().post(new DrawerToggleEvent(true)));
+        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
+        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
         initViewPager();
     }
 
     private void initViewPager() {
         MeizituPagerAdapter pagerAdapter = new MeizituPagerAdapter(getChildFragmentManager());
         mBinding.viewPager.setAdapter(pagerAdapter);
-        mBinding.viewPager.setOffscreenPageLimit(5);
+        mBinding.viewPager.setOffscreenPageLimit(3);
         mBinding.includeToolbar.tabLayout.setupWithViewPager(mBinding.viewPager);
     }
 }

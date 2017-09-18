@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
 import gavin.sensual.app.common.banner.BannerFragment;
-import gavin.sensual.app.main.DrawerToggleEvent;
+import gavin.sensual.app.main.DrawerEnableEvent;
+import gavin.sensual.app.main.DrawerStateEvent;
 import gavin.sensual.base.BindingFragment;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.FragDailyBinding;
@@ -41,6 +42,18 @@ public class DailyFragment extends BindingFragment<FragDailyBinding, DailyViewMo
         loadRootFragment(R.id.bannerHolder, BannerFragment.newInstance(mBannerType));
 
         mBinding.toolbar.setNavigationOnClickListener(v ->
-                RxBus.get().post(new DrawerToggleEvent(true)));
+                RxBus.get().post(new DrawerStateEvent(true)));
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        RxBus.get().post(new DrawerEnableEvent(false));
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        RxBus.get().post(new DrawerEnableEvent(true));
     }
 }

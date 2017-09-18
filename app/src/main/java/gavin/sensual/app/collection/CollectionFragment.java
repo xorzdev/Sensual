@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import gavin.sensual.R;
-import gavin.sensual.app.main.DrawerToggleEvent;
 import gavin.sensual.base.BindingFragment;
-import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.LayoutPagingToolbarBinding;
 
 /**
@@ -35,8 +33,7 @@ public class CollectionFragment extends BindingFragment<LayoutPagingToolbarBindi
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
         mBinding.includeToolbar.toolbar.setTitle("收藏");
-        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_menu_24dp);
-        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v
-                -> RxBus.get().post(new DrawerToggleEvent(true)));
+        mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
+        mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
     }
 }

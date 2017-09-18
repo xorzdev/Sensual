@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,21 +13,24 @@ import android.view.View;
 import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
+import gavin.sensual.app.capture.CaptureFragment;
+import gavin.sensual.app.collection.CollectionFragment;
+import gavin.sensual.app.daily.DailyFragment;
+import gavin.sensual.app.douban.DoubanTabFragment;
+import gavin.sensual.app.gank.GankFragment;
+import gavin.sensual.app.meizitu.MeizituTabFragment;
+import gavin.sensual.app.mzitu.MzituTabFragment;
 import gavin.sensual.app.setting.AboutFragment;
-import gavin.sensual.app.setting.LicenseFragment;
 import gavin.sensual.base.BindingActivity;
 import gavin.sensual.base.RxBus;
 import gavin.sensual.databinding.ActMainBinding;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.SupportFragment;
 
 public class MainActivity extends BindingActivity<ActMainBinding>
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected int getLayoutId() {
@@ -41,7 +45,7 @@ public class MainActivity extends BindingActivity<ActMainBinding>
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         if (savedInstanceState == null) {
-            loadRootFragment(R.id.holder, MainFragment.newInstance());
+            loadRootFragment(R.id.holder, DailyFragment.newInstance());
         }
 
         subscribeEvent();
@@ -52,39 +56,37 @@ public class MainActivity extends BindingActivity<ActMainBinding>
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         binding.drawer.closeDrawer(Gravity.START);
+        if (item.isChecked()) return true;
         switch (item.getItemId()) {
             case R.id.nav_news:
-                showHideFragmentDelay(0);
-                return true;
+                popTo();
+                break;
             case R.id.nav_gank:
-                showHideFragmentDelay(1);
-                return true;
+                next(GankFragment.newInstance());
+                break;
             case R.id.nav_douban:
-                showHideFragmentDelay(2);
-                return true;
+                next(DoubanTabFragment.newInstance());
+                break;
             case R.id.nav_mzitu:
-                showHideFragmentDelay(3);
-                return true;
+                next(MzituTabFragment.newInstance());
+                break;
             case R.id.nav_meizitu:
-                showHideFragmentDelay(4);
-                return true;
+                next(MeizituTabFragment.newInstance());
+                break;
             case R.id.nav_capture:
-                showHideFragmentDelay(5);
-                return true;
+                next(CaptureFragment.newInstance());
+                break;
             case R.id.nav_collection:
-                showHideFragmentDelay(6);
-                return true;
-            case R.id.nav_license:
-                startDelay(LicenseFragment.newInstance());
-                return false;
+                next(CollectionFragment.newInstance());
+                break;
             case R.id.nav_about:
-                startDelay(AboutFragment.newInstance());
-                return false;
+                next(AboutFragment.newInstance());
+                break;
             case R.id.nav_test:
 //                start(SnapRecyclerFragment.newInstance());
 //                startDelay(ImagesFragment.newInstance());
 //                startDelay(TestCommentFragment.newInstance());
-                return false;
+                break;
         }
         return false;
     }
@@ -93,53 +95,51 @@ public class MainActivity extends BindingActivity<ActMainBinding>
     public void onBackPressedSupport() {
         if (binding.drawer.isDrawerOpen(Gravity.START)) {
             binding.drawer.closeDrawer(Gravity.START);
-        } else if (getTopFragment() instanceof MainFragment) {
-            RxBus.get().post(new BackPressedEvent());
         } else {
             super.onBackPressedSupport();
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        compositeDisposable.dispose();
+    private void popTo() {
+        Observable.just(0)
+                .delay(380, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(mCompositeDisposable::add)
+                .subscribe(arg0 -> popTo(DailyFragment.class, false));
     }
 
-    private void showHideFragmentDelay(int position) {
-        popTo(MainFragment.class, false);
-        RxBus.get().post(new ShowHideFragmentEvent(position, 380));
-    }
-
-    private void startDelay(SupportFragment fragment) {
+    private void next(SupportFragment fragment) {
         Observable.just(fragment)
                 .delay(380, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
+                .doOnSubscribe(mCompositeDisposable::add)
                 .subscribe(this::start);
     }
 
     private void subscribeEvent() {
         RxBus.get().toObservable(StartFragmentEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
+                .doOnSubscribe(mCompositeDisposable::add)
                 .subscribe(event -> start(event.supportFragment));
 
-        RxBus.get().toObservable(DrawerToggleEvent.class)
+        RxBus.get().toObservable(DrawerStateEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
-                .subscribe((event -> {
+                .doOnSubscribe(mCompositeDisposable::add)
+                .subscribe(event -> {
                     if (event.open) {
                         binding.drawer.openDrawer(Gravity.START);
                     } else {
                         binding.drawer.closeDrawer(Gravity.START);
                     }
-                }));
+                });
 
-        RxBus.get().toObservable(NavigationItemCheckedEvent.class)
+        RxBus.get().toObservable(DrawerEnableEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(compositeDisposable::add)
-                .subscribe(event -> binding.navigation.getMenu().findItem(event.itemId).setChecked(true));
+                .doOnSubscribe(mCompositeDisposable::add)
+                .subscribe(event -> binding.drawer.setDrawerLockMode(event.enable
+                        ? DrawerLayout.LOCK_MODE_UNLOCKED
+                        : DrawerLayout.LOCK_MODE_LOCKED_CLOSED));
     }
 }

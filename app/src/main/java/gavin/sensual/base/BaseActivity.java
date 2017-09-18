@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import gavin.sensual.inject.component.ApplicationComponent;
 import io.reactivex.disposables.CompositeDisposable;
 import me.yokeyword.fragmentation.SupportActivity;
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
@@ -40,7 +40,7 @@ public abstract class BaseActivity extends SupportActivity {
 
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+        return new DefaultVerticalAnimator();
     }
 
     public abstract void setContentView();
