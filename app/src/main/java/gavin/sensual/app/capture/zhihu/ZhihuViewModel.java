@@ -46,7 +46,7 @@ public class ZhihuViewModel extends PagingViewModel<Capture, BindingHeaderFooter
     @Override
     protected void getData(boolean isMore) {
         Observable.just(pageType)
-                .map(type -> type == TYPE_COLLECTION ? "zhihu_collection.json" : "zhihu_question.json")
+                .map(type -> type == TYPE_COLLECTION ? "json/zhihu_collection.json" : "json/zhihu_question.json")
                 .map(s -> AssetsUtils.readText(mContext.get(), s))
                 .map(s -> {
                     List<Capture> list = JsonUtil.toList(s, new TypeToken<List<Capture>>() { });

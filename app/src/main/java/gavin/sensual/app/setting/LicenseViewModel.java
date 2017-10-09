@@ -45,7 +45,7 @@ public class LicenseViewModel extends PagingViewModel<License, BindingHeaderFoot
 
     @Override
     protected void getData(boolean isMore) {
-        Observable.just("license.json")
+        Observable.just("json/license.json")
                 .map(s -> AssetsUtils.readText(mContext.get(), s))
                 .map(s -> {
                     List<License> list = JsonUtil.toList(s, new TypeToken<List<License>>() {

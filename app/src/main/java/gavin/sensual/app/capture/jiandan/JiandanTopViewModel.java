@@ -33,7 +33,7 @@ class JiandanTopViewModel extends ImageViewModel {
         pagingLimit = 10;
         Observable.just(type)
                 .doOnSubscribe(mCompositeDisposable::add)
-                .map(type -> type == 2017 ? "jiandantop2017.img" : "jiandantop2016.img")
+                .map(type -> type == 2017 ? "json/jiandantop2017.img" : "json/jiandantop2016.img")
                 .map(s -> AssetsUtils.readText(mContext.get(), s))
                 .map(s -> s.split(","))
                 .subscribe(strings -> this.images = strings, e -> notifyMsg(e.getMessage()));
