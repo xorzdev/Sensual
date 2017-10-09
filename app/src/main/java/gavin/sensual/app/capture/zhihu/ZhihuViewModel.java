@@ -3,18 +3,11 @@ package gavin.sensual.app.capture.zhihu;
 import android.content.Context;
 import android.databinding.ViewDataBinding;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
 import gavin.sensual.R;
 import gavin.sensual.app.capture.Capture;
 import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.recycler.BindingHeaderFooterAdapter;
 import gavin.sensual.base.recycler.PagingViewModel;
-import gavin.sensual.util.AssetsUtils;
-import gavin.sensual.util.JsonUtil;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -40,21 +33,20 @@ public class ZhihuViewModel extends PagingViewModel<Capture, BindingHeaderFooter
     protected void initAdapter() {
         adapter = new BindingHeaderFooterAdapter<>(mContext.get(), mList, R.layout.item_capture);
         adapter.setOnItemClickListener(position ->
-            mFragment.get().start(ZhihuDetailsFragment.newInstance(pageType, mList.get(position).getId())));
+                mFragment.get().start(ZhihuDetailsFragment.newInstance(pageType, mList.get(position).getId())));
     }
 
     @Override
     protected void getData(boolean isMore) {
-        Observable.just(pageType)
-                .map(type -> type == TYPE_COLLECTION ? "json/zhihu_collection.json" : "json/zhihu_question.json")
-                .map(s -> AssetsUtils.readText(mContext.get(), s))
-                .map(s -> {
-                    List<Capture> list = JsonUtil.toList(s, new TypeToken<List<Capture>>() { });
-                    return list;
-                })
+        getDataLayer().getZhihuPicService().getList(pageType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(mCompositeDisposable::add)
+                .doOnSubscribe(disposable -> {
+                    mCompositeDisposable.add(disposable);
+                    loading.set(true);
+                })
+                .doOnComplete(() -> loading.set(false))
+                .doOnError(throwable -> loading.set(false))
                 .subscribe(list -> {
                     mList.addAll(list);
                     adapter.notifyDataSetChanged();

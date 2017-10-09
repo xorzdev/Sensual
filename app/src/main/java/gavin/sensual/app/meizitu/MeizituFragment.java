@@ -27,8 +27,13 @@ public class MeizituFragment extends BindingFragment<LayoutPagingBinding, Meizit
     protected void bindViewModel(@Nullable Bundle savedInstanceState) {
         mViewModel = new MeizituViewModel(getContext(), this, mBinding,
                 getArguments().getString(BundleKey.PAGE_TYPE));
-        mViewModel.afterCreate();
         mBinding.setVm(mViewModel);
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        mViewModel.afterCreate();
     }
 
     @Override

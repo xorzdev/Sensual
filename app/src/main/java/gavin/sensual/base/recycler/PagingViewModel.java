@@ -49,6 +49,7 @@ public abstract class PagingViewModel<T, A extends RecyclerHeaderFooterAdapter>
     public void afterCreate() {
         initAdapter();
         initFooterBinding();
+        notifyChange();
         getData(false);
     }
 

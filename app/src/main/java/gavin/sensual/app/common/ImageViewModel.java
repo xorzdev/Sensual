@@ -34,9 +34,8 @@ public abstract class ImageViewModel extends PagingViewModel<Image, ImageAdapter
     @Override
     protected void initAdapter() {
         adapter = new ImageAdapter(mContext.get(), mFragment.get(), mList);
-        adapter.setListener(i ->
-                RxBus.get().post(new StartFragmentEvent(
-                        BigImageFragment.newInstance((ArrayList<Image>) mList, i, mFragment.get().hashCode()))));
+        adapter.setListener(i -> RxBus.get().post(new StartFragmentEvent(
+                BigImageFragment.newInstance((ArrayList<Image>) mList, i, mFragment.get().hashCode()))));
     }
 
     @Override

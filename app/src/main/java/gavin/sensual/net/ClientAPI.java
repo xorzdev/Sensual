@@ -1,8 +1,12 @@
 package gavin.sensual.net;
 
+import java.util.List;
+
+import gavin.sensual.app.capture.Capture;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.gank.Result;
+import gavin.sensual.app.setting.License;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -76,11 +80,11 @@ public interface ClientAPI {
      * **************************************************************************** */
 
 
-    @Headers("Cache-Control: max-stale=1800")
+    @Headers("Cache-Control: max-stale=60")
     @GET("http://www.dbmeinv.com/dbgroup/rank.htm")
     Observable<ResponseBody> getDoubanRank(@Query("pager_offset") int page);
 
-    @Headers("Cache-Control: max-stale=1800")
+    @Headers("Cache-Control: max-stale=60")
     @GET("http://www.dbmeinv.com/dbgroup/show.htm")
     Observable<ResponseBody> getDoubanShow(@Query("cid") String type, @Query("pager_offset") int page);
 
@@ -108,21 +112,7 @@ public interface ClientAPI {
      * **************************************************************************** */
 
 
-    @Headers({
-            "Cache-Control: max-stale=1800",
-
-//            "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-//            "Accept-Encoding:gzip, deflate",
-//            "Accept-Language:zh-CN,zh;q=0.8",
-//            "Cache-Control:max-age=0",
-//            "Cookie:UM_distinctid=15c2512c32ea7-00d2016ead08c-323f5c0f-1fa400-15c2512c32fd8e; safedog-flow-item=; CNZZDATA1253283067=1021046910-1502161137-%7C1502161137",
-//            "Host:m.meizitu.com",
-//            "If-Modified-Since:Thu, 03 Aug 2017 16:02:28 GMT",
-//            "If-None-Match:%220c294e771cd31:6308%22",
-//            "Proxy-Connection:keep-alive",
-//            "Upgrade-Insecure-Requests:1",
-//            "User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36",
-    })
+    @Headers("Cache-Control: max-stale=1800")
     @GET("http://m.meizitu.com/index.html")
     Observable<ResponseBody> getMeizituHome();
 
@@ -135,6 +125,10 @@ public interface ClientAPI {
      * *********************************** 知乎看图 ******************************** *
      * **************************************************************************** */
 
+
+    @Headers("Cache-Control: max-stale=86400")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/{type}")
+    Observable<List<Capture>> getZhihuList(@Path("type") String type);
 
     @Headers({
             "authorization: oauth c3cef7c66a1843f8b3a9e6a1e3160e20",
@@ -155,14 +149,19 @@ public interface ClientAPI {
 
 
     /* **************************************************************************** *
-     * *********************************** 简单妹子 ******************************** *
+     * *********************************** 煎蛋妹子 ******************************** *
      * **************************************************************************** */
 
 
     // "ooxx/page-75#comments"
-    @Headers("Cache-Control: max-stale=1800")
+    @Headers("Cache-Control: max-stale=60")
     @GET("http://jandan.net/ooxx/{offset}")
     Observable<ResponseBody> getJiandan(@Path("offset") String page);
+
+
+    @Headers("Cache-Control: max-stale=86400")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/{type}")
+    Observable<ResponseBody> getJiandanTop(@Path("type") String tpye);
 
 
     /* **************************************************************************** *
@@ -173,5 +172,15 @@ public interface ClientAPI {
     @Headers("Cache-Control: max-stale=60")
     @GET("http://www.mjxzs.cc/")
     Observable<ResponseBody> getMaijiaxiu();
+
+
+    /* **************************************************************************** *
+     * *********************************** 设置 ************************************ *
+     * **************************************************************************** */
+
+
+    @Headers("Cache-Control: max-stale=2419200")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/license.json")
+    Observable<List<License>> getLicense();
 
 }

@@ -5,11 +5,16 @@ import android.support.v4.app.Fragment;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
+import java.util.List;
+
+import gavin.sensual.app.capture.Capture;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+
+import static gavin.sensual.app.capture.zhihu.ZhihuViewModel.TYPE_COLLECTION;
 
 /**
  * DailyManager
@@ -17,6 +22,11 @@ import okhttp3.ResponseBody;
  * @author gavin.xiong 2017/4/28
  */
 public class ZhihuPicManager extends BaseManager implements DataLayer.ZhihuPicService {
+
+    @Override
+    public Observable<List<Capture>> getList(int type) {
+        return getApi().getZhihuList(type == TYPE_COLLECTION ? "zhihu_collection.json" : "zhihu_question.json");
+    }
 
     @Override
     public Observable<Image> getQuestionPic(Fragment fragment, long id, int limit, int offset) {

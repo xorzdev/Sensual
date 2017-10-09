@@ -5,17 +5,10 @@ import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.net.Uri;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
 import gavin.sensual.R;
 import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.recycler.BindingHeaderFooterAdapter;
 import gavin.sensual.base.recycler.PagingViewModel;
-import gavin.sensual.util.AssetsUtils;
-import gavin.sensual.util.JsonUtil;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -24,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author gavin.xiong 2017/8/14
  */
-public class LicenseViewModel extends PagingViewModel<License, BindingHeaderFooterAdapter<License>> {
+class LicenseViewModel extends PagingViewModel<License, BindingHeaderFooterAdapter<License>> {
 
     LicenseViewModel(Context context, BaseFragment fragment, ViewDataBinding binding) {
         super(context, fragment, binding);
@@ -45,16 +38,15 @@ public class LicenseViewModel extends PagingViewModel<License, BindingHeaderFoot
 
     @Override
     protected void getData(boolean isMore) {
-        Observable.just("json/license.json")
-                .map(s -> AssetsUtils.readText(mContext.get(), s))
-                .map(s -> {
-                    List<License> list = JsonUtil.toList(s, new TypeToken<List<License>>() {
-                    });
-                    return list;
-                })
-                .doOnSubscribe(mCompositeDisposable::add)
+        getDataLayer().getSettingService().getLicense()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    mCompositeDisposable.add(disposable);
+                    loading.set(true);
+                })
+                .doOnComplete(() -> loading.set(false))
+                .doOnError(throwable -> loading.set(false))
                 .subscribe(list -> {
                     mList.addAll(list);
                     adapter.notifyDataSetChanged();

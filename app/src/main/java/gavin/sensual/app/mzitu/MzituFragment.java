@@ -27,8 +27,13 @@ public class MzituFragment extends BindingFragment<LayoutPagingBinding, MzituVie
     protected void bindViewModel(@Nullable Bundle savedInstanceState) {
         mViewModel = new MzituViewModel(getContext(), this, mBinding,
                 getArguments().getString(BundleKey.PAGE_TYPE));
-        mViewModel.afterCreate();
         mBinding.setVm(mViewModel);
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        mViewModel.afterCreate();
     }
 
     @Override

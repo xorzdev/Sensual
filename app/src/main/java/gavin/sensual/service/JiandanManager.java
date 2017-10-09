@@ -42,4 +42,10 @@ public class JiandanManager extends BaseManager implements DataLayer.JiandanServ
                 .map(s -> Image.newImage(fragment, s));
     }
 
+    @Override
+    public Observable<String[]> getTop(int type) {
+        return getApi().getJiandanTop(String.format("jiandantop%s.img", type))
+                .map(ResponseBody::string)
+                .map(s -> s.split(","));
+    }
 }

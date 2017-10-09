@@ -27,8 +27,13 @@ public class DoubanFragment extends BindingFragment<LayoutPagingBinding, DoubanV
     protected void bindViewModel(@Nullable Bundle savedInstanceState) {
         mViewModel = new DoubanViewModel(getContext(), this, mBinding,
                 getArguments().getString(BundleKey.PAGE_TYPE));
-        mViewModel.afterCreate();
         mBinding.setVm(mViewModel);
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        mViewModel.afterCreate();
     }
 
     @Override

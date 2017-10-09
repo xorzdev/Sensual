@@ -2,9 +2,13 @@ package gavin.sensual.service.base;
 
 import android.support.v4.app.Fragment;
 
+import java.util.List;
+
+import gavin.sensual.app.capture.Capture;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
+import gavin.sensual.app.setting.License;
 import io.reactivex.Observable;
 
 /**
@@ -22,6 +26,7 @@ public class DataLayer {
     private MeizituService mMeizituService;
     private JiandanService mJiandanService;
     private MaijiaxiuService mMaijiaxiuService;
+    private SettingService mSettingService;
 
     public DataLayer(DailyService dailyService,
                      GankService gankService,
@@ -30,7 +35,8 @@ public class DataLayer {
                      MzituService mzituService,
                      MeizituService meizituService,
                      JiandanService jiandanService,
-                     MaijiaxiuService maijiaxiuService) {
+                     MaijiaxiuService maijiaxiuService,
+                     SettingService settingService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
@@ -39,6 +45,7 @@ public class DataLayer {
         mMeizituService = meizituService;
         mJiandanService = jiandanService;
         mMaijiaxiuService = maijiaxiuService;
+        mSettingService = settingService;
     }
 
     public DailyService getDailyService() {
@@ -73,6 +80,10 @@ public class DataLayer {
         return mMaijiaxiuService;
     }
 
+    public SettingService getSettingService() {
+        return mSettingService;
+    }
+
     public interface DailyService {
 
         /**
@@ -102,6 +113,8 @@ public class DataLayer {
     }
 
     public interface ZhihuPicService {
+        Observable<List<Capture>> getList(int type);
+
         Observable<Image> getQuestionPic(Fragment fragment, long question, int limit, int offset);
 
         Observable<Image> getCollectionPic(Fragment fragment, long question, int offset);
@@ -130,10 +143,16 @@ public class DataLayer {
         Observable<Integer> getPageCount();
 
         Observable<Image> getPic(Fragment fragment, int offset);
+
+        Observable<String[]> getTop(int type);
     }
 
     public interface MaijiaxiuService {
         Observable<Image> getPic2(Fragment fragment);
+    }
+
+    public interface SettingService {
+        Observable<List<License>> getLicense();
     }
 
 }
