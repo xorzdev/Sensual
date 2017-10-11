@@ -8,12 +8,12 @@ import android.databinding.ViewDataBinding;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -154,13 +154,12 @@ class BigImageViewModel extends PagingViewModel<Image, BigImageAdapter> {
                                     }
                                 }).show();
                     } else {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                        intent.setType("image/*");
-                        ArrayList<Uri> imageUris = new ArrayList<>();
-                        imageUris.add(uri);
-                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-                        mContext.get().startActivity(Intent.createChooser(intent, "分享"));
+                        ShareCompat.IntentBuilder
+                                .from(mFragment.get().getActivity())
+                                .setChooserTitle("分享图片")
+                                .setType("image/*")
+                                .addStream(uri)
+                                .startChooser();
                     }
                 }, throwable -> notifyMsg(throwable.getMessage()));
     }
