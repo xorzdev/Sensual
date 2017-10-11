@@ -5,7 +5,13 @@
     <!--<external-path>：外部存储空间根目录，等同于 Environment.getExternalStorageDirectory() 所获取的目录路径；-->
     <!--<external-files-path>：外部存储空间应用私有目录下的 files/ 目录，等同于 Context.getExternalFilesDir(null) 所获取的目录路径；-->
     <!--<external-cache-path>：外部存储空间应用私有目录下的 cache/ 目录，等同于 Context.getExternalCacheDir()；-->
-    <external-files-path
-        name="files"
+    <external-cache-path
+        name="eCache"
         path="" />
+    <cache-path
+        name="cache"
+        path="" />
+    <external-path
+        name="appDir"
+        path="Sensual/" />
 </paths>

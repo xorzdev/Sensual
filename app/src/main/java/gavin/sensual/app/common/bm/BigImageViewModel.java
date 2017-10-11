@@ -1,12 +1,21 @@
 package gavin.sensual.app.common.bm;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ViewDataBinding;
-import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import gavin.sensual.app.common.Image;
 import gavin.sensual.base.BaseFragment;
@@ -14,11 +23,10 @@ import gavin.sensual.base.RxBus;
 import gavin.sensual.base.recycler.PagingViewModel;
 import gavin.sensual.databinding.FragBigImageBinding;
 import gavin.sensual.db.util.DbUtil;
-import gavin.sensual.util.ImageLoader;
-import gavin.sensual.util.ShareUtil;
-import io.reactivex.Observable;
+import gavin.sensual.util.CacheHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 /**
  * 查看大图
@@ -102,29 +110,59 @@ class BigImageViewModel extends PagingViewModel<Image, BigImageAdapter> {
         DbUtil.getCollectionService().toggle(imageUrl);
     }
 
-    void shareImage(String imageUrl) {
-        Observable.just(imageUrl)
-                .observeOn(Schedulers.io())
-                .doOnSubscribe(mCompositeDisposable::add)
-                .subscribe(s -> ShareUtil.shareImage(mFragment.get(), s),
-                        throwable -> notifyMsg(throwable.getMessage()));
-    }
-
-    void saveBitmap(String imageUrl, Uri uri) {
-        Observable.just(uri)
+    /**
+     * 操作图片
+     *
+     * @param imageUrl 图片链接
+     * @param type     操作类型（0：下载 1：分享）
+     */
+    void operateImage(String imageUrl, int type) {
+        new RxPermissions(mFragment.get().getActivity())
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .map(granted -> {
+                    if (!granted) {
+                        Snackbar.make(mBinding.get().getRoot(), "保存图片需要 SDCard 卡读写权限", Snackbar.LENGTH_LONG)
+                                .setAction("设置", v -> {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    intent.setData(Uri.parse("package:" + mContext.get().getPackageName()));
+                                    mFragment.get().startActivity(intent);
+                                }).show();
+                    }
+                    return granted;
+                })
+                .filter(Boolean::booleanValue)
+                .flatMap(granted -> getDataLayer().getSettingService().download(imageUrl))
+                .map(ResponseBody::byteStream)
+                .map(inputStream -> {
+                    String dir = type == 0 ? "download" : "share";
+                    String name = dir + "/" + UUID.randomUUID();
+                    return CacheHelper.saveImageStream(inputStream, name);
+                })
+                .map(path -> CacheHelper.file2Uri(mContext.get(), new File(path)))
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .map(uri1 -> mContext.get().getContentResolver().openOutputStream(uri1))
-                .filter(outputStream -> outputStream != null)
-                .doOnSubscribe(mCompositeDisposable::add)
-                .subscribe(outputStream -> {
-                    try {
-                        Bitmap bitmap = ImageLoader.getBitmap(mFragment.get(), imageUrl);
-                        boolean state = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        notifyMsg(state ? "保存成功" : "保存失败");
-                    } finally {
-                        outputStream.close();
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(uri -> {
+                    if (type == 0) {
+                        Snackbar.make(mBinding.get().getRoot(), "图片已保存", Snackbar.LENGTH_LONG)
+                                .setAction("查看", v -> {
+                                    try {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(uri, "image/*");
+                                        mContext.get().startActivity(intent);
+                                    } catch (ActivityNotFoundException e) {
+                                        notifyMsg("你跟我说打不开？？？");
+                                    }
+                                }).show();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                        intent.setType("image/*");
+                        ArrayList<Uri> imageUris = new ArrayList<>();
+                        imageUris.add(uri);
+                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+                        mContext.get().startActivity(Intent.createChooser(intent, "分享"));
                     }
                 }, throwable -> notifyMsg(throwable.getMessage()));
     }
+
 }

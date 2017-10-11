@@ -10,6 +10,7 @@ import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.setting.License;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * DataLayer
@@ -152,6 +153,8 @@ public class DataLayer {
     }
 
     public interface SettingService {
+        Observable<ResponseBody> download(String url);
+
         Observable<List<License>> getLicense();
     }
 

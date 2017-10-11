@@ -13,6 +13,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * ClientAPI
@@ -158,7 +160,6 @@ public interface ClientAPI {
     @GET("http://jandan.net/ooxx/{offset}")
     Observable<ResponseBody> getJiandan(@Path("offset") String page);
 
-
     @Headers("Cache-Control: max-stale=86400")
     @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/{type}")
     Observable<ResponseBody> getJiandanTop(@Path("type") String tpye);
@@ -178,6 +179,9 @@ public interface ClientAPI {
      * *********************************** 设置 ************************************ *
      * **************************************************************************** */
 
+    @Streaming
+    @GET
+    Observable<ResponseBody> download(@Url String url);
 
     @Headers("Cache-Control: max-stale=2419200")
     @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/license.json")

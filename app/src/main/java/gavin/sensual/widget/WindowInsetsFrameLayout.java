@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
  *
  * @author Pkmmte Xeleon
  * @author https://gist.github.com/Pkmmte/d8e983fb9772d2c91688
- * @see http://stackoverflow.com/questions/31190612/fitssystemwindows-effect-gone-for-fragments-added-via-fragmenttransaction
+ * @link {http://stackoverflow.com/questions/31190612/fitssystemwindows-effect-gone-for-fragments-added-via-fragmenttransaction}
  */
 public class WindowInsetsFrameLayout extends FrameLayout {
 

@@ -9,7 +9,7 @@ import gavin.sensual.base.BundleKey;
 import gavin.sensual.databinding.LayoutPagingBinding;
 
 /**
- * 豆瓣
+ * Meizitu
  *
  * @author gavin.xiong 2017/8/15
  */

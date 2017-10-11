@@ -1,4 +1,4 @@
-def supportVersion = "26.0.0-alpha1"
+def supportVersion = "25.3.1"
 
 def fragmentationVersion = "1.1.0"
 def rxJavaVersion = "2.1.2"
@@ -21,10 +21,10 @@ def greenDaoVersion = "3.2.2"
 
 ext {
     applicationId = "gavin.sensual"
-    compileSdkVersion = 26
-    buildToolsVersion = "26.0.0"
+    compileSdkVersion = 25
+    buildToolsVersion = "26.0.1"
     minSdkVersion = 21
-    targetSdkVersion = 26
+    targetSdkVersion = 25
     versionCode = 202
     versionName = "2.0.2"
     resConfigs = "zh" // 只保留中文

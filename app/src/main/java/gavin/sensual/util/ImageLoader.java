@@ -84,6 +84,7 @@ public class ImageLoader {
             int colorRes = getPlaceholderColor();
             Glide.with(fragment)
                     .load(url)
+                    .asBitmap()
                     .placeholder(colorRes)
                     .error(colorRes)
                     .override(width, height)

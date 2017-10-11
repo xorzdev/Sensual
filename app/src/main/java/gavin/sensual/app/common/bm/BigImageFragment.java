@@ -2,7 +2,6 @@ package gavin.sensual.app.common.bm;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -88,10 +87,10 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding, BigIm
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionDownload:
-                createFile();
+                mViewModel.operateImage(imageUrl, 0);
                 break;
             case R.id.actionShare:
-                mViewModel.shareImage(imageUrl);
+                mViewModel.operateImage(imageUrl, 1);
                 break;
         }
         return false;
@@ -110,7 +109,7 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding, BigIm
         mBinding.toolbar.inflateMenu(R.menu.action_image_option);
         mBinding.toolbar.setOnMenuItemClickListener(this);
 
-        ivActionLove = mBinding.toolbar.getMenu().findItem(R.id.actionCollect).getActionView().findViewById(R.id.ivActionLove);
+        ivActionLove = (ImageView) mBinding.toolbar.getMenu().findItem(R.id.actionCollect).getActionView().findViewById(R.id.ivActionLove);
         ivActionLove.setOnClickListener(v -> doLoveAnim(imageUrl));
 
         SnapHelper snapHelper = new PagerSnapHelper();
@@ -180,21 +179,5 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding, BigIm
                 })
                 .delay(350, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .subscribe(arg0 -> ivActionLove.setEnabled(true));
-    }
-
-    private void createFile() {
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/jpeg");
-        intent.putExtra(Intent.EXTRA_TITLE, imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.lastIndexOf(".")) + ".jpg");
-        startActivityForResult(intent, 99);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 99 && data != null && data.getData() != null) {
-            mViewModel.saveBitmap(imageUrl, data.getData());
-        }
     }
 }
