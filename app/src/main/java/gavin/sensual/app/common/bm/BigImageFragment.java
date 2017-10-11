@@ -109,7 +109,7 @@ public class BigImageFragment extends BindingFragment<FragBigImageBinding, BigIm
         mBinding.toolbar.inflateMenu(R.menu.action_image_option);
         mBinding.toolbar.setOnMenuItemClickListener(this);
 
-        ivActionLove = (ImageView) mBinding.toolbar.getMenu().findItem(R.id.actionCollect).getActionView().findViewById(R.id.ivActionLove);
+        ivActionLove = mBinding.toolbar.getMenu().findItem(R.id.actionCollect).getActionView().findViewById(R.id.ivActionLove);
         ivActionLove.setOnClickListener(v -> doLoveAnim(imageUrl));
 
         SnapHelper snapHelper = new PagerSnapHelper();
