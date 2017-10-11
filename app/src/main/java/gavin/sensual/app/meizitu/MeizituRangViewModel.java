@@ -10,6 +10,7 @@ import gavin.sensual.app.common.ImageViewModel;
 import gavin.sensual.app.common.bm.BigImageLoadStateEvent;
 import gavin.sensual.base.BaseFragment;
 import gavin.sensual.base.RxBus;
+import gavin.sensual.base.recycler.FooterViewModel;
 import gavin.sensual.util.L;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,6 +49,7 @@ class MeizituRangViewModel extends ImageViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
                     doOnComplete(isMore);
+                    mFooterViewModel.notifyStateChanged(FooterViewModel.STATE_PERIOD);
                     RxBus.get().post(new BigImageLoadStateEvent<>(mFragment.get().hashCode(), null, null, null, null, null));
                 })
                 .doOnError(e -> {
