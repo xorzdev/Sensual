@@ -31,13 +31,13 @@
 -dontusemixedcaseclassnames
 #不去忽略非公共的库类
 -dontskipnonpubliclibraryclasses
- #优化  不优化输入的类文件
+#优化  不优化输入的类文件
 -dontoptimize
- #预校验
+#预校验
 -dontpreverify
- #混淆时是否记录日志
+#混淆时是否记录日志
 -verbose
- # 混淆时所采用的算法
+# 混淆时所采用的算法
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 #保护注解
 -keepattributes *Annotation*

@@ -6,6 +6,8 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import gavin.sensual.BuildConfig;
+
 /**
  * 日志（log）工具类
  *
@@ -22,7 +24,7 @@ public class L {
 	private static final int I = 3;
 	private static final int W = 4;
 	private static final int E = 5;
-	private static int Z = 0;
+	private static int Z = BuildConfig.LOG_DEBUG ? V : E;
 
 	public static void initLevel(int level) {
 		Z = level;
@@ -33,7 +35,7 @@ public class L {
 	}
 
 	public static void v(String TAG, Object obj) {
-		if (Z < V)
+		if (Z <= V)
 			Log.v(TAG, HEADER + null == obj ? NULL : obj + FOOTER);
 	}
 
@@ -42,7 +44,7 @@ public class L {
 	}
 
 	public static void d(String TAG, Object obj) {
-		if (Z < D)
+		if (Z <= D)
 			Log.d(TAG, HEADER + null == obj ? NULL : obj + FOOTER);
 	}
 
@@ -51,7 +53,7 @@ public class L {
 	}
 
 	public static void i(String TAG, Object obj) {
-		if (Z < I)
+		if (Z <= I)
 			Log.i(TAG, HEADER + null == obj ? NULL : obj + FOOTER);
 	}
 
@@ -60,7 +62,7 @@ public class L {
 	}
 
 	public static void w(String TAG, Object obj) {
-		if (Z < W)
+		if (Z <= W)
 			Log.w(TAG, HEADER + null == obj ? NULL : obj + FOOTER);
 	}
 
@@ -69,7 +71,7 @@ public class L {
 	}
 
 	public static void e(String TAG, Object obj) {
-		if (Z < E)
+		if (Z <= E)
 			Log.e(TAG, HEADER + null == obj ? NULL : obj + FOOTER);
 	}
 

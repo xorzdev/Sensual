@@ -3,6 +3,14 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'AndResGuard'
 
+def static autoVersionCode() {
+    return Integer.parseInt(new Date().format("yyMMdd", TimeZone.getTimeZone("UTC")))
+}
+
+def static autoVersionName() {
+    return new Date().format("yy.MM.dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -11,8 +19,8 @@ android {
         applicationId rootProject.ext.applicationId
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        versionCode autoVersionCode()
+        versionName autoVersionName()
         resConfigs rootProject.ext.resConfigs
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,14 +38,24 @@ android {
 
     buildTypes {
         debug {
+            debuggable true
             minifyEnabled false
             shrinkResources false
+            zipAlignEnabled false
+            versionNameSuffix "_debug"
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "API_DEBUG", "true"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         release {
+            debuggable false
             minifyEnabled true
             shrinkResources true
+            zipAlignEnabled true
+            versionNameSuffix "_release"
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "API_DEBUG", "false"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

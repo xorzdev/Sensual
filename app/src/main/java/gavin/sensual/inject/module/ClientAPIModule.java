@@ -10,9 +10,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import gavin.sensual.util.CacheHelper;
+import gavin.sensual.BuildConfig;
 import gavin.sensual.inject.component.ApplicationComponent;
 import gavin.sensual.net.ClientAPI;
+import gavin.sensual.util.CacheHelper;
 import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;
 import gavin.sensual.util.okhttp.OKHttpCacheNetworkInterceptor;
 import gavin.sensual.util.okhttp.OKHttpLoggingInterceptor;
@@ -117,7 +118,7 @@ public class ClientAPIModule {
     @Provides
     public HttpLoggingInterceptor provideLogger() {
         return new HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY);
+                .setLevel(BuildConfig.LOG_DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
     }
 
     /**
