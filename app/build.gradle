@@ -128,7 +128,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile rootProject.ext.libSupportAppcompat
     compile rootProject.ext.libSupportDesign
@@ -138,6 +137,8 @@ dependencies {
     compile rootProject.ext.libSupportVectorDrawable
     //    compile rootProject.ext.libSupportPalette
     //    compile rootProject.ext.libSupportPercent
+
+    //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile rootProject.ext.libFragmentation
 
@@ -165,8 +166,6 @@ dependencies {
     compile rootProject.ext.libPhotoView
 
     compile rootProject.ext.libJsoup
-
-    compile rootProject.ext.libGuava
 
     compile rootProject.ext.libGreenDao
 }
