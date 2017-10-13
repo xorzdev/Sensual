@@ -1,4 +1,4 @@
-package gavin.sensual.app.capture.tipit;
+package gavin.sensual.app.capture.topit;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

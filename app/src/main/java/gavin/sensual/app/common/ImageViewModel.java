@@ -15,7 +15,6 @@ import gavin.sensual.base.RxBus;
 import gavin.sensual.base.recycler.PagingViewModel;
 import gavin.sensual.databinding.LayoutPagingBinding;
 import gavin.sensual.databinding.LayoutPagingToolbarBinding;
-import gavin.sensual.util.L;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -73,7 +72,7 @@ public abstract class ImageViewModel extends PagingViewModel<Image, ImageAdapter
                 .subscribe(image -> {
                     accept(isMore, image);
                     RxBus.get().post(new BigImageLoadStateEvent<>(mFragment.get().hashCode(), null, null, image, null, null));
-                }, L::e);
+                }, Throwable::printStackTrace);
     }
 
     private void subscribeEvent() {

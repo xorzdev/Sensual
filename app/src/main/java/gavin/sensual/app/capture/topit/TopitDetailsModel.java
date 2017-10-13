@@ -1,4 +1,4 @@
-package gavin.sensual.app.capture.tipit;
+package gavin.sensual.app.capture.topit;
 
 import android.content.Context;
 import android.databinding.ViewDataBinding;
@@ -9,7 +9,7 @@ import gavin.sensual.base.BaseFragment;
 import io.reactivex.Observable;
 
 /**
- * Topit
+ * TopitDetailsModel
  *
  * @author gavin.xiong 2017/8/11
  */
@@ -24,6 +24,7 @@ class TopitDetailsModel extends ImageViewModel {
 
     @Override
     protected Observable<Image> getDataSrc(boolean isMore) {
-        return getDataLayer().getTopitService().getAlbum(id);
+        return getDataLayer().getTopitService().getAlbum(id, isMore ? pagingOffset : 0);
     }
+
 }

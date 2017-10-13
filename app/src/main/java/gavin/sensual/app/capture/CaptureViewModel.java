@@ -7,7 +7,7 @@ import gavin.sensual.R;
 import gavin.sensual.app.capture.jiandan.JiandanFragment;
 import gavin.sensual.app.capture.jiandan.JiandanTopFragment;
 import gavin.sensual.app.capture.maijiaxiu.MaijiaxiuFragment;
-import gavin.sensual.app.capture.tipit.TopitFragment;
+import gavin.sensual.app.capture.topit.TopitFragment;
 import gavin.sensual.app.capture.zhihu.ZhihuFragment;
 import gavin.sensual.app.capture.zhihu.ZhihuViewModel;
 import gavin.sensual.app.main.StartFragmentEvent;

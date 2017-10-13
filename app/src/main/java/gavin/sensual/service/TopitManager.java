@@ -3,7 +3,7 @@ package gavin.sensual.service;
 import java.util.List;
 
 import gavin.sensual.app.capture.Capture;
-import gavin.sensual.app.capture.tipit.Album;
+import gavin.sensual.app.capture.topit.Album;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
 import gavin.sensual.service.base.DataLayer;
@@ -22,9 +22,9 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
     }
 
     @Override
-    public Observable<Image> getAlbum(long id) {
-        return getApi().getTopitAlbum(id)
-                .map(Album::getItems)
+    public Observable<Image> getAlbum(long id, int offset) {
+        return getApi().getTopitAlbum("album.get", id, 10, offset * 10)
+                .map(Album::getItem)
                 .flatMap(Observable::fromIterable)
                 .map(Album.Item::getIcon)
                 .map(icon -> {

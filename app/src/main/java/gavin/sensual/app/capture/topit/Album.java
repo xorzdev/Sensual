@@ -1,4 +1,4 @@
-package gavin.sensual.app.capture.tipit;
+package gavin.sensual.app.capture.topit;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,34 +12,29 @@ import java.util.List;
  */
 public class Album implements Serializable {
 
-    private List<Item> items;
+    private List<Item> item;
 
-    public List<Item> getItems() {
-        return items;
+    public List<Item> getItem() {
+        return item;
     }
 
     public static class Item implements Serializable {
 
         private Icon icon;
-        private String next;
 
         public Icon getIcon() {
             return icon;
         }
 
-        public String getNext() {
-            return next;
-        }
     }
-
 
     public static class Icon implements Serializable {
 
-        @SerializedName("url_l")
+        @SerializedName(value = "url_l", alternate = "url")
         private String url;
-        @SerializedName("l_width")
+        @SerializedName(value = "l_width", alternate = "width")
         private int width;
-        @SerializedName("l_height")
+        @SerializedName(value = "l_height", alternate = "height")
         private int height;
 
         public String getUrl() {
