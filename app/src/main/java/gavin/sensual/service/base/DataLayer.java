@@ -28,6 +28,7 @@ public class DataLayer {
     private JiandanService mJiandanService;
     private MaijiaxiuService mMaijiaxiuService;
     private SettingService mSettingService;
+    private TopitService mTopitService;
 
     public DataLayer(DailyService dailyService,
                      GankService gankService,
@@ -37,7 +38,8 @@ public class DataLayer {
                      MeizituService meizituService,
                      JiandanService jiandanService,
                      MaijiaxiuService maijiaxiuService,
-                     SettingService settingService) {
+                     SettingService settingService,
+                     TopitService topitService) {
         mDailyService = dailyService;
         mGankService = gankService;
         mDoubanService = doubanService;
@@ -47,6 +49,7 @@ public class DataLayer {
         mJiandanService = jiandanService;
         mMaijiaxiuService = maijiaxiuService;
         mSettingService = settingService;
+        mTopitService = topitService;
     }
 
     public DailyService getDailyService() {
@@ -83,6 +86,10 @@ public class DataLayer {
 
     public SettingService getSettingService() {
         return mSettingService;
+    }
+
+    public TopitService getTopitService() {
+        return mTopitService;
     }
 
     public interface DailyService {
@@ -150,6 +157,12 @@ public class DataLayer {
 
     public interface MaijiaxiuService {
         Observable<Image> getPic2(Fragment fragment);
+    }
+
+    public interface TopitService {
+        Observable<List<Capture>> getList();
+
+        Observable<Image> getAlbum(long id);
     }
 
     public interface SettingService {

@@ -30,6 +30,10 @@ public class Image implements Serializable {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public int getWidth() {
         return width;
     }

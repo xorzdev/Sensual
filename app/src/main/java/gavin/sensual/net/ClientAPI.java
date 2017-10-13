@@ -3,6 +3,7 @@ package gavin.sensual.net;
 import java.util.List;
 
 import gavin.sensual.app.capture.Capture;
+import gavin.sensual.app.capture.tipit.Album;
 import gavin.sensual.app.daily.Daily;
 import gavin.sensual.app.daily.News;
 import gavin.sensual.app.gank.Result;
@@ -173,6 +174,21 @@ public interface ClientAPI {
     @Headers("Cache-Control: max-stale=60")
     @GET("http://www.mjxzs.cc/")
     Observable<ResponseBody> getMaijiaxiu();
+
+
+    /* **************************************************************************** *
+     * *********************************** Topit ********************************** *
+     * **************************************************************************** */
+
+
+    @Headers("Cache-Control: max-stale=86400")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/topit_album.json")
+    Observable<List<Capture>> getTopitAlbumList();
+
+
+    @Headers("Cache-Control: max-stale=60")
+    @GET("http://api.topitme.com?method=album.get&id={id}")
+    Observable<Album> getTopitAlbum(@Path("id") long id);
 
 
     /* **************************************************************************** *
