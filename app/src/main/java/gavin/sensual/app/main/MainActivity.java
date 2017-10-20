@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import gavin.sensual.R;
 import gavin.sensual.app.capture.CaptureFragment;
+import gavin.sensual.app.capture.topit.TopitmeFragment;
 import gavin.sensual.app.collection.CollectionFragment;
 import gavin.sensual.app.daily.DailyFragment;
 import gavin.sensual.app.douban.DoubanTabFragment;
@@ -60,6 +61,9 @@ public class MainActivity extends BindingActivity<ActMainBinding>
         switch (item.getItemId()) {
             case R.id.nav_news:
                 popTo();
+                break;
+            case R.id.nav_topitme:
+                next(TopitmeFragment.newInstance());
                 break;
             case R.id.nav_gank:
                 next(GankFragment.newInstance());

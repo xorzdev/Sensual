@@ -7,7 +7,6 @@ import gavin.sensual.R;
 import gavin.sensual.app.capture.jiandan.JiandanFragment;
 import gavin.sensual.app.capture.jiandan.JiandanTopFragment;
 import gavin.sensual.app.capture.maijiaxiu.MaijiaxiuFragment;
-import gavin.sensual.app.capture.topit.TopitFragment;
 import gavin.sensual.app.capture.zhihu.ZhihuFragment;
 import gavin.sensual.app.capture.zhihu.ZhihuViewModel;
 import gavin.sensual.app.main.StartFragmentEvent;
@@ -51,9 +50,6 @@ class CaptureViewModel extends PagingViewModel<Capture, BindingHeaderFooterAdapt
                 case 5:
                     RxBus.get().post(new StartFragmentEvent(MaijiaxiuFragment.newInstance()));
                     break;
-                case 6:
-                    RxBus.get().post(new StartFragmentEvent(TopitFragment.newInstance()));
-                    break;
                 default:
                     break;
             }
@@ -68,7 +64,6 @@ class CaptureViewModel extends PagingViewModel<Capture, BindingHeaderFooterAdapt
         mList.add(new Capture("煎蛋妹子图精选 1", "https://img3.doubanio.com/lpic/s29203893.jpg"));
         mList.add(new Capture("煎蛋妹子图精选 2", "https://img3.doubanio.com/lpic/s29203893.jpg"));
         mList.add(new Capture("买家秀", "https://img3.doubanio.com/lpic/s29387793.jpg"));
-        mList.add(new Capture("Topit", "https://img3.doubanio.com/lpic/s29155291.jpg"));
         adapter.notifyDataSetChanged();
     }
 }

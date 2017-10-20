@@ -13,11 +13,11 @@ import io.reactivex.Observable;
  *
  * @author gavin.xiong 2017/8/11
  */
-class TopitDetailsModel extends ImageViewModel {
+class TopitmeDetailsModel extends ImageViewModel {
 
     private final long id;
 
-    TopitDetailsModel(Context context, BaseFragment fragment, ViewDataBinding binding, long id) {
+    TopitmeDetailsModel(Context context, BaseFragment fragment, ViewDataBinding binding, long id) {
         super(context, fragment, binding);
         this.id = id;
     }

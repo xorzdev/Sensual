@@ -1,8 +1,7 @@
 package gavin.sensual.service;
 
-import java.util.List;
+import android.support.v4.app.Fragment;
 
-import gavin.sensual.app.capture.Capture;
 import gavin.sensual.app.capture.topit.Album;
 import gavin.sensual.app.common.Image;
 import gavin.sensual.service.base.BaseManager;
@@ -17,8 +16,15 @@ import io.reactivex.Observable;
 public class TopitManager extends BaseManager implements DataLayer.TopitService {
 
     @Override
-    public Observable<List<Capture>> getList() {
-        return getApi().getTopitAlbumList();
+    public Observable<Image> getList(Fragment fragment) {
+        return getApi().getTopitAlbumList()
+                .flatMap(Observable::fromIterable)
+                .map(capture -> {
+                    Image image = Image.newImage(fragment, capture.getImage());
+                    image.setId(String.valueOf(capture.getId()));
+                    image.haveMore = false;
+                    return image;
+                });
     }
 
     @Override

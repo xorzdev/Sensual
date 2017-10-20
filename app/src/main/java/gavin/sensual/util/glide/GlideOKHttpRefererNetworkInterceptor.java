@@ -20,6 +20,11 @@ class GlideOKHttpRefererNetworkInterceptor implements Interceptor {
                     .newBuilder()
                     .header("Referer", "http://m.mzitu.com/")
                     .build());
+        } else if (chain.request().url().toString().contains(".topitme.com")) {
+            return chain.proceed(chain.request()
+                    .newBuilder()
+                    .url(chain.request().url().toString().replaceFirst(".topitme.com", ".topitme.com/"))
+                    .build());
         } else {
             return chain.proceed(chain.request());
         }

@@ -13,19 +13,19 @@ import gavin.sensual.databinding.LayoutPagingToolbarBinding;
  *
  * @author gavin.xiong 2017/8/16
  */
-public class TopitDetailsFragment extends BindingFragment<LayoutPagingToolbarBinding, TopitDetailsModel> {
+public class TopitmeDetailsFragment extends BindingFragment<LayoutPagingToolbarBinding, TopitmeDetailsModel> {
 
-    public static TopitDetailsFragment newInstance(long id) {
+    public static TopitmeDetailsFragment newInstance(long id) {
         Bundle args = new Bundle();
         args.putLong(BundleKey.NEWS_ID, id);
-        TopitDetailsFragment fragment = new TopitDetailsFragment();
+        TopitmeDetailsFragment fragment = new TopitmeDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void bindViewModel(@Nullable Bundle savedInstanceState) {
-        mViewModel = new TopitDetailsModel(getContext(), this, mBinding,
+        mViewModel = new TopitmeDetailsModel(getContext(), this, mBinding,
                 getArguments().getLong(BundleKey.NEWS_ID));
         mViewModel.afterCreate();
         mBinding.setVm(mViewModel);
@@ -38,7 +38,7 @@ public class TopitDetailsFragment extends BindingFragment<LayoutPagingToolbarBin
 
     @Override
     protected void afterCreate(@Nullable Bundle savedInstanceState) {
-        mBinding.includeToolbar.toolbar.setTitle("Topit");
+        mBinding.includeToolbar.toolbar.setTitle("Topit.me");
         mBinding.includeToolbar.toolbar.setNavigationIcon(R.drawable.vt_arrow_back_24dp);
         mBinding.includeToolbar.toolbar.setNavigationOnClickListener(v -> pop());
     }

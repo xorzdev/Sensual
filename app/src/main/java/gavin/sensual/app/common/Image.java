@@ -18,6 +18,12 @@ public class Image implements Serializable {
     private int height;
     private boolean error;
 
+    public boolean haveMore = true;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

@@ -181,13 +181,12 @@ public interface ClientAPI {
      * **************************************************************************** */
 
 
-//    @Headers("Cache-Control: max-stale=86400")
-    @Headers("Cache-Control: max-stale=10")
+    @Headers("Cache-Control: max-stale=43200")
     @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/topitme_album.json")
     Observable<List<Capture>> getTopitAlbumList();
 
 
-    @Headers("Cache-Control: max-stale=60")
+    @Headers("Cache-Control: max-stale=3600")
     @GET("http://api.topitme.com")
     Observable<Album> getTopitAlbum(
             @Query("method") String method,

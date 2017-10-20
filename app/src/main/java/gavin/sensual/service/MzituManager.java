@@ -73,7 +73,11 @@ public class MzituManager extends BaseManager implements DataLayer.MzituService 
                     }
                     return false;
                 })
-                .filter(image -> !image.isError());
+                .filter(image -> !image.isError())
+                .map(image -> {
+                    image.haveMore = false;
+                    return image;
+                });
     }
 
     @Override

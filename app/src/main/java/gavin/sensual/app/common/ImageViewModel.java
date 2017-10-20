@@ -66,7 +66,7 @@ public abstract class ImageViewModel extends PagingViewModel<Image, ImageAdapter
                     RxBus.get().post(new BigImageLoadStateEvent<>(mFragment.get().hashCode(), null, e, null, null, null));
                 })
                 .doOnNext(image -> {
-                    pagingHaveMore = true;
+                    pagingHaveMore = image.haveMore;
                     RxBus.get().post(new BigImageLoadStateEvent<>(mFragment.get().hashCode(), null, null, null, null, pagingHaveMore));
                 })
                 .subscribe(image -> {
