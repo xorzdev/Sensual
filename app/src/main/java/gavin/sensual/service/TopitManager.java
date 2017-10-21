@@ -44,7 +44,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
                         return Observable.just(false);
                     }
                 })
-                .flatMap(arg0 -> getApi().getTopitAlbum("user.getAlbums", 5497642, 10, offset * 10))
+                .flatMap(arg0 -> getApi().getTopitAlbum("user.getAlbums", 5497642, 15, offset * 15))
                 .map(album -> {
                     num = album.getInfo().getNum();
                     return album.getItem();
@@ -65,7 +65,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
                         image.setHeight(item.getIcon().getHeight());
                     }
                     image.setId(String.valueOf(item.getId()));
-                    image.haveMore = offset * 10 + 10 < num;
+                    image.haveMore = offset * 15 + 15 < num;
                     return image;
                 });
 
@@ -73,7 +73,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
 
     @Override
     public Observable<Image> getAlbum(long id, int offset) {
-        return getApi().getTopitAlbum("album.get", id, 10, offset * 10)
+        return getApi().getTopitAlbum("album.get", id, 15, offset * 15)
                 .map(album -> {
                     num = album.getInfo().getNum();
                     return album.getItem();
@@ -85,7 +85,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
                     image.setUrl(icon.getUrl());
                     image.setWidth(icon.getWidth());
                     image.setHeight(icon.getHeight());
-                    image.haveMore = offset * 10 + 10 < num;
+                    image.haveMore = offset * 15 + 15 < num;
                     return image;
                 });
     }
