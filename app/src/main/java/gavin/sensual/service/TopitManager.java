@@ -20,7 +20,8 @@ import io.reactivex.Observable;
 public class TopitManager extends BaseManager implements DataLayer.TopitService {
 
     private int num = 0;
-    private List<Long> excludes;
+    private List<Long> mExcludeAlbums;
+    private List<Long> mExcludeItems;
 
     private Observable<Boolean> getExcludeAlbumList() {
         return getApi().getExcludeAlbumList()
@@ -29,7 +30,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
                 .toList()
                 .toObservable()
                 .map(longs -> {
-                    excludes = longs;
+                    mExcludeAlbums = longs;
                     return true;
                 });
     }
@@ -38,7 +39,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
     public Observable<Image> getList(Fragment fragment, int offset) {
         return Observable.just(0)
                 .flatMap(arg0 -> {
-                    if (excludes == null) {
+                    if (mExcludeAlbums == null) {
                         return getExcludeAlbumList();
                     } else {
                         return Observable.just(false);
@@ -50,7 +51,7 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
                     return album.getItem();
                 })
                 .flatMap(Observable::fromIterable)
-                .filter(item -> !excludes.contains(item.getId()))
+                .filter(item -> !mExcludeAlbums.contains(item.getId()))
                 .map(item -> {
                     Image image = null;
                     if (item.getIcon().getUrl().endsWith("m.jpg")) {
@@ -71,14 +72,31 @@ public class TopitManager extends BaseManager implements DataLayer.TopitService 
 
     }
 
+    private Observable<Boolean> getExcludeItemList() {
+        return getApi().getExcludeItemList()
+                .map(longs -> {
+                    mExcludeItems = longs;
+                    return true;
+                });
+    }
+
     @Override
     public Observable<Image> getAlbum(long id, int offset) {
-        return getApi().getTopitAlbum("album.get", id, 15, offset * 15)
+        return Observable.just(0)
+                .flatMap(arg0 -> {
+                    if (mExcludeItems == null) {
+                        return getExcludeItemList();
+                    } else {
+                        return Observable.just(false);
+                    }
+                })
+                .flatMap(arg0 -> getApi().getTopitAlbum("album.get", id, 15, offset * 15))
                 .map(album -> {
                     num = album.getInfo().getNum();
                     return album.getItem();
                 })
                 .flatMap(Observable::fromIterable)
+                .filter(item -> !mExcludeItems.contains(item.getId()))
                 .map(Album.Item::getIcon)
                 .map(icon -> {
                     Image image = new Image();

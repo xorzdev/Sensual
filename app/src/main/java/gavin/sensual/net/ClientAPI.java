@@ -185,6 +185,10 @@ public interface ClientAPI {
     Observable<List<Capture>> getExcludeAlbumList();
 
     @Headers("Cache-Control: max-stale=3600")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/topitme_exclude_item.json")
+    Observable<List<Long>> getExcludeItemList();
+
+    @Headers("Cache-Control: max-stale=3600")
     @GET("http://api.topitme.com")
     Observable<Album> getTopitAlbum(
             @Query("method") String method,
