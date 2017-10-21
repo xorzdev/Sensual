@@ -160,7 +160,7 @@ public class DataLayer {
     }
 
     public interface TopitService {
-        Observable<Image> getList(Fragment fragment);
+        Observable<Image> getList(Fragment fragment, int offset);
 
         Observable<Image> getAlbum(long id, int offset);
     }

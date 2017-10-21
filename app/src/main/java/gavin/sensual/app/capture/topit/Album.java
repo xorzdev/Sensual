@@ -12,15 +12,36 @@ import java.util.List;
  */
 public class Album implements Serializable {
 
+    private Info info;
     private List<Item> item;
+
+    public Info getInfo() {
+        return info;
+    }
 
     public List<Item> getItem() {
         return item;
     }
 
+    public static class Info implements Serializable {
+
+        private int num;
+
+        public int getNum() {
+            return num;
+        }
+
+    }
+
     public static class Item implements Serializable {
 
+        private long id;
+
         private Icon icon;
+
+        public long getId() {
+            return id;
+        }
 
         public Icon getIcon() {
             return icon;

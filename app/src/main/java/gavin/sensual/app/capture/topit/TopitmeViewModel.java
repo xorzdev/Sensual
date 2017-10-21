@@ -28,6 +28,7 @@ class TopitmeViewModel extends ImageViewModel {
 
     @Override
     protected Observable<Image> getDataSrc(boolean isMore) {
-        return getDataLayer().getTopitService().getList(mFragment.get());
+        return getDataLayer().getTopitService().getList(mFragment.get(), isMore ? pagingOffset : 0);
     }
+
 }
