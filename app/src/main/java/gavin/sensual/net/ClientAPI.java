@@ -181,7 +181,7 @@ public interface ClientAPI {
      * **************************************************************************** */
 
     @Headers("Cache-Control: max-stale=3600")
-    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/topitme_album.json")
+    @GET("https://raw.githubusercontent.com/gavinxxxxxx/Sensual/master/json/topitme_exclude_album.json")
     Observable<List<Capture>> getExcludeAlbumList();
 
     @Headers("Cache-Control: max-stale=3600")
