@@ -2,7 +2,6 @@ package gavin.sensual.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDelegate;
 
 import javax.inject.Inject;
 
@@ -25,8 +24,6 @@ public abstract class BaseActivity extends SupportActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 兼容vector
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView();
         ApplicationComponent.Instance.get().inject(this);
         afterCreate(savedInstanceState);
