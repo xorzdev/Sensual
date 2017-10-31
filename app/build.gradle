@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'AndResGuard'
 
@@ -41,7 +40,7 @@ android {
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false
-            versionNameSuffix "_debug"
+            versionNameSuffix ".debug"
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "API_DEBUG", "true"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -52,7 +51,7 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
-            versionNameSuffix "_release"
+            versionNameSuffix ".release"
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "API_DEBUG", "false"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -87,24 +86,14 @@ android {
 }
 
 andResGuard {
-    //mappingFile用于增量更新，保持本次混淆与上次混淆结果一致；
-    // mappingFile = file("./resource_mapping.txt")
+    // @link{https://github.com/shwenzhang/AndResGuard/blob/master/README.zh-cn.md}
     mappingFile = null
-    //uss7zip为true时，useSign必须为true；
     use7zip = true
-    //useSign为true时，需要配置signConfig；
     useSign = true
-    //打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字;
     keepRoot = false
-    //whiteList添加在代码内部需要动态获取的资源id，不混淆这部分；
     whiteList = [
-            // for your icon
-            "R.mipmap.ic_launcher",
-            "R.mipmap.ic_launcher_round",
-
-            // "R.string.umeng*",
+            // nothing
     ]
-    //用来指定文件重打包时是否压缩指定文件;
     compressFilePattern = [
             "*.png",
             "*.jpg",
@@ -112,10 +101,8 @@ andResGuard {
             "*.gif",
             "resources.arsc"
     ]
-    //sevenzip可使用artifacr或path，path指本地安装的7za（7zip命令行工具）。
     sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.2.0'
-        //path = "/usr/local/bin/7za"
+        artifact = 'com.tencent.mm:SevenZip:1.2.7'
     }
     // v2签名会使得7zip压缩失效，如果你对apk大小有极致的要求，可以在signingConfigs中关闭v2签名
     // gradlew resguardRelease
