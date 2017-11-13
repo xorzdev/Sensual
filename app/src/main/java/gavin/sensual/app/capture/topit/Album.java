@@ -2,7 +2,6 @@ package gavin.sensual.app.capture.topit;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,9 +9,11 @@ import java.util.List;
  *
  * @author gavin.xiong 2017/10/13
  */
-public class Album implements Serializable {
+public class Album {
 
+    @SerializedName("info")
     private Info info;
+    @SerializedName("item")
     private List<Item> item;
 
     public Info getInfo() {
@@ -23,8 +24,9 @@ public class Album implements Serializable {
         return item;
     }
 
-    public static class Info implements Serializable {
+    public static class Info {
 
+        @SerializedName("num")
         private int num;
 
         public int getNum() {
@@ -33,10 +35,12 @@ public class Album implements Serializable {
 
     }
 
-    public static class Item implements Serializable {
+    public static class Item {
 
+        @SerializedName("id")
         private long id;
 
+        @SerializedName("icon")
         private Icon icon;
 
         public long getId() {
@@ -49,7 +53,7 @@ public class Album implements Serializable {
 
     }
 
-    public static class Icon implements Serializable {
+    public static class Icon {
 
         @SerializedName(value = "url_l", alternate = "url")
         private String url;

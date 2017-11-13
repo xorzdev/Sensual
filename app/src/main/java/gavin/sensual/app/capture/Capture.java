@@ -1,16 +1,19 @@
 package gavin.sensual.app.capture;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * 发现
  *
  * @author gavin.xiong 2017/5/24
  */
-public class Capture implements Serializable {
+public class Capture {
 
+    @SerializedName("id")
     private long id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("image")
     private String image;
 
     public Capture(String title, String image) {

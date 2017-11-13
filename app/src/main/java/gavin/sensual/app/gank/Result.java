@@ -2,7 +2,6 @@ package gavin.sensual.app.gank;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 import gavin.sensual.app.common.Image;
@@ -12,7 +11,7 @@ import gavin.sensual.app.common.Image;
  *
  * @author gavin.xiong 2017/5/6
  */
-public class Result implements Serializable {
+public class Result {
 
     @SerializedName("error")
     private boolean error;

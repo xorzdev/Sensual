@@ -1,6 +1,7 @@
 package gavin.sensual.app.capture.maijiaxiu;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -8,20 +9,23 @@ import java.util.List;
  *
  * @author gavin.xiong 2017/8/10
  */
-public class Maijiaxiu implements Serializable {
+public class Maijiaxiu {
 
+    @SerializedName("list")
     private List<Model> list;
 
     public List<Model> getList() {
         return list;
     }
 
-    public static class Model implements Serializable {
+    public static class Model {
 
+        @SerializedName("id")
         private long id;
+        @SerializedName("src")
         private String src;
+        @SerializedName("title")
         private String title;
-        private int star;
 
         public long getId() {
             return id;

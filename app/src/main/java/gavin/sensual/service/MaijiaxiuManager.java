@@ -36,27 +36,24 @@ public class MaijiaxiuManager extends BaseManager implements DataLayer.Maijiaxiu
                     return ss;
                 })
                 .flatMap(Observable::fromIterable)
-                .flatMap(new Function<String, ObservableSource<String>>() {
-                    @Override
-                    public ObservableSource<String> apply(@NonNull String str) throws Exception {
-                        if (!str.startsWith("<script>window.metaData={")) {
-                            return Observable.just(str)
-                                    .map(Jsoup::parse)
-                                    .map(document -> document.select("div[class=section-main] div[class=main] li[class=item] img"))
-                                    .flatMap(Observable::fromIterable)
-                                    .map(element -> element.attr("data-original"))
-                                    .filter(s -> s.length() > 6)
-                                    .map(s -> s.substring(0, s.lastIndexOf("_")));
-                        } else {
-                            return Observable.just(str)
-                                    .map(s -> s.substring(s.indexOf("{")))
-                                    .map(s -> s + "}")
-                                    .map(s -> JsonUtil.toObj(s, Maijiaxiu.class))
-                                    .map(Maijiaxiu::getList)
-                                    .flatMap(Observable::fromIterable)
-                                    .map(Maijiaxiu.Model::getSrc)
-                                    .filter(s -> s.length() > 6);
-                        }
+                .flatMap(str -> {
+                    if (!str.startsWith("<script>window.metaData={")) {
+                        return Observable.just(str)
+                                .map(Jsoup::parse)
+                                .map(document -> document.select("div[class=section-main] div[class=main] li[class=item] img"))
+                                .flatMap(Observable::fromIterable)
+                                .map(element -> element.attr("data-original"))
+                                .filter(s -> s.length() > 6)
+                                .map(s -> s.substring(0, s.lastIndexOf("_")));
+                    } else {
+                        return Observable.just(str)
+                                .map(s -> s.substring(s.indexOf("{")))
+                                .map(s -> s + "}")
+                                .map(s -> JsonUtil.toObj(s, Maijiaxiu.class))
+                                .map(Maijiaxiu::getList)
+                                .flatMap(Observable::fromIterable)
+                                .map(Maijiaxiu.Model::getSrc)
+                                .filter(s -> s.length() > 6);
                     }
                 })
                 .map(s -> "https:" + s)

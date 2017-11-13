@@ -156,8 +156,11 @@ public interface ClientAPI {
      * **************************************************************************** */
 
 
+    @Headers({
+            "User-Agent: a",
+            "Cache-Control: max-stale=60"
+    })
     // "ooxx/page-75#comments"
-    @Headers("Cache-Control: max-stale=60")
     @GET("http://jandan.net/ooxx/{offset}")
     Observable<ResponseBody> getJiandan(@Path("offset") String page);
 

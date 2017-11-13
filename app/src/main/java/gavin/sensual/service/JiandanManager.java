@@ -20,6 +20,10 @@ public class JiandanManager extends BaseManager implements DataLayer.JiandanServ
 
     @Override
     public Observable<Integer> getPageCount() {
+//        return Observable.just(0)
+//                .map(arg0 -> {
+//                    return Jsoup.connect("http://jandan.net/ooxx/").get();
+//                })
         return getApi().getJiandan("")
                 .map(ResponseBody::string)
                 .map(Jsoup::parse)

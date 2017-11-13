@@ -3,12 +3,11 @@ package gavin.sensual.app.common;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 
-import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 import gavin.sensual.util.ImageLoader;
 
-public class Image implements Serializable {
+public class Image {
 
     private String id;
     private String time;

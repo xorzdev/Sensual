@@ -1,13 +1,11 @@
 package gavin.sensual.app.setting;
 
-import java.io.Serializable;
-
 /**
  * 开源许可
  *
  * @author gavin.xiong 2017/4/24
  */
-public class License implements Serializable {
+public class License {
 
     private String title;
     private String license;

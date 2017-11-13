@@ -2,7 +2,6 @@ package gavin.sensual.app.daily;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  *
  * @author gavin.xiong 2017/4/26
  */
-public class Daily implements Serializable {
+public class Daily {
     //日期,唯一,重复的直接覆盖
     @SerializedName("date")
     private String date;
@@ -44,7 +43,7 @@ public class Daily implements Serializable {
                 '}';
     }
 
-    public static class Story implements Serializable {
+    public static class Story {
         //id
         @SerializedName("id")
         private long id;

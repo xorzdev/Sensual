@@ -2,7 +2,6 @@ package gavin.sensual.app.daily;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  *
  * @author lsxiao 2015-11-05 10:45
  */
-public class News implements Serializable {
+public class News {
     //新闻的 id
     @SerializedName("id")
     private Long mId;
@@ -80,7 +79,7 @@ public class News implements Serializable {
     /**
      * 栏目的信息
      */
-    public static class Section implements Serializable {
+    public static class Section {
         //该栏目的 id
         @SerializedName("id")
         private Long mSectionId;
@@ -115,7 +114,7 @@ public class News implements Serializable {
         }
     }
 
-    public static class Recommender implements Serializable {
+    public static class Recommender {
         //这篇文章的推荐者头像
         @SerializedName("avatar")
         private String mAvatarUrl;
