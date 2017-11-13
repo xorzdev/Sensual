@@ -13,6 +13,7 @@ import com.bumptech.glide.module.GlideModule;
 import java.io.InputStream;
 
 import gavin.sensual.util.CacheHelper;
+import gavin.sensual.util.okhttp.OKHttpRefererNetworkInterceptor;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 
@@ -55,7 +56,7 @@ public class GlideQualityModule implements GlideModule {
             synchronized (GlideQualityModule.class) {
                 if (internalClient == null) {
                     internalClient = new OkHttpClient.Builder()
-                            .addNetworkInterceptor(new GlideOKHttpRefererNetworkInterceptor())
+                            .addNetworkInterceptor(new OKHttpRefererNetworkInterceptor())
                             .build();
                 }
             }

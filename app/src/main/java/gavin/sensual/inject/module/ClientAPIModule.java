@@ -17,6 +17,7 @@ import gavin.sensual.util.CacheHelper;
 import gavin.sensual.util.okhttp.OKHttpCacheInterceptor;
 import gavin.sensual.util.okhttp.OKHttpCacheNetworkInterceptor;
 import gavin.sensual.util.okhttp.OKHttpLoggingInterceptor;
+import gavin.sensual.util.okhttp.OKHttpRefererNetworkInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -95,8 +96,12 @@ public class ClientAPIModule {
      */
     @Singleton
     @Provides
-    public OkHttpClient provideClient(HttpLoggingInterceptor logging, OKHttpLoggingInterceptor logging2,
-                                      OKHttpCacheInterceptor cacheInterceptor, OKHttpCacheNetworkInterceptor cacheNetworkInterceptor, Cache cache) {
+    public OkHttpClient provideClient(HttpLoggingInterceptor logging,
+                                      OKHttpLoggingInterceptor logging2,
+                                      OKHttpCacheInterceptor cacheInterceptor,
+                                      OKHttpCacheNetworkInterceptor cacheNetworkInterceptor,
+                                      OKHttpRefererNetworkInterceptor refererNetworkInterceptor,
+                                      Cache cache) {
         return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -105,6 +110,7 @@ public class ClientAPIModule {
                 .addInterceptor(logging2)
                 .addInterceptor(cacheInterceptor)
                 .addNetworkInterceptor(cacheNetworkInterceptor)
+                .addNetworkInterceptor(refererNetworkInterceptor)
                 .cache(cache)
                 .build();
     }
@@ -152,6 +158,17 @@ public class ClientAPIModule {
     @Provides
     public OKHttpCacheNetworkInterceptor provideCacheNetworkInterceptor() {
         return new OKHttpCacheNetworkInterceptor();
+    }
+
+    /**
+     * OKHttp 图片路径修正与反反盗链
+     *
+     * @return OKHttpRefererNetworkInterceptor
+     */
+    @Singleton
+    @Provides
+    public OKHttpRefererNetworkInterceptor provideRefererNetworkInterceptor() {
+        return new OKHttpRefererNetworkInterceptor();
     }
 
     /**

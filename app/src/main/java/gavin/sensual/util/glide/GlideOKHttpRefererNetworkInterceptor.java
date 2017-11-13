@@ -11,7 +11,7 @@ import okhttp3.Response;
  *
  * @author gavin.xiong 2017/4/28
  */
-class GlideOKHttpRefererNetworkInterceptor implements Interceptor {
+final class GlideOKHttpRefererNetworkInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
